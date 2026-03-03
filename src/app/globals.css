@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap');
+@import "tailwindcss";
+
+@theme inline {
+  --color-silver: #E8E8E8;
+  --color-rose-gold: #F2D7A1;
+  /* Renamed to match the champagne/gold feel but keeping variable name for now */
+  --color-charcoal: #1E1E1E;
+  --color-pearl: #FAFAFA;
+  --color-champagne: #F2D7A1;
+  --color-deep-rose: #702540;
+  --color-soft-rose: #9F4D6B;
+  --color-luxury-pink: #DFA6B8;
+
+  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-poppins);
+}
+
+:root {
+  --background: #702540;
+  --foreground: #FFFFFF;
+  --font-playfair: "Playfair Display", serif;
+  --font-poppins: "Poppins", sans-serif;
+}
+
+@keyframes gradient-xy {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient-xy {
+  animation: gradient-xy 15s ease infinite;
+}
+
+/* Glassmorphism Utility - Adjusted for dark background */
+@utility glass {
+  @apply backdrop-blur-md bg-black/10 border border-white/10 shadow-lg;
+}
+
+@utility glass-rose {
+  @apply backdrop-blur-md bg-luxury-pink/60 border border-white/10 shadow-lg;
+}
+
+@utility glass-dark {
+  @apply backdrop-blur-md bg-black/30 border border-white/10 shadow-lg;
+}
+
+@layer base {
+  body {
+    @apply text-white antialiased font-sans;
+
+    background: linear-gradient(75deg, #BCD3E3, #4b97c6, #d364b2);
+
+    /* background-size: 400% 400%;
+    animation: gradient-xy 10s ease infinite;
+    min-height: 100vh; */
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif;
+  }
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Custom Dropdown Styling to Match Theme (#702540) */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23702540' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1em 1em;
+  padding-right: 2.5rem;
+  transition: all 0.2s ease;
+  accent-color: #702540;
+  color-scheme: light;
+}
+
+select:focus {
+  border-color: #702540;
+  outline: none;
+}
+
+/* Light background dropdowns (white/light backgrounds) - Default */
+select option {
+  background-color: white !important;
+  color: #1f2937 !important;
+  padding: 0.5rem 0.75rem;
+}
+
+/* Override browser default selection color for options */
+select option:checked,
+select option[selected] {
+  background-color: #702540 !important;
+  background: #702540 !important;
+  color: white !important;
+}
+
+/* Dark background dropdowns (transparent/dark backgrounds) */
+select.theme-dropdown {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  accent-color: #702540;
+}
+
+select.theme-dropdown:focus {
+  border-color: #702540;
+}
+
+select.theme-dropdown option {
+  background-color: #702540 !important;
+  color: white !important;
+  padding: 0.75rem 1rem;
+}
+
+/* Selected/checked option in dark dropdowns */
+select.theme-dropdown option:checked,
+select.theme-dropdown option[selected] {
+  background-color: #702540 !important;
+  background: #702540 !important;
+  color: white !important;
+}
+
+/* Hover state for dropdowns */
+select:hover:not(:disabled) {
+  border-color: #702540;
+}
+
+/* Disabled dropdown styling */
+select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Additional browser-specific overrides */
+select::-ms-expand {
+  display: none;
+}
+
+/* Note: Browser native dropdown option hover colors (blue highlight) cannot be fully overridden with CSS.
+   The hover highlight is controlled by the browser's native UI. However, the selected/checked state
+/* Custom scrollbar hiding utility */
+@utility no-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
