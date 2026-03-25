@@ -3,6 +3,14 @@ import { Product, Category, Gender } from './mockData';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1';
 
+export const getMediaUrl = (path: string | null | undefined) => {
+  if (!path) return '';
+  if (path.startsWith('http')) return path;
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1';
+  const serverUrl = baseUrl.replace('/api/v1', '');
+  return `${serverUrl}${path}`;
+};
+
 // API Response Wrapper
 interface ApiResponse<T> {
   success: boolean;
@@ -109,6 +117,13 @@ export const api = {
   getPromos: async (activeOnly: boolean = true) => {
     const res = await fetch(`${BASE_URL}/promos?activeOnly=${activeOnly}`, { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to fetch promos');
+    return res.json() as Promise<ApiResponse<{ id: number, title: string, subtitle: string, video_url: string, link_url: string, is_active: boolean, order_index: number }[]>>;
+  },
+
+  // Stories
+  getStories: async (activeOnly: boolean = true) => {
+    const res = await fetch(`${BASE_URL}/stories?activeOnly=${activeOnly}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch stories');
     return res.json() as Promise<ApiResponse<{ id: number, title: string, subtitle: string, video_url: string, link_url: string, is_active: boolean, order_index: number }[]>>;
   }
 };

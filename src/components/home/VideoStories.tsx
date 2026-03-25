@@ -1,88 +1,78 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, VolumeX, MoreVertical, ArrowRight, Play } from "lucide-react";
+import { ChevronLeft, ChevronRight, VolumeX, Volume2, MoreVertical, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { api, getMediaUrl } from "@/lib/api";
 
-const STORIES = [
-    {
-        id: 1,
-        title: "Styling Diamonds",
-        subtitle: "WITH SHIBANI",
-        image: "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80&w=600&h=1000",
-        product: {
-            name: "Exquisite Vines Diamond Necklace Set",
-            image: "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80&w=200&h=200",
-        },
-    },
-    {
-        id: 2,
-        title: "Royal Heritage",
-        subtitle: "THE COLLECTION",
-        image: "https://images.unsplash.com/photo-1588880331179-bc9b93a8dad5?auto=format&fit=crop&q=80&w=600&h=1000",
-        product: {
-            name: "Regal Emerald Drop Earrings",
-            image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=200&h=200",
-        },
-    },
-    {
-        id: 3,
-        title: "Modern Minimalist",
-        subtitle: "DAILY WEAR",
-        image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=600&h=1000",
-        product: {
-            name: "Sleek Gold Chain Bracelet",
-            image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=200&h=200",
-        },
-    },
-    {
-        id: 4,
-        title: "Wedding Vows",
-        subtitle: "FOREVER YOURS",
-        image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&q=80&w=600&h=1000",
-        product: {
-            name: "Solitaire Engagement Ring",
-            image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&q=80&w=200&h=200",
-        },
-    },
-    {
-        id: 5,
-        title: "Golden Hour",
-        subtitle: "SUNSET EDITIONS",
-        image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=600&h=1000",
-        product: {
-            name: "Vintage Silver Anklet",
-            image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=200&h=200",
-        },
-    },
-];
+interface PromoStory {
+    id: number;
+    title: string;
+    subtitle: string;
+    video_url: string;
+    link_url: string;
+    is_active: boolean;
+    order_index: number;
+}
 
 export default function VideoStories() {
     const [activeIndex, setActiveIndex] = useState(0);
+    const [stories, setStories] = useState<PromoStory[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [isMuted, setIsMuted] = useState(true);
+    const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+
+    useEffect(() => {
+        const fetchStories = async () => {
+            try {
+                const res = await api.getStories(true);
+                if (res.success && res.data) {
+                    setStories(res.data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch stories:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchStories();
+    }, []);
+
+    useEffect(() => {
+        videoRefs.current.forEach((vid, idx) => {
+            if (vid) {
+                if (idx === activeIndex) {
+                    vid.currentTime = 0;
+                    vid.play().catch((e) => console.log('Playback issue:', e));
+                } else {
+                    vid.pause();
+                }
+            }
+        });
+    }, [activeIndex, stories]);
 
     const nextStory = () => {
-        setActiveIndex((prev) => (prev + 1) % STORIES.length);
+        if (stories.length === 0) return;
+        setActiveIndex((prev) => (prev + 1) % stories.length);
     };
 
     const prevStory = () => {
-        setActiveIndex((prev) => (prev - 1 + STORIES.length) % STORIES.length);
+        if (stories.length === 0) return;
+        setActiveIndex((prev) => (prev - 1 + stories.length) % stories.length);
     };
 
     const getCardStyle = (index: number) => {
-        const diff = (index - activeIndex + STORIES.length) % STORIES.length;
-        // Adjust logic to handle circular scrolling visual correctly for small lists
-        // We want centered item to be 0. Items to left are negative, right are positive.
+        if (stories.length === 0) return {};
 
-        // Simplification for standard coverflow feeling with 5 items
         let normalizedDiff = index - activeIndex;
-        if (normalizedDiff < -2) normalizedDiff += STORIES.length;
-        if (normalizedDiff > 2) normalizedDiff -= STORIES.length;
+        if (normalizedDiff < -2) normalizedDiff += stories.length;
+        if (normalizedDiff > 2) normalizedDiff -= stories.length;
 
         const isActive = normalizedDiff === 0;
         const isLeft = normalizedDiff < 0;
-        const isRight = normalizedDiff > 0;
         const absDiff = Math.abs(normalizedDiff);
 
         return {
@@ -94,6 +84,24 @@ export default function VideoStories() {
             filter: isActive ? "blur(0px)" : `blur(${absDiff * 2}px) brightness(${100 - (absDiff * 15)}%)`,
         };
     };
+
+    const toggleMute = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setIsMuted(!isMuted);
+    };
+
+    if (loading) {
+        return (
+            <section className="py-24 relative overflow-hidden flex justify-center items-center min-h-[600px]">
+                <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#702540] via-[#8a3052] to-[#5c1c33] opacity-90" />
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white relative z-10"></div>
+            </section>
+        );
+    }
+
+    if (stories.length === 0) {
+        return null;
+    }
 
     return (
         <section className="py-24 relative overflow-hidden">
@@ -126,32 +134,43 @@ export default function VideoStories() {
 
                     {/* Cards */}
                     <div className="relative w-full max-w-5xl mx-auto h-full flex items-center justify-center">
-                        {STORIES.map((story, index) => {
+                        {stories.map((story, index) => {
                             const style = getCardStyle(index);
                             const isActive = index === activeIndex;
 
                             return (
                                 <motion.div
-                                    key={story.id}
+                                    key={story.id || index}
                                     className={cn(
-                                        "absolute w-[300px] md:w-[350px] aspect-[9/16] rounded-3xl overflow-hidden shadow-2xl cursor-pointer bg-charcoal border border-white/10",
+                                        "absolute w-[300px] md:w-[350px] aspect-[9/16] rounded-3xl overflow-hidden shadow-2xl bg-charcoal border border-white/10",
                                         isActive ? "cursor-default" : "cursor-pointer"
                                     )}
                                     initial={false}
                                     animate={style}
                                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                    onClick={() => setActiveIndex(index)}
+                                    onClick={() => !isActive && setActiveIndex(index)}
                                     style={{
                                         transformStyle: "preserve-3d",
                                     }}
                                 >
                                     {/* Story Content (Only fully visible if active) */}
                                     <div className="relative h-full w-full">
-                                        <img
-                                            src={story.image}
-                                            alt={story.title}
-                                            className="h-full w-full object-cover"
-                                        />
+                                        {story.video_url ? (
+                                            <video
+                                                ref={(el) => {
+                                                    videoRefs.current[index] = el;
+                                                }}
+                                                src={getMediaUrl(story.video_url)}
+                                                className="h-full w-full object-cover"
+                                                muted={isMuted}
+                                                playsInline
+                                                onEnded={nextStory}
+                                            />
+                                        ) : (
+                                            <div className="h-full w-full bg-gray-800 flex items-center justify-center text-white/50">
+                                                No Media
+                                            </div>
+                                        )}
 
                                         {/* Overlays - Only active */}
                                         <AnimatePresence>
@@ -170,18 +189,20 @@ export default function VideoStories() {
                                                             </div>
                                                         </div>
                                                         <div className="flex gap-4">
-                                                            <VolumeX className="w-5 h-5" />
+                                                            <button onClick={toggleMute} className="text-white hover:text-white/80 transition-colors">
+                                                                {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+                                                            </button>
                                                             <MoreVertical className="w-5 h-5" />
                                                         </div>
                                                     </div>
 
                                                     {/* Center Titles */}
-                                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-full px-4 text-white z-20">
+                                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-full px-4 text-white z-20 pointer-events-none">
                                                         <motion.p
                                                             initial={{ y: 20, opacity: 0 }}
                                                             animate={{ y: 0, opacity: 1 }}
                                                             transition={{ delay: 0.2 }}
-                                                            className="text-2xl font-serif uppercase tracking-widest mb-2"
+                                                            className="text-2xl font-serif uppercase tracking-widest mb-2 drop-shadow-lg"
                                                         >
                                                             {story.title}
                                                         </motion.p>
@@ -189,32 +210,23 @@ export default function VideoStories() {
                                                             initial={{ y: 20, opacity: 0 }}
                                                             animate={{ y: 0, opacity: 1 }}
                                                             transition={{ delay: 0.3 }}
-                                                            className="text-lg font-light tracking-wider"
+                                                            className="text-lg font-light tracking-wider drop-shadow-md"
                                                         >
                                                             {story.subtitle}
                                                         </motion.p>
                                                     </div>
 
-                                                    {/* Bottom Product Card */}
-                                                    <div className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl p-3 flex items-center gap-3 z-30">
-                                                        <div className="h-12 w-12 rounded-lg overflow-hidden bg-white/5 flex-shrink-0">
-                                                            <img src={story.product.image} alt={story.product.name} className="h-full w-full object-cover" />
+                                                    {/* Bottom Link Card */}
+                                                    {story.link_url && (
+                                                        <div className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl p-3 flex items-center justify-between z-30">
+                                                            <div className="flex-1 min-w-0">
+                                                                <p className="text-white text-sm font-medium">Explore Now</p>
+                                                            </div>
+                                                            <Link href={story.link_url} className="p-2 rounded-full bg-white text-charcoal hover:bg-luxury-pink hover:text-white transition-colors">
+                                                                <ArrowRight className="w-4 h-4" />
+                                                            </Link>
                                                         </div>
-                                                        <div className="flex-1 min-w-0">
-                                                            <p className="text-white text-xs font-medium truncate">{story.product.name}</p>
-                                                            <p className="text-white/60 text-[10px]">Shop Now</p>
-                                                        </div>
-                                                        <button className="p-2 rounded-full bg-white text-charcoal hover:bg-luxury-pink hover:text-white transition-colors">
-                                                            <ArrowRight className="w-4 h-4" />
-                                                        </button>
-                                                    </div>
-
-                                                    {/* Play Button Overlay (Optional hint) */}
-                                                    <div className="absolute inset-0 flex items-center justify-center z-10 opacity-0 hover:opacity-100 transition-opacity pointer-events-none">
-                                                        <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                                                            <Play className="w-6 h-6 text-white fill-current" />
-                                                        </div>
-                                                    </div>
+                                                    )}
                                                 </motion.div>
                                             )}
                                         </AnimatePresence>
@@ -228,3 +240,4 @@ export default function VideoStories() {
         </section>
     );
 }
+
