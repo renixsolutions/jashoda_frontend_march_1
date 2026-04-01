@@ -13,7 +13,8 @@ export default function Hero() {
                 {/* Left Content */}
                 <motion.div
                     initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
                     className="flex flex-col items-start gap-6 text-left z-10"
                 >
@@ -47,7 +48,8 @@ In Pure Silver</span>
                 {/* Right Image */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9, x: 50 }}
-                    animate={{ opacity: 1, scale: 1, x: 0 }}
+                    whileInView={{ opacity: 1, scale: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
                     className="relative flex justify-center items-center z-10"
                 >
