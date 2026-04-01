@@ -310,6 +310,36 @@ export default function Navbar() {
                     </div>
                 </div>
 
+                {/* Promotional Marquee */}
+                <div className="w-full overflow-hidden bg-[#702540] text-white py-2 flex text-xs md:text-sm tracking-widest font-medium uppercase relative">
+                    <motion.div
+                        animate={{ x: ["0%", "-50%"] }}
+                        transition={{ ease: "linear", duration: 25, repeat: Infinity }}
+                        className="flex whitespace-nowrap items-center w-max"
+                    >
+                        <div className="flex gap-12 px-6 items-center">
+                            <span>Free Shipping On Orders Above ₹50,000</span>
+                            <span className="text-white/60 text-[10px]">✦</span>
+                            <span>100% Certified Jewellery</span>
+                            <span className="text-white/60 text-[10px]">✦</span>
+                            <span>Lifetime Exchange & Buyback</span>
+                            <span className="text-white/60 text-[10px]">✦</span>
+                            <span>Secure & Insured Delivery</span>
+                            <span className="text-white/60 text-[10px]">✦</span>
+                        </div>
+                        <div className="flex gap-12 px-6 items-center">
+                            <span>Free Shipping On Orders Above ₹50,000</span>
+                            <span className="text-white/60 text-[10px]">✦</span>
+                            <span>100% Certified Jewellery</span>
+                            <span className="text-white/60 text-[10px]">✦</span>
+                            <span>Lifetime Exchange & Buyback</span>
+                            <span className="text-white/60 text-[10px]">✦</span>
+                            <span>Secure & Insured Delivery</span>
+                            <span className="text-white/60 text-[10px]">✦</span>
+                        </div>
+                    </motion.div>
+                </div>
+
                 {/* BOTTOM ROW: Categories */}
                 <div className="hidden md:block border-b border-gray-100 bg-white relative">
                     <div className="container mx-auto px-6 h-12 flex items-center justify-center gap-8 text-sm font-medium text-gray-600">

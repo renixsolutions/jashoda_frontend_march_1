@@ -12,42 +12,42 @@ const p1 = "p1", p2 = "p2", p3 = "p3", p4 = "p4", p5 = "p5", p6 = "p6", p7 = "p7
 const collections = [
     {
         id: 1,
-        title: "Eternal Bloom",
-        subtitle: "Valentine's Collection",
-        description: "Our Valentine's Day silver jewellery, crafted with ice-cut stones",
-        image: "/luxury-banner-pink.png", // Generated asset
+        // title: "Eternal Bloom",
+        // subtitle: "Valentine's Collection",
+        // description: "Our Valentine's Day silver jewellery, crafted with ice-cut stones",
+        image: "/card2.png", // Changed to card1
         theme: "pink", // Light theme
-        products: [
-            { id: p1, image: "/luxury-product-thumb.png" },
-            { id: p2, image: "/luxury-product-thumb.png" },
-            { id: p3, image: "/luxury-product-thumb.png" },
-        ],
+        // products: [
+        //     { id: p1, image: "/luxury-product-thumb.png" },
+        //     { id: p2, image: "/luxury-product-thumb.png" },
+        //     { id: p3, image: "/luxury-product-thumb.png" },
+        // ],
     },
     {
         id: 2,
-        title: "Glow in Motion",
-        subtitle: "New Collection",
-        description: "Experience the shimmer of movement with our kinetic designs",
-        image: "/luxury-banner-dark.png", // Generated asset
+        // title: "Glow in Motion",
+        // subtitle: "New Collection",
+        // description: "Experience the shimmer of movement with our kinetic designs",
+        image: "/card1.png", // Changed to card2
         theme: "dark", // Dark theme
-        products: [
-            { id: p4, image: "/luxury-product-thumb.png" },
-            { id: p5, image: "/luxury-product-thumb.png" },
-            { id: p6, image: "/luxury-product-thumb.png" },
-        ],
+        // products: [
+        //     { id: p4, image: "/luxury-product-thumb.png" },
+        //     { id: p5, image: "/luxury-product-thumb.png" },
+        //     { id: p6, image: "/luxury-product-thumb.png" },
+        // ],
     },
     {
         id: 3,
-        title: "Royal Heritage",
-        subtitle: "Wedding Edition",
-        description: "Timeless pieces for your most special moments",
-        image: "/luxury-banner-pink.png", // Reusing for demo, ideally would be gold/white
+        // title: "Royal Heritage",
+        // subtitle: "Wedding Edition",
+        // description: "Timeless pieces for your most special moments",
+        image: "/card3.png", // Changed to card3
         theme: "gold",
-        products: [
-            { id: p7, image: "/luxury-product-thumb.png" },
-            { id: p8, image: "/luxury-product-thumb.png" },
-            { id: p9, image: "/luxury-product-thumb.png" },
-        ],
+        // products: [
+        //     { id: p7, image: "/luxury-product-thumb.png" },
+        //     { id: p8, image: "/luxury-product-thumb.png" },
+        //     { id: p9, image: "/luxury-product-thumb.png" },
+        // ],
     },
 ];
 
@@ -130,13 +130,13 @@ export default function LuxuryShowcase() {
                                 <p className="text-lg md:text-xl font-light opacity-90 mb-8">
                                     {collection.description}
                                 </p>
-                                <button className="bg-white text-black px-8 py-3 rounded-full font-medium hover:bg-opacity-90 transition-all uppercase tracking-wide text-sm">
+                                {/* <button className="bg-white text-black px-8 py-3 rounded-full font-medium hover:bg-opacity-90 transition-all uppercase tracking-wide text-sm">
                                     Explore Collection
-                                </button>
+                                </button> */}
                             </div>
 
                             {/* Product Overlay Cards - Floating at bottom */}
-                            <div className="absolute bottom-8 right-8 flex gap-4">
+                            {/* <div className="absolute bottom-8 right-8 flex gap-4">
                                 {collection.products.map((product, idx) => (
                                     <Link href={`/product/${product.id}`} key={idx}>
                                         <motion.div
@@ -156,7 +156,7 @@ export default function LuxuryShowcase() {
                                         </motion.div>
                                     </Link>
                                 ))}
-                            </div>
+                            </div> */}
                         </div>
                     ))}
                 </div>
