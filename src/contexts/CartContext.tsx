@@ -26,7 +26,7 @@ export interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-    const { user, isAuthenticated } = useAuth();
+    const { user, isAuthenticated, promptLogin } = useAuth();
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -64,6 +64,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     const addToCart = async (product: Product, quantity: number = 1, size?: string) => {
         if (!isAuthenticated) {
             toast.error("Please login to add to cart");
+            promptLogin();
             return;
         }
 
@@ -79,6 +80,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
             const res = await cartApi.addToCart(Number(product.id), quantity);
             if (res.success) {
+                toast.success('Added to bag successfully');
                 // Re-fetch to get correct item ids
                 fetchCart();
             }

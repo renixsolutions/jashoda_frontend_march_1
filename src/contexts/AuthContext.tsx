@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import toast from 'react-hot-toast';
 
 interface User {
   id: number;
@@ -19,6 +20,7 @@ interface AuthContextType {
   login: (token: string, user: User) => void;
   logout: () => void;
   updateUser: (user: Partial<User>) => void;
+  promptLogin: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -69,6 +71,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const handleUnauthorized = () => {
       console.warn('Unauthorized access detected. Logging out.');
+      if (token || user) {
+        toast.error('Session expired. Please login again.');
+        // Optionally trigger promptLogin after a brief delay
+        setTimeout(() => {
+           if (typeof window !== 'undefined' && (window as any).openAuthModal) {
+             (window as any).openAuthModal();
+           }
+        }, 800);
+      }
       logout();
     };
 
@@ -100,6 +111,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const promptLogin = useCallback(() => {
+    if (typeof window !== 'undefined' && (window as any).openAuthModal) {
+      (window as any).openAuthModal();
+    }
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
@@ -110,6 +127,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         login,
         logout,
         updateUser,
+        promptLogin,
       }}
     >
       {children}

@@ -183,9 +183,17 @@ const getAuthHeaders = (): HeadersInit => {
 
 const handleResponse = async (res: Response, defaultError: string) => {
   const data = await res.json().catch(() => ({}));
-  if (res.status === 401 && typeof window !== 'undefined') {
+
+  // Check for unauthorized or expired token
+  const isUnauthorized = res.status === 401;
+  const isExpired = data?.message?.toLowerCase().includes('token expired') || 
+                    data?.message?.toLowerCase().includes('expired token') ||
+                    data?.message?.toLowerCase().includes('jwt expired');
+
+  if ((isUnauthorized || isExpired) && typeof window !== 'undefined') {
     window.dispatchEvent(new Event('auth_unauthorized'));
   }
+
   if (!res.ok) {
     throw new Error(data.message || defaultError);
   }

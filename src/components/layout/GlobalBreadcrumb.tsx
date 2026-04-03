@@ -32,7 +32,7 @@ export default function GlobalBreadcrumb() {
     });
 
     return (
-        <div className="bg-[#fcf8f5] mt-20 md:mt-32 py-4 border-b border-[#ebdacc]">
+        <div className="bg-[#fcf8f5] mt-[116px] md:mt-[165px] py-2 md:py-4 border-b border-[#ebdacc]">
             <div className="container mx-auto px-6 text-center">
                 <div className="flex items-center justify-center gap-2 text-xs font-bold tracking-widest text-[#832729]/60 uppercase">
                     <Link href="/" className="hover:text-[#832729] transition-colors">HOME</Link>

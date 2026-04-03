@@ -56,7 +56,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                     </div>
                     <div className="w-full">
                         <PDPInfo product={product} />
-                        <PDPTabs />
+                        <PDPTabs product={product} />
                     </div>
                 </div>
 
