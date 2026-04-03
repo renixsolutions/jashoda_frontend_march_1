@@ -4,7 +4,8 @@ import React, { useRef } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ArrowLeft } from "lucide-react";
-import Link from "next/link";
+import { useAuth } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
 
 // Mock IDs for products to avoid errors
 const p1 = "p1", p2 = "p2", p3 = "p3", p4 = "p4", p5 = "p5", p6 = "p6", p7 = "p7", p8 = "p8", p9 = "p9";
@@ -29,6 +30,8 @@ const collections = [
 
 export default function LuxuryShowcase() {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const { isAuthenticated, promptLogin } = useAuth();
+    const router = useRouter();
 
     const scrollLeft = () => {
         if (scrollContainerRef.current) {
@@ -79,9 +82,15 @@ export default function LuxuryShowcase() {
             >
                 <div className="flex gap-6 pb-12 w-max px-4 md:px-[max(1rem,calc((100vw-1200px)/2))]">
                     {collections.map((collection) => (
-                        <Link 
-                            key={collection.id} 
-                            href={collection.link}
+                        <div
+                            key={collection.id}
+                            onClick={() => {
+                                if (isAuthenticated) {
+                                    router.push(collection.link);
+                                } else {
+                                    promptLogin();
+                                }
+                            }}
                             className="block relative w-[85vw] md:w-[900px] aspect-[16/9] md:h-[500px] rounded-[2rem] overflow-hidden shrink-0 snap-center shadow-xl group cursor-pointer"
                         >
                             <Image
@@ -102,7 +111,7 @@ export default function LuxuryShowcase() {
                                 whileHover={{ scaleX: 1 }}
                                 transition={{ duration: 0.5 }}
                             />
-                        </Link>
+                        </div>
                     ))}
                 </div>
             </div>

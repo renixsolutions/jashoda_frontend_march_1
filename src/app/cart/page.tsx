@@ -6,9 +6,31 @@ import Link from "next/link";
 import { Minus, Plus, Trash2, ArrowRight, ShoppingBag } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/Button";
+import { useAuth } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function CartPage() {
     const { cartItems, updateQuantity, removeFromCart, totalPrice, totalItems } = useCart();
+    const { isAuthenticated, isLoading, promptLogin } = useAuth();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!isLoading && !isAuthenticated) {
+            router.push('/');
+            setTimeout(() => {
+                promptLogin();
+            }, 500);
+        }
+    }, [isAuthenticated, isLoading, router, promptLogin]);
+
+    if (isLoading) {
+        return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    }
+
+    if (!isAuthenticated) {
+        return null;
+    }
 
     if (cartItems.length === 0) {
         return (
@@ -30,7 +52,7 @@ export default function CartPage() {
     }
 
     return (
-        <div className="min-h-screen pt-32 pb-24 px-4 md:px-8 bg-[#FAFAFA]">
+        <div className="min-h-screen pt-4 pb-8 px-2 md:px-6 bg-[#FAFAFA] rounded-t-[2.5rem] shadow-sm -mt-4 relative z-10">
             <div className="max-w-7xl mx-auto">
                 <h1 className="text-4xl font-serif text-[#1E2856] mb-8">Shopping Bag <span className="text-lg text-gray-500 font-sans">({totalItems} items)</span></h1>
 

@@ -29,7 +29,7 @@ const BOTTOM_NAV_LINKS = [
 
 export default function Navbar() {
     const { scrollY } = useScroll();
-    const { isAuthenticated, user, logout } = useAuth();
+    const { isAuthenticated, user, logout, promptLogin } = useAuth();
     const { totalItems } = useCart();
     const [hidden, setHidden] = useState(false);
     const [scrolled, setScrolled] = useState(false);
@@ -217,15 +217,35 @@ export default function Navbar() {
 
                     {/* Right Icons */}
                     <div className="flex items-center justify-end gap-5 md:gap-6 w-1/4">
-                        <button className="hidden lg:block text-charcoal hover:text-luxury-pink transition-colors" title="Collections">
+                        <button
+                            onClick={() => {
+                                if (isAuthenticated) {
+                                    router.push('/shop'); // Or wherever collections leads to
+                                } else {
+                                    promptLogin();
+                                }
+                            }}
+                            className="hidden lg:block text-charcoal hover:text-luxury-pink transition-colors"
+                            title="Collections"
+                        >
                             <Diamond className="w-5 h-5" />
                         </button>
                         <button className="hidden lg:block text-charcoal hover:text-luxury-pink transition-colors" title="Stores">
                             <MapPin className="w-5 h-5" />
                         </button>
-                        <Link href="/wishlist" className="text-charcoal hover:text-luxury-pink transition-colors relative">
+                        <button
+                            onClick={() => {
+                                if (isAuthenticated) {
+                                    router.push('/wishlist');
+                                } else {
+                                    promptLogin();
+                                }
+                            }}
+                            className="text-charcoal hover:text-luxury-pink transition-colors relative"
+                            title="Wishlist"
+                        >
                             <Heart className="w-5 h-5" />
-                        </Link>
+                        </button>
                         <div className="relative">
                             {isAuthenticated && user ? (
                                 <button
@@ -297,7 +317,17 @@ export default function Navbar() {
                                 )}
                             </AnimatePresence>
                         </div>
-                        <Link href="/cart" className="text-charcoal hover:text-luxury-pink transition-colors relative flex items-center gap-1">
+                        <button
+                            onClick={() => {
+                                if (isAuthenticated) {
+                                    router.push('/cart');
+                                } else {
+                                    promptLogin();
+                                }
+                            }}
+                            className="text-charcoal hover:text-luxury-pink transition-colors relative flex items-center gap-1"
+                            title="Cart"
+                        >
                             <div className="relative">
                                 <ShoppingBag className="w-5 h-5" />
                                 {totalItems > 0 && (
@@ -306,7 +336,7 @@ export default function Navbar() {
                                     </span>
                                 )}
                             </div>
-                        </Link>
+                        </button>
                     </div>
                 </div>
 

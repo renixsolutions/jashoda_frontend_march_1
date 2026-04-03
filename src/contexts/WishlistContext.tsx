@@ -18,7 +18,7 @@ interface WishlistContextType {
 const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
 
 export function WishlistProvider({ children }: { children: ReactNode }) {
-    const { user, isAuthenticated } = useAuth();
+    const { user, isAuthenticated, promptLogin } = useAuth();
     const [wishlistItems, setWishlistItems] = useState<Product[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -62,6 +62,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     const addToWishlist = async (product: Product) => {
         if (!isAuthenticated) {
             toast.error("Please login to add to wishlist");
+            promptLogin();
             return;
         }
 
@@ -73,6 +74,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
             });
 
             await favoritesApi.addToFavorites(Number(product.id));
+            toast.success('Added to wishlist successfully');
         } catch (error: any) {
             toast.error(error.message || "Failed to add to wishlist");
             fetchWishlist(); // Revert
@@ -87,6 +89,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
             setWishlistItems(prev => prev.filter(item => item.id !== productId));
 
             await favoritesApi.removeFromFavorites(Number(productId));
+            toast.success('Removed from wishlist');
         } catch (error: any) {
             toast.error(error.message || "Failed to remove from wishlist");
             fetchWishlist(); // Revert

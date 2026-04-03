@@ -17,6 +17,14 @@ const nextConfig = {
             {
                 protocol: "http",
                 hostname: "192.168.1.12",
+            },
+            {
+                protocol: "https",
+                hostname: "jashoda-app-storage.s3.eu-north-1.amazonaws.com",
+            },
+            {
+                protocol: "http",
+                hostname: "13.48.104.92",
             }
         ],
     },

@@ -15,6 +15,8 @@ import { CartProvider } from "@/contexts/CartContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
 import AuthModalManager from "@/components/auth/AuthModalManager";
 import { Toaster } from "react-hot-toast";
+import NextTopLoader from "nextjs-toploader";
+import Preloader from "@/components/layout/Preloader";
 
 export default function RootLayout({
   children,
@@ -29,6 +31,7 @@ export default function RootLayout({
         <AuthProvider>
           <CartProvider>
             <WishlistProvider>
+              <Preloader />
               <SmoothScroll>
                 <Navbar />
                 <GlobalBreadcrumb />

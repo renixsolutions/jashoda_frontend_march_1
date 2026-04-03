@@ -58,7 +58,6 @@ export default function ProductCard({ product, variant = 'light' }: ProductCardP
         e.preventDefault();
         e.stopPropagation();
         addToCart(product);
-        toast.success('Added to bag successfully');
     };
 
     const handleToggleWishlist = (e: React.MouseEvent) => {
@@ -66,10 +65,8 @@ export default function ProductCard({ product, variant = 'light' }: ProductCardP
         e.stopPropagation();
         if (isInWishlistState) {
             removeFromWishlist(product.id);
-            toast.success('Removed from wishlist');
         } else {
             addToWishlist(product);
-            toast.success('Added to wishlist successfully');
         }
     };
 
