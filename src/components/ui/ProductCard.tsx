@@ -26,19 +26,47 @@ export default function ProductCard({ product, variant = 'light' }: ProductCardP
     const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
     const isInWishlistState = isInWishlist(product.id);
 
-    // Extract correct image URL based on whether it is a string, object with url, or relies on image_url/images array
-    const productImages = product.images || [];
-    let imageUrl = '/diamond-pendant.png'; // safe fallback
+    const [currentImgIndex, setCurrentImgIndex] = React.useState(0);
+
+    // Extract valid images into an array for the slider
+    const validImages: string[] = [];
+    
+    let mainImg = '';
     if (typeof product.image === 'string' && product.image !== '/images/placeholder.jpg') {
-        imageUrl = product.image;
+        mainImg = product.image;
     } else if (product.image && typeof product.image === 'object' && product.image.url) {
-        imageUrl = product.image.url;
+        mainImg = product.image.url;
     } else if (product.image_url) {
-        imageUrl = product.image_url;
-    } else if (productImages.length > 0) {
-        const firstImg = productImages[0];
-        imageUrl = typeof firstImg === 'string' ? firstImg : (firstImg as any)?.url || imageUrl;
+        mainImg = product.image_url;
     }
+
+    if (mainImg) validImages.push(mainImg);
+
+    if (product.images && Array.isArray(product.images)) {
+        product.images.forEach((img: any) => {
+            const url = typeof img === 'string' ? img : img?.url;
+            if (url && url !== '/images/placeholder.jpg' && !validImages.includes(url)) {
+                validImages.push(url);
+            }
+        });
+    }
+
+    if (validImages.length === 0) {
+        validImages.push('/diamond-pendant.png'); // safe fallback
+    }
+
+    // Auto-slide effect
+    React.useEffect(() => {
+        let interval: NodeJS.Timeout;
+        if (validImages.length > 1) {
+            interval = setInterval(() => {
+                setCurrentImgIndex((prev) => (prev + 1) % validImages.length);
+            }, 2500); // Crossfade image every 2.5 seconds
+        }
+        return () => {
+            if (interval) clearInterval(interval);
+        };
+    }, [validImages.length]);
 
     // Safely parse prices to numbers for calculations
     const displayPrice = product.discount_price
@@ -87,6 +115,14 @@ export default function ProductCard({ product, variant = 'light' }: ProductCardP
                 </div>
             )}
 
+            {/* Low Stock Badge */}
+            {product.stock_quantity !== undefined && product.stock_quantity > 0 && product.stock_quantity <= 5 && (
+                <div className={`absolute top-4 ${product.badge ? 'left-[100px]' : 'left-4'} z-20 px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-[#832729] bg-white/90 backdrop-blur-sm border border-[#832729]/20 shadow-sm rounded-full flex items-center gap-1.5 animate-pulse`}>
+                    <div className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+                    Only {product.stock_quantity} Left
+                </div>
+            )}
+
             {/* Wishlist Button */}
             <button
                 onClick={handleToggleWishlist}
@@ -98,17 +134,35 @@ export default function ProductCard({ product, variant = 'light' }: ProductCardP
                 <Heart className={`w-5 h-5 ${isInWishlistState ? 'fill-current' : ''}`} />
             </button>
 
-            {/* Image Container */}
+            {/* Image Container with Slider Effect */}
             <Link href={`/product/${product.id || product.slug}`} className={`block relative h-[380px] w-full overflow-hidden rounded-2xl ${isDark ? 'bg-black/20' : 'bg-[#F9F9F9]'}`}>
-                <Image
-                    src={imageUrl}
-                    alt={product.name}
-                    fill
-                    className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-110"
-                />
+                {validImages.map((imgUrl, idx) => (
+                    <Image
+                        key={`${imgUrl}-${idx}`}
+                        src={imgUrl}
+                        alt={`${product.name} - ${idx + 1}`}
+                        fill
+                        className={`object-cover transition-opacity duration-1000 ease-in-out group-hover:scale-110 ${
+                            idx === currentImgIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                        }`}
+                        unoptimized={imgUrl.startsWith('http')}
+                    />
+                ))}
+
+                {/* Slider Indicators */}
+                {validImages.length > 1 && (
+                    <div className="absolute bottom-20 left-0 right-0 flex justify-center gap-1.5 z-20">
+                        {validImages.map((_, idx) => (
+                            <div 
+                                key={idx} 
+                                className={`h-1.5 rounded-full transition-all duration-500 shadow-sm ${idx === currentImgIndex ? 'w-4 bg-[#832729] opacity-100' : 'w-1.5 bg-gray-300 opacity-60'}`} 
+                            />
+                        ))}
+                    </div>
+                )}
 
                 {/* Quick Add Overlay - Animated Up */}
-                <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-10 glass-effect">
+                <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-30 glass-effect">
                     <Button className={`w-full shadow-lg font-serif tracking-wide ${isDark ? 'bg-white text-[#702540] hover:bg-white/90 rounded-md py-3' : 'bg-[#832729] text-white hover:bg-[#6b1f21] rounded-none py-4'}`} onClick={handleAddToCart}>
                         <ShoppingBag className="w-4 h-4 mr-2" /> {isDark ? 'Quick Add' : 'ADD TO CART'}
                     </Button>

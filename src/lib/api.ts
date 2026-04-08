@@ -66,6 +66,35 @@ export const api = {
     if (!res.ok) throw new Error('Failed to fetch product');
     return res.json() as Promise<ApiResponse<Product>>;
   },
+  
+  getProductReviews: async (productId: number | string, params: { page?: number; limit?: number } = {}) => {
+    const queryString = buildQueryString(params);
+    const res = await fetch(`${BASE_URL}/products/${productId}/reviews?${queryString}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch reviews');
+    return res.json() as Promise<ApiResponse<{
+      reviews: any[],
+      average_rating: number,
+      review_count: number,
+      pagination: any
+    }>>;
+  },
+
+  checkReviewEligibility: async (productId: number | string) => {
+    const res = await fetch(`${BASE_URL}/products/${productId}/review-eligibility`, {
+      headers: getAuthHeaders(),
+      cache: 'no-store'
+    });
+    return handleResponse(res, 'Failed to check eligibility');
+  },
+
+  submitReview: async (productId: number | string, data: { rating: number, review_title?: string, review_description?: string, images?: string[] }) => {
+    const res = await fetch(`${BASE_URL}/products/${productId}/reviews`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res, 'Failed to submit review');
+  },
 
   // Categories
   getCategories: async (params: {

@@ -251,7 +251,7 @@ export default function CheckoutPage() {
     };
 
     return (
-        <div className="min-h-screen pt-32 pb-24 bg-gray-50">
+        <div className="min-h-screen pt-6 pb-24 bg-gray-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Checkout Header Steps */}
                 <div className="mb-8 flex items-center gap-2 text-sm text-gray-500">
@@ -575,10 +575,11 @@ export default function CheckoutPage() {
                                     <div key={`${item.id}-${item.size}`} className="flex gap-4 items-start pb-4 border-b border-gray-100 last:border-0 last:pb-0">
                                         <div className="relative w-16 h-16 bg-gray-50 rounded-lg overflow-hidden shrink-0 border border-gray-100">
                                             <Image
-                                                src={item.images ? item.images[0] : ("/images/placeholder.png")}
+                                                src={item.images?.[0] || item.image_url || "/diamond-pendant.png"}
                                                 alt={item.name}
                                                 fill
                                                 className="object-cover"
+                                                unoptimized={!!(item.images?.[0] || item.image_url)?.startsWith('http')}
                                             />
                                             <span className="absolute -top-2 -right-2 bg-gray-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold z-10">
                                                 {item.quantity}

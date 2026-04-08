@@ -8,23 +8,14 @@ import { cn } from "@/lib/utils";
 import MegaMenu from "./MegaMenu";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
+import { useNavigation } from "@/contexts/NavigationContext";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import { Product } from "@/lib/mockData";
 
-const BOTTOM_NAV_LINKS = [
+// We will now fetch these dynamically
+const STATIC_NAV_LINKS = [
     { name: "All Jewellery", href: "/shop", hasMegaMenu: true },
-    { name: "Men", href: "/shop?category=men", hasMegaMenu: true },
-    { name: "Women", href: "/shop?category=women", hasMegaMenu: true },
-    { name: "Kids", href: "/shop?category=kids" },
-    // { name: "Rings", href: "/shop" },
-    // { name: "Daily Wear", href: "/shop" },
-    // { name: "Collections", href: "/shop" },
-    { name: "Wedding", href: "/shop?occasion=wedding" },
-    { name: "Gifting", href: "/shop?occasion=gifting" },
-    { name: "Idols", href: "/shop?category=idols" },
-    { name: "Puja", href: "/shop?category=puja" },
-    { name: "More", href: "/shop" },
 ];
 
 export default function Navbar() {
@@ -42,6 +33,8 @@ export default function Navbar() {
     const [suggestions, setSuggestions] = useState<Product[]>([]);
     const [isSuggestionsLoading, setIsSuggestionsLoading] = useState(false);
     const [showSuggestions, setShowSuggestions] = useState(false);
+    // Dynamic links will come from context
+    const { genders, occasions, categories, loading: isLoadingLinks } = useNavigation();
     const searchRef = useRef<HTMLDivElement>(null);
     const mobileSearchRef = useRef<HTMLDivElement>(null);
 
@@ -92,6 +85,47 @@ export default function Navbar() {
             router.push(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
         }
     };
+
+    // Generate dynamic nav links (Genders, Occasions, and Parent Categories)
+    const navLinks = React.useMemo(() => {
+        const links: { name: string; href: string; hasMegaMenu?: boolean }[] = [...STATIC_NAV_LINKS];
+
+        // Add Genders
+        genders.forEach(g => {
+            links.push({
+                name: g.name,
+                href: `/shop?gender=${g.slug}`,
+                hasMegaMenu: true
+            });
+        });
+
+        // Add Occasions
+        occasions.forEach(o => {
+            links.push({
+                name: o.name,
+                href: `/shop?occasion=${o.slug}`,
+                hasMegaMenu: true
+            });
+        });
+
+        // Add Parent Categories (Dynamic as requested)
+        categories.forEach(c => {
+            // if (!links.some(l => l.name.toLowerCase() === c.name.toLowerCase())) {
+            //     links.push({
+            //         name: c.name,
+            //         href: `/shop?category=${c.slug}`,
+            //         hasMegaMenu: true
+            //     });
+            // }
+        });
+
+        // Add a static 'More' link if we have many items
+        if (links.length > 8) {
+            links.push({ name: "More", href: "/shop" });
+        }
+
+        return links;
+    }, [genders, occasions, categories]);
 
     useMotionValueEvent(scrollY, "change", (latest) => {
         const previous = scrollY.getPrevious() ?? 0;
@@ -373,7 +407,7 @@ export default function Navbar() {
                 {/* BOTTOM ROW: Categories */}
                 <div className="hidden md:block border-b border-gray-100 bg-white relative">
                     <div className="container mx-auto px-6 h-12 flex items-center justify-center gap-8 text-sm font-medium text-gray-600">
-                        {BOTTOM_NAV_LINKS.map((link) => (
+                        {navLinks.map((link) => (
                             <div
                                 key={link.name}
                                 className="h-full flex items-center"
@@ -385,7 +419,7 @@ export default function Navbar() {
                                     className={cn(
                                         "flex items-center gap-2 hover:text-[#702540] transition-colors h-full border-b-2 border-transparent",
                                         activeMenu === link.name ? "text-[#702540] border-[#702540]" : "hover:border-[#702540]",
-                                        link.name === "Gifting" && "text-red-500 font-semibold"
+                                        (link.name.toLowerCase() === "gift" || link.name.toLowerCase() === "gifting") && "text-red-500 font-semibold"
                                     )}
                                 >
                                     {/* Icons for specific items can be added here if needed, keeping simple for now */}
@@ -485,11 +519,14 @@ export default function Navbar() {
 
                         {/* Links */}
                         <div className="flex flex-col gap-4">
-                            {BOTTOM_NAV_LINKS.map(link => (
+                            {navLinks.map(link => (
                                 <Link
                                     key={link.name}
                                     href={link.href}
-                                    className="text-lg font-medium text-gray-800 border-b border-gray-50 pb-3 flex justify-between items-center"
+                                    className={cn(
+                                        "text-lg font-medium border-b border-gray-50 pb-3 flex justify-between items-center",
+                                        (link.name.toLowerCase() === "gift" || link.name.toLowerCase() === "gifting") ? "text-red-500 font-bold" : "text-gray-800"
+                                    )}
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >
                                     {link.name}

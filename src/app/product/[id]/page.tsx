@@ -52,7 +52,11 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 mb-20">
                     <div className="w-full">
-                        <PDPGallery images={product.images || []} />
+                        <PDPGallery 
+                            images={product.images || []} 
+                            rating={product.average_rating} 
+                            reviews={product.review_count} 
+                        />
                     </div>
                     <div className="w-full">
                         <PDPInfo product={product} />

@@ -7,17 +7,30 @@ export interface Product {
     price_label?: string;
     originalPrice?: number;
     category: string;
+    category_name?: string;
     categoryId: number;
     subcategory?: string;
     subcategoryId?: number;
     images: string[];
+    image_url?: string;
     discount_price?: string | number;
     badge?: string;
     rating: number;
     reviewCount: number;
     description: string;
     metalType: string;
+    metal_type?: string;
+    purity?: string;
+    metal_weight?: number | string;
+    stone_type?: string;
     stoneType?: string;
+    stone_weight?: number | string;
+    stone_count?: number;
+    certification?: string;
+    length?: number | string;
+    width?: number | string;
+    ring_size?: string;
+    stock_quantity?: number;
     inStock: boolean;
     createdAt: string;
 }
@@ -74,6 +87,7 @@ export const PRODUCTS: Product[] = [
         reviewCount: 120,
         description: "A stunning ethereal diamond ring that captures the essence of luxury.",
         metalType: "Gold",
+        stone_type: "Diamond",
         stoneType: "Diamond",
         inStock: true,
         createdAt: "2023-05-15T10:00:00Z",
@@ -90,6 +104,7 @@ export const PRODUCTS: Product[] = [
         reviewCount: 45,
         description: "Elegant pearl stacking ring for a subtle yet sophisticated look.",
         metalType: "Silver",
+        stone_type: "Pearl",
         stoneType: "Pearl",
         inStock: true,
         createdAt: "2023-06-20T14:30:00Z",
@@ -110,6 +125,7 @@ export const PRODUCTS: Product[] = [
         reviewCount: 89,
         description: "The perfect symbol of love, this solitaire engagement ring shines bright.",
         metalType: "Platinum",
+        stone_type: "Diamond",
         stoneType: "Diamond",
         inStock: true,
         createdAt: "2023-07-01T09:00:00Z",
@@ -130,6 +146,7 @@ export const PRODUCTS: Product[] = [
         reviewCount: 200,
         description: "Mystical moonstone drop earrings that add a touch of magic to your outfit.",
         metalType: "Silver",
+        stone_type: "Moonstone",
         stoneType: "Moonstone",
         inStock: true,
         createdAt: "2023-05-10T11:20:00Z",
@@ -163,6 +180,7 @@ export const PRODUCTS: Product[] = [
         reviewCount: 65,
         description: "Sparkling crystal hoops that catch the light from every angle.",
         metalType: "Silver",
+        stone_type: "Crystal",
         stoneType: "Crystal",
         inStock: true,
         createdAt: "2023-09-12T13:15:00Z",

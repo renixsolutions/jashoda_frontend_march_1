@@ -5,11 +5,11 @@ import ProductCard from "@/components/ui/ProductCard";
 import FilterTopBar from "./FilterTopBar";
 import AdvertisingBanner from "./AdvertisingBanner";
 import ChooseLook from "./ChooseLook";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Search } from "lucide-react";
 import { api } from "@/lib/api";
 import { Product } from "@/lib/mockData";
 import { motion } from "framer-motion";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 // Animation Variants
 const container = {
@@ -29,6 +29,7 @@ const item = {
 
 export default function ProductListing() {
     const searchParams = useSearchParams();
+    const router = useRouter();
     const categoryQuery = searchParams.get('category') || undefined;
     const subcategoryQuery = searchParams.get('subcategory') || undefined;
     const occasionQuery = searchParams.get('occasion') || undefined;
@@ -92,10 +93,10 @@ export default function ProductListing() {
     };
 
     // Group products by category for display
-    const rings = products.filter(p => p.category === "Rings");
-    const otherProducts = products.filter(p => p.category !== "Rings");
-    const earrings = otherProducts.filter(p => p.category === "Earrings");
-    const remaining = otherProducts.filter(p => p.category !== "Earrings");
+    const rings = products.filter(p => (p.category_name || p.category) === "Rings");
+    const otherProducts = products.filter(p => (p.category_name || p.category) !== "Rings");
+    const earrings = otherProducts.filter(p => (p.category_name || p.category) === "Earrings");
+    const remaining = otherProducts.filter(p => (p.category_name || p.category) !== "Earrings");
 
     if (loading && page === 1) {
         return <div className="min-h-screen flex items-center justify-center p-20 text-[#832729]">Loading...</div>;
@@ -112,8 +113,13 @@ export default function ProductListing() {
                     className="flex flex-col md:flex-row justify-between items-end mb-8 gap-6"
                 >
                     <div>
-                        <h1 className="text-4xl md:text-5xl font-serif text-[#832729] mb-2">
-                            All Jewellery <span className="text-lg text-[#832729]/60 align-middle ml-2 font-sans font-normal">({products.length} results)</span>
+                        <h1 className="text-4xl md:text-5xl font-serif text-[#832729] mb-2 uppercase">
+                            {[
+                                genderQuery,
+                                occasionQuery,
+                                subcategoryQuery || categoryQuery
+                            ].filter(Boolean).join(' ') || "All Jewellery"}
+                            <span className="text-lg text-[#832729]/60 align-middle ml-2 font-sans font-normal lowercase italic">({products.length} results)</span>
                         </h1>
                     </div>
 
@@ -131,65 +137,41 @@ export default function ProductListing() {
                 {/* Top Filters */}
                 <FilterTopBar />
 
-                {/* Section 1: Rings */}
-                {rings.length > 0 && (
-                    <div className="mb-16">
-                        <motion.div
-                            variants={container}
-                            initial="hidden"
-                            whileInView="show"
-                            viewport={{ once: true, margin: "-100px" }}
-                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+                {/* dynamic Grid */}
+                {products.length > 0 ? (
+                    <motion.div
+                        variants={container}
+                        initial="hidden"
+                        animate="show"
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+                    >
+                        {products.map((product) => (
+                            <motion.div key={product.id} variants={item}>
+                                <ProductCard product={{ ...product, image: product.images?.[0] || '/images/placeholder.jpg' }} />
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                ) : (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="py-20 text-center"
+                    >
+                        <div className="mb-6 inline-flex items-center justify-center w-20 h-20 rounded-full bg-rose-50 text-[#832729]">
+                           <Search className="w-10 h-10" />
+                        </div>
+                        <h3 className="text-2xl font-serif text-charcoal mb-2">No products found</h3>
+                        <p className="text-gray-500 max-w-md mx-auto">
+                            We couldn't find any products matching your current filters. 
+                            Try broadening your search or resetting the filters.
+                        </p>
+                        <button 
+                            onClick={() => router.push('/shop')}
+                            className="mt-8 text-[#832729] font-semibold hover:underline"
                         >
-                            {rings.map((product) => (
-                                <motion.div key={product.id} variants={item}>
-                                    <ProductCard product={{ ...product, image: product.images?.[0] || '/images/placeholder.jpg' }} />
-                                </motion.div>
-                            ))}
-                        </motion.div>
-                    </div>
-                )}
-                {/* Advertising Banner */}
-                <AdvertisingBanner />
-
-                {/* Section 2: Earrings */}
-                {earrings.length > 0 && (
-                    <div className="mb-16">
-                        <motion.div
-                            variants={container}
-                            initial="hidden"
-                            whileInView="show"
-                            viewport={{ once: true, margin: "-100px" }}
-                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-                        >
-                            {earrings.map((product) => (
-                                <motion.div key={product.id} variants={item}>
-                                    <ProductCard product={{ ...product, image: product.images?.[0] || '/images/placeholder.jpg' }} />
-                                </motion.div>
-                            ))}
-                        </motion.div>
-                    </div>
-                )}
-
-
-
-                {/* Section 3: Remaining Items */}
-                {remaining.length > 0 && (
-                    <div>
-                        <motion.div
-                            variants={container}
-                            initial="hidden"
-                            whileInView="show"
-                            viewport={{ once: true, margin: "-100px" }}
-                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-                        >
-                            {remaining.map((product) => (
-                                <motion.div key={product.id} variants={item}>
-                                    <ProductCard product={{ ...product, image: product.images?.[0] || '/images/placeholder.jpg' }} />
-                                </motion.div>
-                            ))}
-                        </motion.div>
-                    </div>
+                            Reset all filters
+                        </button>
+                    </motion.div>
                 )}
 
                 {/* Pagination / Load More */}
