@@ -10,6 +10,7 @@ import { api } from "@/lib/api";
 import { Product } from "@/lib/mockData";
 import { motion } from "framer-motion";
 import { useSearchParams, useRouter } from "next/navigation";
+import { useNavigation } from "@/contexts/NavigationContext";
 
 // Animation Variants
 const container = {
@@ -37,6 +38,13 @@ export default function ProductListing() {
     const minPriceQuery = searchParams.get('min') ? Number(searchParams.get('min')) : undefined;
     const maxPriceQuery = searchParams.get('max') ? Number(searchParams.get('max')) : undefined;
     const searchStr = searchParams.get('search') || undefined;
+
+    const { categories, genders, occasions } = useNavigation();
+
+    // Helper to get labels for IDs or Slugs
+    const getGenderLabel = (idOrSlug: string) => genders.find(g => String(g.id) === idOrSlug || g.slug === idOrSlug)?.name || idOrSlug;
+    const getOccasionLabel = (idOrSlug: string) => occasions.find(o => String(o.id) === idOrSlug || o.slug === idOrSlug)?.name || idOrSlug;
+    const getCategoryLabel = (idOrSlug: string) => categories.find(c => String(c.id) === idOrSlug || c.slug === idOrSlug)?.name || idOrSlug;
 
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
@@ -115,9 +123,9 @@ export default function ProductListing() {
                     <div>
                         <h1 className="text-4xl md:text-5xl font-serif text-[#832729] mb-2 uppercase">
                             {[
-                                genderQuery,
-                                occasionQuery,
-                                subcategoryQuery || categoryQuery
+                                genderQuery && getGenderLabel(genderQuery),
+                                occasionQuery && getOccasionLabel(occasionQuery),
+                                (subcategoryQuery || categoryQuery) && getCategoryLabel(subcategoryQuery || categoryQuery)
                             ].filter(Boolean).join(' ') || "All Jewellery"}
                             <span className="text-lg text-[#832729]/60 align-middle ml-2 font-sans font-normal lowercase italic">({products.length} results)</span>
                         </h1>

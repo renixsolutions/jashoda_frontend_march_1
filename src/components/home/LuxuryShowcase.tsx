@@ -91,7 +91,7 @@ export default function LuxuryShowcase() {
                                     promptLogin();
                                 }
                             }}
-                            className="block relative w-[85vw] md:w-[900px] aspect-[16/9] md:h-[500px] rounded-[2rem] overflow-hidden shrink-0 snap-center shadow-xl group cursor-pointer"
+                            className="block relative w-[85vw] md:w-[70vw] lg:w-[800px] xl:w-[900px] aspect-[16/9] rounded-[2rem] overflow-hidden shrink-0 snap-center shadow-xl group cursor-pointer"
                         >
                             <Image
                                 src={collection.image}

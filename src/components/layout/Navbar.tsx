@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
-import { Search, Heart, ShoppingBag, User, MapPin, Menu, Diamond, Camera, Mic, X, LogOut, CheckCircle2, Mail, Package, ChevronRight } from "lucide-react";
+import { Search, Heart, ShoppingBag, User, MapPin, Menu, Diamond, Camera, Mic, X, LogOut, CheckCircle2, Mail, Package, ChevronRight, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import MegaMenu from "./MegaMenu";
 import { useAuth } from "@/contexts/AuthContext";
@@ -26,6 +26,8 @@ export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [mobileSubMenu, setMobileSubMenu] = useState<string | null>(null);
+    const [mobileFilterOpen, setMobileFilterOpen] = useState<string | null>(null);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const router = useRouter();
@@ -38,9 +40,25 @@ export default function Navbar() {
     const searchRef = useRef<HTMLDivElement>(null);
     const mobileSearchRef = useRef<HTMLDivElement>(null);
     const [promos, setPromos] = useState<{ id: number, title: string, subtitle: string, video_url: string, link_url: string }[]>([]);
+    const [marqueeData, setMarqueeData] = useState<{
+        messages: { id: number, text: string }[],
+        settings: { speed: number, bg_color: string, text_color: string, is_active: boolean }
+    } | null>(null);
 
     // Close suggestions on outside click
     useEffect(() => {
+        const fetchMarquee = async () => {
+            try {
+                const res = await api.getMarquee();
+                if (res.success) {
+                    setMarqueeData(res.data);
+                }
+            } catch (error) {
+                console.error("Error fetching marquee:", error);
+            }
+        };
+        fetchMarquee();
+
         const fetchPromos = async () => {
             try {
                 const res = await api.getPromos(true);
@@ -163,7 +181,7 @@ export default function Navbar() {
                 )}
             >
                 {/* TOP ROW: Logo, Search, Icons */}
-                <div className="container mx-auto px-4 lg:px-6 h-20 flex items-center justify-between border-b border-gray-100">
+                <div className="container mx-auto px-4 lg:px-6 min-h-[70px] lg:min-h-[80px] flex items-center justify-between border-b border-gray-100 py-2">
                     {/* Mobile Menu Trigger & Mobile Logo */}
                     <div className="flex md:hidden items-center gap-4">
                         <button onClick={() => setIsMobileMenuOpen(true)}>
@@ -189,7 +207,7 @@ export default function Navbar() {
                                 alt="Jashoda Jewels"
                                 className={cn(
                                     "w-auto object-contain transition-all duration-300",
-                                    scrolled ? "h-16" : "h-24"
+                                    scrolled ? "max-h-[60px]" : "max-h-[90px]"
                                 )}
                             />
                         </Link>
@@ -394,38 +412,75 @@ export default function Navbar() {
                 </div>
 
                 {/* Promotional Marquee */}
-                <div className="w-full overflow-hidden bg-[#702540] text-white py-2 flex text-xs md:text-sm tracking-widest font-medium uppercase relative">
-                    <motion.div
-                        animate={{ x: ["0%", "-50%"] }}
-                        transition={{ ease: "linear", duration: 25, repeat: Infinity }}
-                        className="flex whitespace-nowrap items-center w-max"
+                {marqueeData && marqueeData.settings.is_active && marqueeData.messages.length > 0 ? (
+                    <div 
+                        className="w-full overflow-hidden py-2 flex text-xs md:text-sm tracking-widest font-medium uppercase relative"
+                        style={{ 
+                            backgroundColor: marqueeData.settings.bg_color || '#702540', 
+                            color: marqueeData.settings.text_color || '#ffffff' 
+                        }}
                     >
-                        <div className="flex gap-12 px-6 items-center">
-                            <span>Free Shipping On Orders Above ₹50,000</span>
-                            <span className="text-white/60 text-[10px]">✦</span>
-                            <span>100% Certified Jewellery</span>
-                            <span className="text-white/60 text-[10px]">✦</span>
-                            <span>Lifetime Exchange & Buyback</span>
-                            <span className="text-white/60 text-[10px]">✦</span>
-                            <span>Secure & Insured Delivery</span>
-                            <span className="text-white/60 text-[10px]">✦</span>
-                        </div>
-                        <div className="flex gap-12 px-6 items-center">
-                            <span>Free Shipping On Orders Above ₹50,000</span>
-                            <span className="text-white/60 text-[10px]">✦</span>
-                            <span>100% Certified Jewellery</span>
-                            <span className="text-white/60 text-[10px]">✦</span>
-                            <span>Lifetime Exchange & Buyback</span>
-                            <span className="text-white/60 text-[10px]">✦</span>
-                            <span>Secure & Insured Delivery</span>
-                            <span className="text-white/60 text-[10px]">✦</span>
-                        </div>
-                    </motion.div>
-                </div>
+                        <motion.div
+                            animate={{ x: ["0%", "-50%"] }}
+                            transition={{ 
+                                ease: "linear", 
+                                duration: marqueeData.settings.speed || 25, 
+                                repeat: Infinity 
+                            }}
+                            className="flex whitespace-nowrap items-center w-max"
+                        >
+                            <div className="flex gap-12 px-6 items-center">
+                                {marqueeData.messages.map((msg) => (
+                                    <React.Fragment key={msg.id}>
+                                        <span>{msg.text}</span>
+                                        <span className="opacity-60 text-[10px]">✦</span>
+                                    </React.Fragment>
+                                ))}
+                            </div>
+                            <div className="flex gap-12 px-6 items-center">
+                                {marqueeData.messages.map((msg) => (
+                                    <React.Fragment key={`repeat-${msg.id}`}>
+                                        <span>{msg.text}</span>
+                                        <span className="opacity-60 text-[10px]">✦</span>
+                                    </React.Fragment>
+                                ))}
+                            </div>
+                        </motion.div>
+                    </div>
+                ) : !marqueeData && (
+                    <div className="w-full overflow-hidden bg-[#702540] text-white py-2 flex text-xs md:text-sm tracking-widest font-medium uppercase relative">
+                        <motion.div
+                            animate={{ x: ["0%", "-50%"] }}
+                            transition={{ ease: "linear", duration: 25, repeat: Infinity }}
+                            className="flex whitespace-nowrap items-center w-max"
+                        >
+                            <div className="flex gap-12 px-6 items-center">
+                                <span>Free Shipping On Orders Above ₹50,000</span>
+                                <span className="text-white/60 text-[10px]">✦</span>
+                                <span>100% Certified Jewellery</span>
+                                <span className="text-white/60 text-[10px]">✦</span>
+                                <span>Lifetime Exchange & Buyback</span>
+                                <span className="text-white/60 text-[10px]">✦</span>
+                                <span>Secure & Insured Delivery</span>
+                                <span className="text-white/60 text-[10px]">✦</span>
+                            </div>
+                            <div className="flex gap-12 px-6 items-center">
+                                <span>Free Shipping On Orders Above ₹50,000</span>
+                                <span className="text-white/60 text-[10px]">✦</span>
+                                <span>100% Certified Jewellery</span>
+                                <span className="text-white/60 text-[10px]">✦</span>
+                                <span>Lifetime Exchange & Buyback</span>
+                                <span className="text-white/60 text-[10px]">✦</span>
+                                <span>Secure & Insured Delivery</span>
+                                <span className="text-white/60 text-[10px]">✦</span>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
 
                 {/* BOTTOM ROW: Categories */}
                 <div className="hidden md:block border-b border-gray-100 bg-white relative">
-                    <div className="container mx-auto px-6 h-12 flex items-center justify-center gap-8 text-sm font-medium text-gray-600">
+                    <div className="container mx-auto px-4 md:px-8 min-h-[3.5rem] py-1 flex items-center justify-center gap-4 md:gap-6 lg:gap-10 text-sm font-medium text-gray-600 flex-wrap">
                         {navLinks.map((link) => (
                             <div
                                 key={link.name}
@@ -545,21 +600,165 @@ export default function Navbar() {
                         </div>
 
                         {/* Links */}
-                        <div className="flex flex-col gap-4">
-                            {navLinks.map(link => (
-                                <Link
-                                    key={link.name}
-                                    href={link.href}
-                                    className={cn(
-                                        "text-lg font-medium border-b border-gray-50 pb-3 flex justify-between items-center",
-                                        (link.name.toLowerCase() === "gift" || link.name.toLowerCase() === "gifting") ? "text-red-500 font-bold" : "text-gray-800"
-                                    )}
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                >
-                                    {link.name}
-                                    <div className="w-1.5 h-1.5 rounded-full bg-gray-200"></div>
-                                </Link>
-                            ))}
+                        <div className="flex flex-col">
+                            {navLinks.map(link => {
+                                const isExpanded = mobileSubMenu === link.name;
+                                return (
+                                    <div key={link.name} className="flex flex-col border-b border-gray-100">
+                                        <div
+                                            className={cn(
+                                                "text-lg font-medium py-4 flex justify-between items-center cursor-pointer",
+                                                (link.name.toLowerCase() === "gift" || link.name.toLowerCase() === "gifting") ? "text-red-500 font-bold" : "text-gray-800"
+                                            )}
+                                            onClick={() => {
+                                                if (link.hasMegaMenu) {
+                                                    setMobileSubMenu(isExpanded ? null : link.name);
+                                                } else {
+                                                    setIsMobileMenuOpen(false);
+                                                    router.push(link.href);
+                                                }
+                                            }}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                {link.name}
+                                                {link.name.toLowerCase() === 'gift' && <Sparkles size={14} className="text-red-500" />}
+                                            </div>
+                                            {link.hasMegaMenu ? (
+                                                <ChevronRight className={cn("w-5 h-5 text-gray-400 transition-transform duration-300", isExpanded && "rotate-90")} />
+                                            ) : (
+                                                <div className="w-1.5 h-1.5 rounded-full bg-gray-200"></div>
+                                            )}
+                                        </div>
+
+                                        {/* Expanded MegaMenu for Mobile */}
+                                        <AnimatePresence>
+                                            {isExpanded && (
+                                                <motion.div
+                                                    initial={{ height: 0, opacity: 0 }}
+                                                    animate={{ height: "auto", opacity: 1 }}
+                                                    exit={{ height: 0, opacity: 0 }}
+                                                    className="overflow-hidden bg-gray-50/50 rounded-xl mb-4"
+                                                >
+                                                    <div className="flex flex-col gap-2 p-2">
+                                                        {/* Category Section */}
+                                                        <div className="flex flex-col">
+                                                            <button 
+                                                                onClick={() => setMobileFilterOpen(mobileFilterOpen === 'cat' ? null : 'cat')}
+                                                                className="flex items-center justify-between p-3 text-sm font-bold text-[#1E2856] uppercase tracking-wider bg-white rounded-lg border border-gray-100"
+                                                            >
+                                                                Shop by Category
+                                                                <ChevronRight className={cn("w-4 h-4 transition-transform", mobileFilterOpen === 'cat' && "rotate-90")} />
+                                                            </button>
+                                                            {mobileFilterOpen === 'cat' && (
+                                                                <div className="grid grid-cols-2 gap-2 p-2">
+                                                                    {categories.map(c => (
+                                                                        <Link 
+                                                                            key={c.id} 
+                                                                            href={`/shop?category=${c.slug}`}
+                                                                            onClick={() => setIsMobileMenuOpen(false)}
+                                                                            className="p-2 text-xs bg-white border border-gray-50 rounded-md text-gray-600 hover:text-[#702540]"
+                                                                        >
+                                                                            {c.name}
+                                                                        </Link>
+                                                                    ))}
+                                                                    <Link 
+                                                                        href="/shop"
+                                                                        onClick={() => setIsMobileMenuOpen(false)}
+                                                                        className="p-2 text-xs bg-[#702540]/5 border border-[#702540]/20 rounded-md text-[#702540] font-bold text-center col-span-2"
+                                                                    >
+                                                                        View All Jewellery
+                                                                    </Link>
+                                                                </div>
+                                                            )}
+                                                        </div>
+
+                                                        {/* Price Section */}
+                                                        <div className="flex flex-col">
+                                                            <button 
+                                                                onClick={() => setMobileFilterOpen(mobileFilterOpen === 'price' ? null : 'price')}
+                                                                className="flex items-center justify-between p-3 text-sm font-bold text-[#1E2856] uppercase tracking-wider bg-white rounded-lg border border-gray-100"
+                                                            >
+                                                                Shop by Price
+                                                                <ChevronRight className={cn("w-4 h-4 transition-transform", mobileFilterOpen === 'price' && "rotate-90")} />
+                                                            </button>
+                                                            {mobileFilterOpen === 'price' && (
+                                                                <div className="grid grid-cols-1 gap-2 p-2">
+                                                                    {[
+                                                                        { label: "Under ₹10k", min: 0, max: 10000 },
+                                                                        { label: "₹10k - ₹25k", min: 10000, max: 25000 },
+                                                                        { label: "₹25k - ₹50k", min: 25000, max: 50000 },
+                                                                        { label: "Above ₹50k", min: 50000, max: 1000000 }
+                                                                    ].map(range => (
+                                                                        <Link 
+                                                                            key={range.label}
+                                                                            href={`/shop?min=${range.min}&max=${range.max}`}
+                                                                            onClick={() => setIsMobileMenuOpen(false)}
+                                                                            className="flex justify-between items-center p-3 text-xs bg-white border border-gray-50 rounded-md text-gray-600"
+                                                                        >
+                                                                            {range.label}
+                                                                            <ChevronRight size={12} className="text-gray-300" />
+                                                                        </Link>
+                                                                    ))}
+                                                                </div>
+                                                            )}
+                                                        </div>
+
+                                                        {/* Gender Section */}
+                                                        <div className="flex flex-col">
+                                                            <button 
+                                                                onClick={() => setMobileFilterOpen(mobileFilterOpen === 'gender' ? null : 'gender')}
+                                                                className="flex items-center justify-between p-3 text-sm font-bold text-[#1E2856] uppercase tracking-wider bg-white rounded-lg border border-gray-100"
+                                                            >
+                                                                Shop by Gender
+                                                                <ChevronRight className={cn("w-4 h-4 transition-transform", mobileFilterOpen === 'gender' && "rotate-90")} />
+                                                            </button>
+                                                            {mobileFilterOpen === 'gender' && (
+                                                                <div className="grid grid-cols-2 gap-2 p-2">
+                                                                    {genders.map(g => (
+                                                                        <Link 
+                                                                            key={g.id}
+                                                                            href={`/shop?gender=${g.slug}`}
+                                                                            onClick={() => setIsMobileMenuOpen(false)}
+                                                                            className="p-3 text-xs bg-white border border-gray-50 rounded-md text-gray-600 text-center"
+                                                                        >
+                                                                            {g.name}
+                                                                        </Link>
+                                                                    ))}
+                                                                </div>
+                                                            )}
+                                                        </div>
+
+                                                        {/* Occasion Section */}
+                                                        <div className="flex flex-col">
+                                                            <button 
+                                                                onClick={() => setMobileFilterOpen(mobileFilterOpen === 'occ' ? null : 'occ')}
+                                                                className="flex items-center justify-between p-3 text-sm font-bold text-[#1E2856] uppercase tracking-wider bg-white rounded-lg border border-gray-100"
+                                                            >
+                                                                Shop by Occasion
+                                                                <ChevronRight className={cn("w-4 h-4 transition-transform", mobileFilterOpen === 'occ' && "rotate-90")} />
+                                                            </button>
+                                                            {mobileFilterOpen === 'occ' && (
+                                                                <div className="grid grid-cols-2 gap-2 p-2">
+                                                                    {occasions.map(o => (
+                                                                        <Link 
+                                                                            key={o.id}
+                                                                            href={`/shop?occasion=${o.slug}`}
+                                                                            onClick={() => setIsMobileMenuOpen(false)}
+                                                                            className="p-3 text-xs bg-white border border-gray-50 rounded-md text-gray-600 text-center"
+                                                                        >
+                                                                            {o.name}
+                                                                        </Link>
+                                                                    ))}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+                                    </div>
+                                )
+                            })}
                         </div>
 
                         {/* Mobile Promo Section */}

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export default function HomeVideo() {
   return (
-    <section className="relative w-full h-[60vh] md:h-[80vh] lg:h-[90vh] overflow-hidden bg-black mt-[160px] md:mt-[170px]" aria-label="Welcome Video">
+    <section className="relative w-full h-[60vh] md:h-[80vh] lg:h-[90vh] overflow-hidden bg-black mt-[110px] md:mt-[170px]" aria-label="Welcome Video">
       {/* Background Video */}
       <video
         className="absolute inset-0 w-full h-full object-cover z-0"

@@ -174,6 +174,26 @@ export const api = {
     return res.json() as Promise<ApiResponse<{ id: number, title: string, subtitle: string, video_url: string, link_url: string, is_active: boolean, order_index: number }[]>>;
   },
 
+  // Banners
+  getBanners: async (activeOnly: boolean = true, type?: string) => {
+    const params: any = { activeOnly };
+    if (type) params.type = type;
+    const queryString = buildQueryString(params);
+    const res = await fetch(`${BASE_URL}/banners?${queryString}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch banners');
+    return res.json() as Promise<ApiResponse<any[]>>;
+  },
+
+  // Marquee
+  getMarquee: async () => {
+    const res = await fetch(`${BASE_URL}/marquee`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch marquee');
+    return res.json() as Promise<ApiResponse<{
+      messages: { id: number, text: string, display_order: number, is_active: boolean }[],
+      settings: { speed: number, bg_color: string, text_color: string, is_active: boolean }
+    }>>;
+  },
+
   // Admin Reviews
   adminGetAllReviews: async (params: { page?: number; limit?: number; status?: string; productId?: number } = {}) => {
     const queryString = buildQueryString(params);

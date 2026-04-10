@@ -41,7 +41,7 @@ export default function SilverAdBanner() {
   return (
     <section className="w-full bg-white">
       <div className="w-full max-w-[1400px] mx-auto py-8 px-4 md:px-8">
-        <div className="relative w-full h-[180px] md:h-[240px] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden bg-gray-100 shadow-xl group">
+        <div className="relative w-full min-h-[160px] md:min-h-[200px] lg:min-h-[240px] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden bg-gray-100 shadow-xl group">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
