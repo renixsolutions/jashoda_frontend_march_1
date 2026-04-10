@@ -3,30 +3,33 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { Star, Layers } from "lucide-react";
+import { Star, Layers, Play, Film } from "lucide-react";
 
-export default function PDPGallery({ images, rating, reviews }: { images: any[], rating?: number, reviews?: number }) {
+export default function PDPGallery({ images, videoUrl, rating, reviews }: { images: any[], videoUrl?: string, rating?: number, reviews?: number }) {
     // Map items to get string URLs
     const imageUrls = images.map(img => typeof img === 'string' ? img : img?.url).filter(Boolean);
     // Ensure we always have at least one image to prevent errors
     const safeImages = imageUrls.length > 0 ? imageUrls : ["/diamond-pendant.png"];
-    const [selectedImage, setSelectedImage] = useState(safeImages[0]);
+    
+    // selected state can now be an image URL or a special string "video"
+    const [selected, setSelected] = useState<string>(safeImages[0]);
 
     useEffect(() => {
-        if (safeImages.length > 0) setSelectedImage(safeImages[0]);
+        if (safeImages.length > 0) setSelected(safeImages[0]);
     }, [images]);
 
     return (
         <div className="flex flex-col-reverse md:flex-row gap-6 h-full">
             {/* Thumbnails */}
             <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto no-scrollbar md:w-24 shrink-0 py-1">
+                {/* Images */}
                 {safeImages.map((img, idx) => (
                     <button
                         key={idx}
-                        onClick={() => setSelectedImage(img)}
+                        onClick={() => setSelected(img)}
                         className={cn(
                             "relative w-20 h-20 md:w-24 md:h-24 border-2 rounded-xl overflow-hidden transition-all duration-300 shrink-0",
-                            selectedImage === img
+                            selected === img
                                 ? "border-[#1E2856] shadow-sm ring-2 ring-[#1E2856]/10"
                                 : "border-gray-100 bg-gray-50 hover:border-gray-300"
                         )}
@@ -40,17 +43,44 @@ export default function PDPGallery({ images, rating, reviews }: { images: any[],
                         />
                     </button>
                 ))}
+
+                {/* Video Thumbnail */}
+                {videoUrl && (
+                    <button
+                        onClick={() => setSelected("video")}
+                        className={cn(
+                            "relative w-20 h-20 md:w-24 md:h-24 border-2 rounded-xl overflow-hidden transition-all duration-300 shrink-0 bg-black flex flex-col items-center justify-center gap-1",
+                            selected === "video"
+                                ? "border-[#1E2856] ring-2 ring-[#1E2856]/10"
+                                : "border-gray-100 hover:border-gray-300"
+                        )}
+                    >
+                        <Play className="w-8 h-8 text-white fill-white" />
+                        <span className="text-[10px] text-white font-bold uppercase tracking-tighter">Video</span>
+                    </button>
+                )}
             </div>
 
-            {/* Main Image */}
-            <div className="flex-1 relative bg-[#F8F8F8] border border-gray-100/50 rounded-[40px] overflow-hidden min-h-[450px] md:min-h-[750px] w-full transition-all duration-500 group cursor-zoom-in shadow-sm hover:shadow-md">
-                <Image
-                    src={selectedImage}
-                    alt="Product Main View"
-                    fill
-                    className="object-cover mix-blend-multiply transition-all duration-700 group-hover:scale-110"
-                    unoptimized={selectedImage.startsWith('http')}
-                />
+            {/* Main View */}
+            <div className="flex-1 relative bg-[#F8F8F8] border border-gray-100/50 rounded-[40px] overflow-hidden min-h-[450px] md:min-h-[750px] w-full transition-all duration-500 group shadow-sm hover:shadow-md">
+                {selected === "video" && videoUrl ? (
+                    <div className="w-full h-full flex items-center justify-center bg-black">
+                        <video 
+                            src={videoUrl} 
+                            controls 
+                            autoPlay 
+                            className="max-w-full max-h-full"
+                        />
+                    </div>
+                ) : (
+                    <Image
+                        src={selected}
+                        alt="Product Main View"
+                        fill
+                        className="object-cover mix-blend-multiply transition-all duration-700 group-hover:scale-110"
+                        unoptimized={selected.startsWith('http')}
+                    />
+                )}
 
                 {/* Rating Badge */}
                 {(rating !== undefined || reviews !== undefined) && (
@@ -61,11 +91,6 @@ export default function PDPGallery({ images, rating, reviews }: { images: any[],
                         </span>
                     </div>
                 )}
-
-                {/* Gallery/QuickView Icon */}
-                {/* <div className="absolute bottom-6 right-6 z-10 p-3 bg-white/90 backdrop-blur-md rounded-2xl shadow-sm border border-black/5 hover:bg-white transition-colors cursor-pointer group/icon">
-                    <Layers className="w-5 h-5 text-gray-500 group-hover/icon:text-[#1E2856] transition-colors" />
-                </div> */}
             </div>
         </div>
     );

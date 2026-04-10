@@ -54,6 +54,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                     <div className="w-full">
                         <PDPGallery 
                             images={product.images || []} 
+                            videoUrl={product.video_url}
                             rating={product.average_rating} 
                             reviews={product.review_count} 
                         />

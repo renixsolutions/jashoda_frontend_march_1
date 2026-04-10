@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Star, MessageSquare, CheckCircle2, AlertCircle } from "lucide-react";
+import { Star, MessageSquare, CheckCircle2, AlertCircle, Upload, X, Film, Image as ImageIcon, Play } from "lucide-react";
 import { api } from "@/lib/api";
 import { Button } from "@/components/ui/Button";
 import { toast } from "react-hot-toast";
@@ -17,6 +17,9 @@ export default function ReviewSection({ productId }: { productId: string | numbe
     const [hover, setHover] = useState(0);
     const [comment, setComment] = useState("");
     const [submitting, setSubmitting] = useState(false);
+    const [uploading, setUploading] = useState(false);
+    const [uploadedMedia, setUploadedMedia] = useState<{ url: string; type: string }[]>([]);
+    const [selectedMedia, setSelectedMedia] = useState<{ url: string; type: string } | null>(null);
 
     useEffect(() => {
         fetchReviews();
@@ -48,6 +51,35 @@ export default function ReviewSection({ productId }: { productId: string | numbe
         }
     };
 
+    const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (!files || files.length === 0) return;
+
+        if (uploadedMedia.length + files.length > 5) {
+            toast.error("You can only upload up to 5 items");
+            return;
+        }
+
+        setUploading(true);
+        try {
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const res = await api.uploadReviewMedia(file);
+                if (res.success) {
+                    setUploadedMedia(prev => [...prev, { url: res.data.url, type: res.data.type }]);
+                }
+            }
+        } catch (error: any) {
+            toast.error(error.message || "Failed to upload file");
+        } finally {
+            setUploading(false);
+        }
+    };
+
+    const removeMedia = (index: number) => {
+        setUploadedMedia(prev => prev.filter((_, i) => i !== index));
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (rating === 0) {
@@ -58,13 +90,17 @@ export default function ReviewSection({ productId }: { productId: string | numbe
         try {
             const res = await api.submitReview(productId, {
                 rating,
-                review_description: comment
+                review_description: comment,
+                media: uploadedMedia
             });
             if (res.success) {
                 toast.success("Review submitted! It will be visible after approval.");
+                setComment("");
+                setRating(0);
+                setUploadedMedia([]);
                 setShowForm(false);
                 setEligibility({ eligible: false, reason: 'already_reviewed' });
-                router.refresh();
+                fetchReviews();
             }
         } catch (error: any) {
             toast.error(error.message || "Failed to submit review");
@@ -87,7 +123,7 @@ export default function ReviewSection({ productId }: { productId: string | numbe
                 {!showForm && eligibility?.eligible && (
                     <Button 
                         onClick={() => setShowForm(true)}
-                        className="bg-[#832729] text-white hover:bg-[#6b1f21] px-6 rounded-full"
+                        className="bg-[#832729] text-black hover:bg-[#6b1f21] px-6 rounded-full"
                     >
                         Write a Review
                     </Button>
@@ -151,9 +187,52 @@ export default function ReviewSection({ productId }: { productId: string | numbe
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                             placeholder="Tell us what you like or dislike about this item..."
-                            className="w-full min-h-[150px] p-5 rounded-2xl border border-gray-200 focus:ring-4 focus:ring-[#832729]/10 focus:border-[#832729] outline-none transition-all resize-none shadow-sm"
+                            className="w-full min-h-[120px] p-5 rounded-2xl border border-gray-200 focus:ring-4 focus:ring-[#832729]/10 focus:border-[#832729] outline-none transition-all resize-none shadow-sm"
                             required
                         />
+                    </div>
+
+                    <div className="space-y-3">
+                        <label className="text-sm font-bold text-gray-700 uppercase tracking-wider">Photos & Videos</label>
+                        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                            {uploadedMedia.map((item, index) => (
+                                <div key={index} className="relative aspect-square rounded-xl overflow-hidden group bg-gray-200 border border-gray-100 shadow-sm">
+                                    {item.type === 'video' ? (
+                                        <div className="w-full h-full flex items-center justify-center bg-black">
+                                            <Film className="w-8 h-8 text-white/50" />
+                                            <div className="absolute inset-0 flex items-center justify-center">
+                                                <Play className="w-6 h-6 text-white fill-white" />
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <img src={api.getMediaUrl(item.url)} alt="Preview" className="w-full h-full object-cover" />
+                                    )}
+                                    <button
+                                        type="button"
+                                        onClick={() => removeMedia(index)}
+                                        className="absolute top-1 right-1 bg-black/50 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                                    >
+                                        <X className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            ))}
+                            {uploadedMedia.length < 5 && (
+                                <label className="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-[#832729] hover:bg-[#832729]/5 transition-all group">
+                                    <Upload className="w-8 h-8 text-gray-400 group-hover:text-[#832729] mb-2" />
+                                    <span className="text-[10px] font-bold text-gray-500 uppercase group-hover:text-[#832729]">Upload</span>
+                                    <input
+                                        type="file"
+                                        accept="image/*,video/*"
+                                        multiple
+                                        className="hidden"
+                                        onChange={handleFileSelect}
+                                        disabled={uploading}
+                                    />
+                                </label>
+                            )}
+                        </div>
+                        {uploading && <p className="text-xs text-[#832729] animate-pulse">Uploading...</p>}
+                        <p className="text-[10px] text-gray-400 uppercase tracking-widest font-medium">upto 5 photos or videos</p>
                     </div>
 
                     <div className="flex gap-3 justify-end pt-2">
@@ -209,10 +288,50 @@ export default function ReviewSection({ productId }: { productId: string | numbe
                                     {new Date(review.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
                                 </span>
                             </div>
-                            <div className="ml-16">
+                            <div className="ml-16 space-y-4">
                                 <p className="text-gray-600 leading-relaxed text-base italic">
                                     "{review.review_description}"
                                 </p>
+                                
+                                {review.media && review.media.length > 0 && (
+                                    <div className="flex flex-wrap gap-3 pt-2">
+                                        {review.media.map((item: any, mIdx: number) => (
+                                            <div 
+                                                key={mIdx} 
+                                                onClick={() => setSelectedMedia(item)}
+                                                className="w-24 h-24 md:w-32 md:h-32 rounded-xl overflow-hidden border border-gray-100 shadow-sm relative group cursor-pointer bg-gray-50"
+                                            >
+                                                {item.type === 'video' ? (
+                                                    <div className="w-full h-full relative">
+                                                        <video 
+                                                            src={api.getMediaUrl(item.url)} 
+                                                            className="w-full h-full object-cover"
+                                                            muted
+                                                            playsInline
+                                                        />
+                                                        <div className="absolute inset-0 bg-black/20 flex items-center justify-center group-hover:bg-black/40 transition-all">
+                                                            <Play className="w-8 h-8 text-white fill-white shadow-lg" />
+                                                        </div>
+                                                        <div className="absolute bottom-1 right-2 text-[10px] text-white font-bold drop-shadow-md flex items-center gap-1">
+                                                            <Film className="w-3 h-3" /> VIDEO
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <img 
+                                                        src={api.getMediaUrl(item.url)} 
+                                                        alt="Review" 
+                                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                                                    />
+                                                )}
+                                                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <div className="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-lg">
+                                                        <ImageIcon className="w-5 h-5 text-gray-800" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     ))
@@ -229,6 +348,41 @@ export default function ReviewSection({ productId }: { productId: string | numbe
                     </div>
                 )}
             </div>
+
+            {/* Media Lightbox */}
+            {selectedMedia && (
+                <div 
+                    className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex items-center justify-center p-4 md:p-10 animate-in fade-in duration-300"
+                    onClick={() => setSelectedMedia(null)}
+                >
+                    <button 
+                        className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors"
+                        onClick={() => setSelectedMedia(null)}
+                    >
+                        <X className="w-8 h-8" />
+                    </button>
+                    
+                    <div 
+                        className="relative max-w-5xl w-full max-h-full flex items-center justify-center"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {selectedMedia.type === 'video' ? (
+                            <video 
+                                src={api.getMediaUrl(selectedMedia.url)} 
+                                className="max-w-full max-h-[85vh] rounded-lg shadow-2xl"
+                                controls
+                                autoPlay
+                            />
+                        ) : (
+                            <img 
+                                src={api.getMediaUrl(selectedMedia.url)} 
+                                alt="Review Full" 
+                                className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+                            />
+                        )}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

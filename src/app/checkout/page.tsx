@@ -22,6 +22,7 @@ import { ordersApi, usersApi } from "@/lib/api";
 import toast from "react-hot-toast";
 import { STATE_CITY_MAP } from "@/lib/statesCities";
 import { useAuth } from "@/contexts/AuthContext";
+import EmailVerificationModal from "@/components/auth/EmailVerificationModal";
 
 export interface Address {
     id: number;
@@ -49,6 +50,8 @@ export default function CheckoutPage() {
     const [currentStep, setCurrentStep] = useState<CheckoutStep>('shipping');
     const [isProcessing, setIsProcessing] = useState(false);
     const [showMap, setShowMap] = useState(false);
+    const [showVerificationModal, setShowVerificationModal] = useState(false);
+    const { user } = useAuth();
 
     // Address state
     const [savedAddresses, setSavedAddresses] = useState<Address[]>([]);
@@ -126,6 +129,13 @@ export default function CheckoutPage() {
 
     const handleContinueToPayment = (e: React.FormEvent) => {
         e.preventDefault();
+        
+        // Enforce Email Verification for logged in users
+        if (isAuthenticated && user && !user.email_verified) {
+            setShowVerificationModal(true);
+            return;
+        }
+
         setCurrentStep('payment');
         window.scrollTo(0, 0);
     };
@@ -182,6 +192,13 @@ export default function CheckoutPage() {
 
     const handlePlaceOrder = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Final check for email verification
+        if (isAuthenticated && user && !user.email_verified) {
+            setShowVerificationModal(true);
+            return;
+        }
+
         setIsProcessing(true);
 
         try {
@@ -625,6 +642,13 @@ export default function CheckoutPage() {
                 </div>
             </div>
             <Script src="https://checkout.razorpay.com/v1/checkout.js" />
+            
+            <EmailVerificationModal 
+                isOpen={showVerificationModal}
+                onClose={() => setShowVerificationModal(false)}
+                email={user?.email || formData.email}
+            />
+
             <style jsx global>{`
                 .custom-scrollbar::-webkit-scrollbar { width: 4px; }
                 .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }

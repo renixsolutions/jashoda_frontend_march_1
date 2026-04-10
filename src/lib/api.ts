@@ -38,6 +38,7 @@ const buildQueryString = (params: Record<string, any>) => {
 };
 
 export const api = {
+  getMediaUrl,
   // Products
   getProducts: async (params: {
     page?: number;
@@ -87,13 +88,30 @@ export const api = {
     return handleResponse(res, 'Failed to check eligibility');
   },
 
-  submitReview: async (productId: number | string, data: { rating: number, review_title?: string, review_description?: string, images?: string[] }) => {
+  submitReview: async (productId: number | string, data: { rating: number, review_title?: string, review_description?: string, media?: { url: string, type: string }[] }) => {
     const res = await fetch(`${BASE_URL}/products/${productId}/reviews`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: JSON.stringify(data),
     });
     return handleResponse(res, 'Failed to submit review');
+  },
+
+  uploadReviewMedia: async (file: File) => {
+    const formData = new FormData();
+    formData.append('media', file);
+    
+    // We need special headers for FormData (no Content-Type set manually)
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    const headers: HeadersInit = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    const res = await fetch(`${BASE_URL}/admin/uploads/review-media`, {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+    return handleResponse(res, 'Failed to upload media');
   },
 
   // Categories
@@ -154,6 +172,33 @@ export const api = {
     const res = await fetch(`${BASE_URL}/stories?activeOnly=${activeOnly}`, { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to fetch stories');
     return res.json() as Promise<ApiResponse<{ id: number, title: string, subtitle: string, video_url: string, link_url: string, is_active: boolean, order_index: number }[]>>;
+  },
+
+  // Admin Reviews
+  adminGetAllReviews: async (params: { page?: number; limit?: number; status?: string; productId?: number } = {}) => {
+    const queryString = buildQueryString(params);
+    const res = await fetch(`${BASE_URL}/admin/products/reviews?${queryString}`, {
+      headers: getAuthHeaders(),
+      cache: 'no-store'
+    });
+    return handleResponse(res, 'Failed to fetch admin reviews');
+  },
+
+  adminUpdateReview: async (reviewId: number | string, data: { status?: string; rating?: number; review_description?: string }) => {
+    const res = await fetch(`${BASE_URL}/admin/products/reviews/${reviewId}`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res, 'Failed to update review');
+  },
+
+  adminDeleteReview: async (reviewId: number | string) => {
+    const res = await fetch(`${BASE_URL}/admin/products/reviews/${reviewId}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders(),
+    });
+    return handleResponse(res, 'Failed to delete review');
   }
 };
 
@@ -193,6 +238,14 @@ export const authApi = {
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Failed to complete registration');
     return data;
+  },
+  
+  resendVerification: async () => {
+    const res = await fetch(`${BASE_URL}/auth/resend-verification`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+    });
+    return handleResponse(res, 'Failed to resend verification email');
   }
 };
 

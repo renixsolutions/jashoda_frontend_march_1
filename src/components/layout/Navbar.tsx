@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
-import { Search, Heart, ShoppingBag, User, MapPin, Menu, Diamond, Camera, Mic, X, LogOut, CheckCircle2, Mail, Package } from "lucide-react";
+import { Search, Heart, ShoppingBag, User, MapPin, Menu, Diamond, Camera, Mic, X, LogOut, CheckCircle2, Mail, Package, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import MegaMenu from "./MegaMenu";
 import { useAuth } from "@/contexts/AuthContext";
@@ -37,9 +37,20 @@ export default function Navbar() {
     const { genders, occasions, categories, loading: isLoadingLinks } = useNavigation();
     const searchRef = useRef<HTMLDivElement>(null);
     const mobileSearchRef = useRef<HTMLDivElement>(null);
+    const [promos, setPromos] = useState<{ id: number, title: string, subtitle: string, video_url: string, link_url: string }[]>([]);
 
     // Close suggestions on outside click
     useEffect(() => {
+        const fetchPromos = async () => {
+            try {
+                const res = await api.getPromos(true);
+                if (res.data) setPromos(res.data);
+            } catch (error) {
+                console.error("Error fetching promos in navbar:", error);
+            }
+        };
+        fetchPromos();
+
         const handleClickOutside = (event: MouseEvent) => {
             if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
                 setShowSuggestions(false);
@@ -337,6 +348,14 @@ export default function Navbar() {
                                             <Package className="w-4 h-4 text-gray-400" />
                                             My Orders
                                         </Link>
+                                        {/* <Link
+                                            href="/admin/reviews"
+                                            className="w-full px-4 py-2 text-left text-sm text-[#702540] hover:bg-gray-50 flex items-center gap-2 border-b border-gray-50 font-bold"
+                                            onClick={() => setIsUserMenuOpen(false)}
+                                        >
+                                            <MessageSquare className="w-4 h-4" />
+                                            Manage Reviews
+                                        </Link> */}
                                         <button
                                             onClick={() => {
                                                 logout();
@@ -417,19 +436,27 @@ export default function Navbar() {
                                 <Link
                                     href={link.href}
                                     className={cn(
-                                        "flex items-center gap-2 hover:text-[#702540] transition-colors h-full border-b-2 border-transparent",
-                                        activeMenu === link.name ? "text-[#702540] border-[#702540]" : "hover:border-[#702540]",
+                                        "relative flex items-center gap-2 hover:text-[#702540] transition-colors h-full px-2 group",
+                                        activeMenu === link.name ? "text-[#702540]" : "hover:text-[#702540]",
                                         (link.name.toLowerCase() === "gift" || link.name.toLowerCase() === "gifting") && "text-red-500 font-semibold"
                                     )}
                                 >
-                                    {/* Icons for specific items can be added here if needed, keeping simple for now */}
                                     {link.name}
+                                    {activeMenu === link.name && (
+                                        <motion.div 
+                                            layoutId="nav-underline"
+                                            className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#702540]"
+                                            initial={false}
+                                        />
+                                    )}
                                 </Link>
 
                                 {/* Mega Menu Dropdown */}
-                                {link.hasMegaMenu && activeMenu === link.name && (
-                                    <MegaMenu menuName={link.name} />
-                                )}
+                                <AnimatePresence>
+                                    {link.hasMegaMenu && activeMenu === link.name && (
+                                        <MegaMenu menuName={link.name} />
+                                    )}
+                                </AnimatePresence>
                             </div>
                         ))}
                     </div>
@@ -534,6 +561,37 @@ export default function Navbar() {
                                 </Link>
                             ))}
                         </div>
+
+                        {/* Mobile Promo Section */}
+                        {promos.length > 0 && (
+                            <div className="mt-10 mb-6">
+                                <div className="flex items-center gap-2 mb-4">
+                                    <span className="w-8 h-[1px] bg-luxury-pink"></span>
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#702540]">Featured Collections</span>
+                                </div>
+                                <Link 
+                                    href={promos[0].link_url || "/shop"} 
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="block group relative aspect-video rounded-2xl overflow-hidden shadow-lg"
+                                >
+                                    <video 
+                                        src={promos[0].video_url.startsWith('http') ? promos[0].video_url : `${process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '') || 'http://localhost:3000'}${promos[0].video_url.startsWith('/') ? '' : '/'}${promos[0].video_url}`}
+                                        className="w-full h-full object-cover"
+                                        autoPlay
+                                        muted
+                                        loop
+                                        playsInline
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                                    <div className="absolute bottom-4 left-4 right-4">
+                                        <h4 className="text-white font-serif italic text-lg mb-0.5">{promos[0].title}</h4>
+                                        <div className="flex items-center gap-2 text-white/80 text-[10px] uppercase font-bold tracking-tighter">
+                                            Explore Now <ChevronRight size={10} className="group-hover:translate-x-1 transition-transform" />
+                                        </div>
+                                    </div>
+                                </Link>
+                            </div>
+                        )}
 
                         <div className="mt-auto py-8 text-center text-xs text-gray-400">
                             <p>© 2024 Jashoda Jewels</p>
