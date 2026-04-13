@@ -32,6 +32,9 @@ export interface Product {
     ring_size?: string;
     stock_quantity?: number;
     inStock: boolean;
+    status: "active" | "inactive";
+    gender?: string;
+    collections?: { id: number, name: string, slug: string }[];
     createdAt: string;
 }
 

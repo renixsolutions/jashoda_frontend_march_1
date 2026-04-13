@@ -38,6 +38,7 @@ export default function ProductListing() {
     const minPriceQuery = searchParams.get('min') ? Number(searchParams.get('min')) : undefined;
     const maxPriceQuery = searchParams.get('max') ? Number(searchParams.get('max')) : undefined;
     const searchStr = searchParams.get('search') || undefined;
+    const collectionQuery = searchParams.get('collection') || undefined;
 
     const { categories, genders, occasions } = useNavigation();
 
@@ -56,7 +57,7 @@ export default function ProductListing() {
         setPage(1);
         setProducts([]);
         setHasMore(true);
-    }, [categoryQuery, subcategoryQuery, occasionQuery, genderQuery, minPriceQuery, maxPriceQuery, searchStr]);
+    }, [categoryQuery, subcategoryQuery, occasionQuery, genderQuery, minPriceQuery, maxPriceQuery, searchStr, collectionQuery]);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -68,10 +69,8 @@ export default function ProductListing() {
                     category: categoryQuery,
                     subcategory: subcategoryQuery,
                     occasion: occasionQuery,
-                    gender: genderQuery,
-                    search: searchStr,
-                    // minPrice: minPriceQuery,
-                    // maxPrice: maxPriceQuery
+                    minPrice: minPriceQuery,
+                    maxPrice: maxPriceQuery
                 });
                 if (response.success) {
                     if (page === 1) {
@@ -92,7 +91,7 @@ export default function ProductListing() {
         };
 
         fetchProducts();
-    }, [page, categoryQuery, subcategoryQuery, occasionQuery, genderQuery, searchStr]);
+    }, [page, categoryQuery, subcategoryQuery, occasionQuery, genderQuery, minPriceQuery, maxPriceQuery, searchStr, collectionQuery]);
 
     const loadMore = () => {
         if (hasMore) {

@@ -159,6 +159,21 @@ export const api = {
     if (!res.ok) throw new Error('Failed to fetch occasions');
     return res.json() as Promise<ApiResponse<{ id: number, name: string, slug: string, image?: string, image_url?: string }[]>>;
   },
+  
+  // Collections
+  getCollections: async (params: { page?: number; limit?: number; isActive?: boolean } = {}) => {
+    const queryString = buildQueryString(params);
+    const res = await fetch(`${BASE_URL}/collections?${queryString}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch collections');
+    return res.json() as Promise<ApiResponse<any[]>>;
+  },
+
+  getCollectionProducts: async (idOrSlug: string, params: { page?: number; limit?: number } = {}) => {
+    const queryString = buildQueryString(params);
+    const res = await fetch(`${BASE_URL}/collections/${idOrSlug}/products?${queryString}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch collection products');
+    return res.json() as Promise<ApiResponse<Product[]>>;
+  },
 
   // Promos
   getPromos: async (activeOnly: boolean = true) => {
