@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
-import { Search, Heart, ShoppingBag, User, MapPin, Menu, Diamond, Camera, Mic, X, LogOut, CheckCircle2, Mail, Package, ChevronRight, Sparkles } from "lucide-react";
+import { Search, Heart, ShoppingBag, User, MapPin, Menu, Diamond, Camera, Mic, X, LogOut, CheckCircle2, Mail, Package, ChevronRight, Sparkles, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 import MegaMenu from "./MegaMenu";
 import { useAuth } from "@/contexts/AuthContext";
@@ -116,12 +116,12 @@ export default function Navbar() {
     };
 
     // Generate dynamic nav links (Genders, Occasions, and Parent Categories)
-    const navLinks = React.useMemo(() => {
-        const links: { name: string; href: string; hasMegaMenu?: boolean }[] = [...STATIC_NAV_LINKS];
+    const { visibleLinks, moreLinks } = React.useMemo(() => {
+        const allLinks: { name: string; href: string; hasMegaMenu?: boolean }[] = [...STATIC_NAV_LINKS];
 
         // Add Genders
         genders.forEach(g => {
-            links.push({
+            allLinks.push({
                 name: g.name,
                 href: `/shop?gender=${g.slug}`,
                 hasMegaMenu: true
@@ -130,30 +130,36 @@ export default function Navbar() {
 
         // Add Occasions
         occasions.forEach(o => {
-            links.push({
+            allLinks.push({
                 name: o.name,
                 href: `/shop?occasion=${o.slug}`,
                 hasMegaMenu: true
             });
         });
 
-        // Add Parent Categories (Dynamic as requested)
+        // Add Parent Categories
         categories.forEach(c => {
-            // if (!links.some(l => l.name.toLowerCase() === c.name.toLowerCase())) {
-            //     links.push({
-            //         name: c.name,
-            //         href: `/shop?category=${c.slug}`,
-            //         hasMegaMenu: true
-            //     });
-            // }
+            if (!allLinks.some(l => l.name.toLowerCase() === c.name.toLowerCase())) {
+                allLinks.push({
+                    name: c.name,
+                    href: `/shop?category=${c.slug}`,
+                    hasMegaMenu: true
+                });
+            }
         });
 
-        // Add a static 'More' link if we have many items
-        if (links.length > 8) {
-            links.push({ name: "More", href: "/shop" });
+        // If more than 10 items, split them
+        if (allLinks.length > 10) {
+            return {
+                visibleLinks: allLinks.slice(0, 9),
+                moreLinks: allLinks.slice(9)
+            };
         }
 
-        return links;
+        return {
+            visibleLinks: allLinks,
+            moreLinks: []
+        };
     }, [genders, occasions, categories]);
 
     useMotionValueEvent(scrollY, "change", (latest) => {
@@ -374,6 +380,14 @@ export default function Navbar() {
                                             <MessageSquare className="w-4 h-4" />
                                             Manage Reviews
                                         </Link> */}
+                                        {/* <Link
+                                            href="/admin/testimonials"
+                                            className="w-full px-4 py-2 text-left text-sm text-[#702540] hover:bg-gray-50 flex items-center gap-2 border-b border-gray-50 font-bold"
+                                            onClick={() => setIsUserMenuOpen(false)}
+                                        >
+                                            <Sparkles className="w-4 h-4" />
+                                            Manage Testimonials
+                                        </Link> */}
                                         <button
                                             onClick={() => {
                                                 logout();
@@ -478,10 +492,9 @@ export default function Navbar() {
                     </div>
                 )}
 
-                {/* BOTTOM ROW: Categories */}
                 <div className="hidden md:block border-b border-gray-100 bg-white relative">
                     <div className="container mx-auto px-4 md:px-8 min-h-[3.5rem] py-1 flex items-center justify-center gap-4 md:gap-6 lg:gap-10 text-sm font-medium text-gray-600 flex-wrap">
-                        {navLinks.map((link) => (
+                        {visibleLinks.map((link) => (
                             <div
                                 key={link.name}
                                 className="h-full flex items-center"
@@ -493,7 +506,8 @@ export default function Navbar() {
                                     className={cn(
                                         "relative flex items-center gap-2 hover:text-[#702540] transition-colors h-full px-2 group",
                                         activeMenu === link.name ? "text-[#702540]" : "hover:text-[#702540]",
-                                        (link.name.toLowerCase() === "gift" || link.name.toLowerCase() === "gifting") && "text-red-500 font-semibold"
+                                        (link.name.toLowerCase() === "gift" || link.name.toLowerCase() === "gifting") ? "text-red-500 font-semibold" : 
+                                        (link.name.toLowerCase() === "wedding" || link.name.toLowerCase() === "party wear") ? "text-[#702540] font-semibold" : ""
                                     )}
                                 >
                                     {link.name}
@@ -514,6 +528,61 @@ export default function Navbar() {
                                 </AnimatePresence>
                             </div>
                         ))}
+
+                        {moreLinks.length > 0 && (
+                            <div 
+                                className="h-full flex items-center relative"
+                                onMouseEnter={() => setActiveMenu("More")}
+                                onMouseLeave={() => setActiveMenu(null)}
+                            >
+                                <button
+                                    className={cn(
+                                        "relative flex items-center gap-2 hover:text-[#702540] transition-colors h-full px-4 group py-4",
+                                        activeMenu === "More" ? "text-[#702540]" : "text-gray-600"
+                                    )}
+                                >
+                                    More
+                                    <ChevronRight className={cn("w-4 h-4 transition-transform duration-300", activeMenu === "More" && "rotate-90")} />
+                                    {activeMenu === "More" && (
+                                        <motion.div 
+                                            layoutId="nav-underline"
+                                            className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#702540]"
+                                            initial={false}
+                                        />
+                                    )}
+                                </button>
+
+                                <AnimatePresence>
+                                    {activeMenu === "More" && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: 10 }}
+                                            className="absolute top-full right-0 mt-0 w-64 bg-white shadow-2xl border border-gray-100 py-3 z-50 rounded-b-2xl overflow-hidden"
+                                        >
+                                            <div className="max-h-[70vh] overflow-y-auto custom-scrollbar">
+                                                {moreLinks.map((link) => (
+                                                    <Link
+                                                        key={link.name}
+                                                        href={link.href}
+                                                        className="flex items-center justify-between px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#702540] transition-all group/item"
+                                                        onClick={() => setActiveMenu(null)}
+                                                    >
+                                                        <span className={cn(
+                                                            "transition-colors",
+                                                            (link.name.toLowerCase() === "gift" || link.name.toLowerCase() === "gifting") && "text-red-500 font-bold"
+                                                        )}>
+                                                            {link.name}
+                                                        </span>
+                                                        <ChevronRight className="w-3 h-3 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-1 transition-all text-[#702540]" />
+                                                    </Link>
+                                                ))}
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+                        )}
                     </div>
                 </div>
             </motion.nav>
@@ -601,7 +670,7 @@ export default function Navbar() {
 
                         {/* Links */}
                         <div className="flex flex-col">
-                            {navLinks.map(link => {
+                            {[...visibleLinks, ...moreLinks].map(link => {
                                 const isExpanded = mobileSubMenu === link.name;
                                 return (
                                     <div key={link.name} className="flex flex-col border-b border-gray-100">

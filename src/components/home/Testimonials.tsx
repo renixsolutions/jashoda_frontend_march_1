@@ -1,46 +1,39 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-
-const testimonials = [
-    {
-        id: 1,
-        name: "Akanksha Khanna, 27",
-        text: "Delighted with my engagement ring from BlueStone! It's my dream ring, fits perfectly and is stunning to look at. Thanks, BlueStone, for helping us find the perfect symbol of love!",
-        image: "/customer1.png",
-        rotation: -2,
-    },
-    {
-        id: 2,
-        name: "Nutan Mishra, 33",
-        text: "I got a Nazariya for my baby boy from BlueStone. It's so cute seeing it on my little one's wrist, and it gives me a sense of security knowing it's there. Thanks, BlueStone!",
-        image: "/customer1.png",
-        rotation: 2,
-    },
-    {
-        id: 3,
-        name: "Divya Mishra, 26",
-        text: "On Valentine's Day, my husband gifted me a necklace from BlueStone, and I haven't taken it off even once. Everyone asks me where it's from, and I just LOVE how nice it looks on me.",
-        image: "/customer1.png",
-        rotation: -1,
-    },
-    {
-        id: 4,
-        name: "Anuska Ananya, 24",
-        text: "BlueStone is my go-to place for jewellery. I love that I can wear their jewellery to work, dates, parties and brunches; it goes with everything and makes my outfits look stylish and trendy.",
-        image: "/customer1.png",
-        rotation: 3,
-    },
-];
-
-// Duplicate for infinite scroll
-const marqueeItems = [...testimonials, ...testimonials, ...testimonials];
+import { api } from "@/lib/api";
+import { Star } from "lucide-react";
 
 export default function Testimonials() {
+    const [testimonials, setTestimonials] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchTestimonials = async () => {
+            try {
+                const response = await api.getTestimonials(true);
+                if (response.success) {
+                    setTestimonials(response.data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch testimonials", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchTestimonials();
+    }, []);
+
+    if (loading || testimonials.length === 0) return null;
+
+    // Repeat enough times to fill the screen twice even with few testimonials
+    const repeatCount = 10;
+    const marqueeItems = Array(repeatCount).fill(testimonials).flat();
+
     return (
-        <section className="py-20 bg-white overflow-hidden ml-1">
+        <section className="py-20 bg-white overflow-hidden">
             <div className="container mx-auto px-4 mb-12 text-center">
                 <h2 className="text-3xl md:text-4xl font-serif text-[#1E3A8A] mb-4">
                     Customer Testimonials
@@ -48,19 +41,17 @@ export default function Testimonials() {
             </div>
 
             <div className="relative w-full">
-                {/* Continuous String Line Background - We'll simulate this per-card for easier looping */}
-
                 <div className="flex overflow-hidden">
                     <motion.div
-                        className="flex gap-8 px-4"
+                        className="flex"
                         animate={{
-                            x: ["0%", "-33.33%"], // We have 3 sets, so moving 1 set width ensures seamless loop
+                            x: ["0%", `-${(1 / repeatCount) * 100}%`],
                         }}
                         transition={{
                             x: {
                                 repeat: Infinity,
                                 repeatType: "loop",
-                                duration: 30,
+                                duration: 3 * (testimonials.length > 0 ? (marqueeItems.length / testimonials.length) : 1),
                                 ease: "linear",
                             },
                         }}
@@ -68,7 +59,7 @@ export default function Testimonials() {
                         {marqueeItems.map((item, index) => (
                             <div
                                 key={`${item.id}-${index}`}
-                                className="relative w-[300px] flex-shrink-0 pt-10 group"
+                                className="relative w-[360px] flex-shrink-0 pt-10 group px-4"
                             >
                                 {/* String Segment */}
                                 <svg
@@ -103,7 +94,7 @@ export default function Testimonials() {
                                 >
                                     <div className="bg-gray-100 aspect-square mb-4 relative overflow-hidden">
                                         <Image
-                                            src={item.image}
+                                            src={api.getMediaUrl(item.image_url)}
                                             alt={item.name}
                                             fill
                                             className="object-cover"
@@ -111,11 +102,20 @@ export default function Testimonials() {
                                     </div>
 
                                     <div className="text-left">
+                                        <div className="flex gap-0.5 mb-2">
+                                            {[...Array(5)].map((_, i) => (
+                                                <Star
+                                                    key={i}
+                                                    size={14}
+                                                    className={i < item.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}
+                                                />
+                                            ))}
+                                        </div>
                                         <h3 className="text-[#1E3A8A] font-semibold text-lg leading-tight mb-2">
                                             {item.name}
                                         </h3>
                                         <p className="text-gray-500 text-xs italic leading-relaxed">
-                                            "{item.text}"
+                                            "{item.content}"
                                         </p>
                                     </div>
                                 </div>

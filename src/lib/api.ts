@@ -4,7 +4,7 @@ import { Product, Category, Gender } from './mockData';
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1';
 
 export const getMediaUrl = (path: string | null | undefined) => {
-  if (!path) return '';
+  if (!path) return '/placeholder.png';
   if (path.startsWith('http')) return path;
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1';
   const serverUrl = baseUrl.replace('/api/v1', '');
@@ -167,6 +167,28 @@ export const api = {
     return res.json() as Promise<ApiResponse<{ id: number, title: string, subtitle: string, video_url: string, link_url: string, is_active: boolean, order_index: number }[]>>;
   },
 
+  // Home Ad Cards (dynamic video cards on home page)
+  getHomeAds: async (activeOnly: boolean = true) => {
+    const res = await fetch(`${BASE_URL}/home-ads?activeOnly=${activeOnly}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch home ads');
+    return res.json() as Promise<ApiResponse<{
+      id: number,
+      title: string,
+      subtitle: string,
+      video_url: string,
+      link_url: string,
+      link_text: string,
+      category_id: number | null,
+      gender_id: number | null,
+      occasion_id: number | null,
+      category_slug?: string,
+      gender_slug?: string,
+      occasion_slug?: string,
+      is_active: boolean,
+      order_index: number
+    }[]>>;
+  },
+
   // Stories
   getStories: async (activeOnly: boolean = true) => {
     const res = await fetch(`${BASE_URL}/stories?activeOnly=${activeOnly}`, { cache: 'no-store' });
@@ -182,6 +204,13 @@ export const api = {
     const res = await fetch(`${BASE_URL}/banners?${queryString}`, { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to fetch banners');
     return res.json() as Promise<ApiResponse<any[]>>;
+  },
+
+  // Testimonials
+  getTestimonials: async (activeOnly: boolean = true) => {
+    const res = await fetch(`${BASE_URL}/testimonials?activeOnly=${activeOnly}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch testimonials');
+    return res.json() as Promise<ApiResponse<{ id: number, name: string, content: string, image_url: string, rating: number, rotation: number, is_active: boolean, order_index: number }[]>>;
   },
 
   // Marquee
@@ -219,6 +248,159 @@ export const api = {
       headers: getAuthHeaders(),
     });
     return handleResponse(res, 'Failed to delete review');
+  },
+
+  // Admin Testimonials
+  adminGetTestimonials: async () => {
+    const res = await fetch(`${BASE_URL}/admin/testimonials`, {
+      headers: getAuthHeaders(),
+      cache: 'no-store'
+    });
+    return handleResponse(res, 'Failed to fetch admin testimonials');
+  },
+
+  adminCreateTestimonial: async (data: any) => {
+    const res = await fetch(`${BASE_URL}/admin/testimonials`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res, 'Failed to create testimonial');
+  },
+
+  adminUpdateTestimonial: async (id: number | string, data: any) => {
+    const res = await fetch(`${BASE_URL}/admin/testimonials/${id}`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res, 'Failed to update testimonial');
+  },
+
+  adminDeleteTestimonial: async (id: number | string) => {
+    const res = await fetch(`${BASE_URL}/admin/testimonials/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders(),
+    });
+    return handleResponse(res, 'Failed to delete testimonial');
+  },
+
+  // Admin Promos
+  adminGetPromos: async (activeOnly: boolean = false) => {
+    const res = await fetch(`${BASE_URL}/admin/promos?activeOnly=${activeOnly}`, {
+      headers: getAuthHeaders(),
+      cache: 'no-store'
+    });
+    return handleResponse(res, 'Failed to fetch admin promos');
+  },
+
+  adminCreatePromo: async (data: any) => {
+    const res = await fetch(`${BASE_URL}/admin/promos`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res, 'Failed to create promo');
+  },
+
+  adminUpdatePromo: async (id: number | string, data: any) => {
+    const res = await fetch(`${BASE_URL}/admin/promos/${id}`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res, 'Failed to update promo');
+  },
+
+  adminDeletePromo: async (id: number | string) => {
+    const res = await fetch(`${BASE_URL}/admin/promos/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders(),
+    });
+    return handleResponse(res, 'Failed to delete promo');
+  },
+
+  // Admin Home Ad Cards
+  adminGetHomeAds: async (activeOnly: boolean = false) => {
+    const res = await fetch(`${BASE_URL}/admin/home-ads?activeOnly=${activeOnly}`, {
+      headers: getAuthHeaders(),
+      cache: 'no-store'
+    });
+    return handleResponse(res, 'Failed to fetch admin home ads');
+  },
+
+  adminCreateHomeAd: async (data: any) => {
+    const res = await fetch(`${BASE_URL}/admin/home-ads`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res, 'Failed to create home ad');
+  },
+
+  adminUpdateHomeAd: async (id: number | string, data: any) => {
+    const res = await fetch(`${BASE_URL}/admin/home-ads/${id}`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res, 'Failed to update home ad');
+  },
+
+  adminDeleteHomeAd: async (id: number | string) => {
+    const res = await fetch(`${BASE_URL}/admin/home-ads/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders(),
+    });
+    return handleResponse(res, 'Failed to delete home ad');
+  },
+  
+  uploadMedia: async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    const headers: HeadersInit = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    const res = await fetch(`${BASE_URL}/admin/uploads`, {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+    return handleResponse(res, 'Failed to upload media');
+  },
+
+  uploadPromoVideo: async (file: File) => {
+    const formData = new FormData();
+    formData.append('video', file);
+    
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    const headers: HeadersInit = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    const res = await fetch(`${BASE_URL}/admin/uploads/promo-video`, {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+    return handleResponse(res, 'Failed to upload video');
+  },
+
+  uploadHomeAdVideo: async (file: File) => {
+    const formData = new FormData();
+    formData.append('video', file);
+    
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    const headers: HeadersInit = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    const res = await fetch(`${BASE_URL}/admin/uploads/home-ad-video`, {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+    return handleResponse(res, 'Failed to upload video');
   }
 };
 

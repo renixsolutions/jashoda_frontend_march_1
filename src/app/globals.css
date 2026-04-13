@@ -58,7 +58,7 @@
   body {
     @apply text-white antialiased font-sans;
 
-    background: linear-gradient(75deg, #BCD3E3, #4b97c6, #d364b2);
+    background: linear-gradient(75deg, #BCD3E3, #02006c, #d364b2);
 
     /* background-size: 400% 400%;
     animation: gradient-xy 10s ease infinite;

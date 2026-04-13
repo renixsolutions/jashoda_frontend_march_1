@@ -65,7 +65,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                     </div>
                 </div>
 
-                <PDPRelated />
+                <PDPRelated currentProduct={product} />
             </main>
         </div>
     );
