@@ -135,7 +135,7 @@ export default function ProductCard({ product, variant = 'light' }: ProductCardP
             </button>
 
             {/* Image Container with Slider Effect */}
-            <Link href={`/product/${product.id || product.slug}`} className={`block relative h-[380px] w-full overflow-hidden rounded-2xl ${isDark ? 'bg-black/20' : 'bg-[#F9F9F9]'}`}>
+            <Link href={`/shop/${product.id}`} className={`block relative h-[380px] w-full overflow-hidden rounded-2xl ${isDark ? 'bg-black/20' : 'bg-[#F9F9F9]'}`}>
                 {validImages.map((imgUrl, idx) => (
                     <Image
                         key={`${imgUrl}-${idx}`}
@@ -172,7 +172,7 @@ export default function ProductCard({ product, variant = 'light' }: ProductCardP
             {/* Product Details */}
             <div className={`pt-5 text-left px-3 ${isDark ? 'px-2' : ''}`}>
                 <div className="flex justify-between items-start mb-1">
-                    <Link href={`/product/${product.id}`}>
+                    <Link href={`/shop/${product.id}`}>
                         <h3 className={`text-base font-sans leading-tight transition-colors line-clamp-2 pr-4 ${isDark ? 'text-white/90 hover:text-white font-medium' : 'text-[#404040] hover:text-[#832729] font-medium'}`}>{product.name}</h3>
                     </Link>
                 </div>

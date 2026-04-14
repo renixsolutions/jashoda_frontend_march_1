@@ -9,7 +9,7 @@ import MegaMenu from "./MegaMenu";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
 import { useNavigation } from "@/contexts/NavigationContext";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { api } from "@/lib/api";
 import { Product } from "@/lib/mockData";
 
@@ -31,6 +31,8 @@ export default function Navbar() {
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
 
     const [suggestions, setSuggestions] = useState<Product[]>([]);
     const [isSuggestionsLoading, setIsSuggestionsLoading] = useState(false);
@@ -80,6 +82,13 @@ export default function Navbar() {
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
+
+    // Close menus on navigation
+    useEffect(() => {
+        setActiveMenu(null);
+        setIsMobileMenuOpen(false);
+        setMobileSubMenu(null);
+    }, [pathname, searchParams]);
 
     // Debounced search fetch
     useEffect(() => {
@@ -254,14 +263,26 @@ export default function Navbar() {
                                                         key={item.id}
                                                         onClick={() => {
                                                             setShowSuggestions(false);
-                                                            router.push(`/shop?search=${encodeURIComponent(item.name)}`);
+                                                            router.push(`/shop/${item.id}`);
                                                         }}
-                                                        className="px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center gap-3 transition-colors"
+                                                        className="px-4 py-3 hover:bg-gray-50 cursor-pointer flex items-center gap-4 transition-colors border-b border-gray-50 last:border-0"
                                                     >
-                                                        <Search className="w-4 h-4 text-gray-400" />
-                                                        <div className="flex flex-col">
-                                                            <span className="text-sm font-medium text-gray-900 line-clamp-1">{item.name}</span>
-                                                            <span className="text-xs text-gray-500">{item.price_label || `₹${Number(item.price).toLocaleString()}`}</span>
+                                                        <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0 border border-gray-100">
+                                                            <img 
+                                                                src={api.getMediaUrl(item.images?.[0] || item.image_url)} 
+                                                                alt={item.name}
+                                                                className="w-full h-full object-cover"
+                                                                onError={(e) => {
+                                                                    (e.target as HTMLImageElement).src = '/luxury-product-thumb.png';
+                                                                }}
+                                                            />
+                                                        </div>
+                                                        <div className="flex flex-col flex-1 min-w-0">
+                                                            <span className="text-sm font-bold text-gray-900 line-clamp-1">{item.name}</span>
+                                                            <div className="flex items-center justify-between mt-0.5">
+                                                                <span className="text-xs text-[#702540] font-bold">{item.price_label || `₹${Number(item.price).toLocaleString()}`}</span>
+                                                                <span className="text-[10px] text-gray-400 uppercase tracking-tighter">View Detail</span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 ))}
@@ -631,21 +652,33 @@ export default function Navbar() {
                                         {isSuggestionsLoading ? (
                                             <div className="p-4 text-center text-sm text-gray-500">Loading suggestions...</div>
                                         ) : suggestions.length > 0 ? (
-                                            <div className="py-2">
+                                            <div className="flex flex-col">
                                                 {suggestions.map((item) => (
                                                     <div
                                                         key={item.id}
                                                         onClick={() => {
                                                             setIsMobileMenuOpen(false);
                                                             setShowSuggestions(false);
-                                                            router.push(`/shop?search=${encodeURIComponent(item.name)}`);
+                                                            router.push(`/shop/${item.id}`);
                                                         }}
-                                                        className="px-4 py-3 border-b border-gray-50 hover:bg-gray-50 cursor-pointer flex items-center gap-3"
+                                                        className="px-4 py-4 border-b border-gray-50 hover:bg-gray-50 cursor-pointer flex items-center gap-4 transition-colors"
                                                     >
-                                                        <Search className="w-4 h-4 text-gray-400" />
-                                                        <div className="flex flex-col">
-                                                            <span className="text-sm font-medium text-gray-900 line-clamp-1">{item.name}</span>
-                                                            <span className="text-xs text-gray-500">{item.price_label || `₹${Number(item.price).toLocaleString()}`}</span>
+                                                        <div className="w-14 h-14 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0 border border-gray-100">
+                                                            <img 
+                                                                src={api.getMediaUrl(item.images?.[0] || item.image_url)} 
+                                                                alt={item.name}
+                                                                className="w-full h-full object-cover"
+                                                                onError={(e) => {
+                                                                    (e.target as HTMLImageElement).src = '/luxury-product-thumb.png';
+                                                                }}
+                                                            />
+                                                        </div>
+                                                        <div className="flex flex-col flex-1 min-w-0">
+                                                            <span className="text-sm font-bold text-gray-900 line-clamp-1">{item.name}</span>
+                                                            <div className="flex items-center justify-between mt-1">
+                                                                <span className="text-xs text-[#702540] font-bold">{item.price_label || `₹${Number(item.price).toLocaleString()}`}</span>
+                                                                <ChevronRight className="w-4 h-4 text-gray-300" />
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 ))}

@@ -36,9 +36,10 @@ export default function RootLayout({
                 <Preloader />
                 <SmoothScroll>
                   <Navbar />
-                  <GlobalBreadcrumb />
                   <Toaster position="top-center" />
-                  {children}
+                  <div className="pt-[110px] md:pt-[190px]">
+                    {children}
+                  </div>
                   <Footer />
                   <AuthModalManager />
                 </SmoothScroll>

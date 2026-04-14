@@ -15,7 +15,7 @@ export default function GlobalBreadcrumb() {
     // Fetch product name if on product page
     React.useEffect(() => {
         const segments = pathname.split('/').filter(Boolean);
-        if (segments[0] === 'product' && segments[1]) {
+        if ((segments[0] === 'product' || segments[0] === 'shop') && segments[1]) {
             const fetchProductName = async () => {
                 try {
                     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1'}/products/${segments[1]}`);
@@ -54,7 +54,7 @@ export default function GlobalBreadcrumb() {
         }
 
         // If this is the product ID segment, use the fetched product name
-        if (index === 1 && segments[0] === 'product' && productName) {
+        if (index === 1 && (segments[0] === 'product' || segments[0] === 'shop') && productName) {
             name = productName.toUpperCase();
         }
 
@@ -117,17 +117,17 @@ export default function GlobalBreadcrumb() {
     }
 
     return (
-        <div className="bg-[#fcf8f5] mt-[116px] md:mt-[165px] py-2 md:py-4 border-b border-[#ebdacc]">
-            <div className="container mx-auto px-6 text-center">
-                <div className="flex items-center justify-center gap-2 text-xs font-bold tracking-widest text-[#832729]/60 uppercase">
-                    <Link href="/" className="hover:text-[#832729] transition-colors">HOME</Link>
+        <div className="py-2 md:py-4 relative z-10">
+            <div className="container mx-auto px-4 md:px-8">
+                <div className="flex flex-wrap items-center justify-center gap-1.5 md:gap-3 text-xs md:text-sm font-bold tracking-widest text-[#702540] uppercase">
+                    <Link href="/" className="hover:opacity-70 transition-opacity">HOME</Link>
                     {breadcrumbs.map((crumb, index) => (
                         <React.Fragment key={index}>
-                            <span className="text-[#832729]/40">/</span>
+                            <span className="opacity-40 font-light">/</span>
                             {crumb.isLast ? (
-                                <span className="text-[#832729]">{crumb.name}</span>
+                                <span className="underline underline-offset-4 decoration-[#702540]/20">{crumb.name}</span>
                             ) : (
-                                <Link href={crumb.href} className="hover:text-[#832729] transition-colors">
+                                <Link href={crumb.href} className="hover:opacity-70 transition-opacity">
                                     {crumb.name}
                                 </Link>
                             )}

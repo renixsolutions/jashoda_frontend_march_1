@@ -57,12 +57,8 @@
 @layer base {
   body {
     @apply text-white antialiased font-sans;
-
     background: linear-gradient(75deg, #BCD3E3, #02006c, #d364b2);
-
-    /* background-size: 400% 400%;
-    animation: gradient-xy 10s ease infinite;
-    min-height: 100vh; */
+    min-height: 100vh;
   }
 
   h1,
@@ -201,3 +197,9 @@ select::-ms-expand {
   scrollbar-width: none;
   /* Firefox */
 }
+
+@media (min-width: 768px) {
+  .md\:px-6 {
+    padding-inline: calc(var(--spacing, 0.25rem) * 7) !important;
+  }
+}

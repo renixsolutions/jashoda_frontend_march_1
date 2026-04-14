@@ -94,14 +94,8 @@ export default function PDPRelated({ currentProduct }: PDPRelatedProps) {
 
     return (
         <div className="py-16">
-            <div className="flex justify-between items-end mb-8">
-                <h2 className="text-3xl font-serif text-[#1E2856]">You May Also Like</h2>
-                <Link 
-                    href={`/shop?category=${currentProduct.categoryId}`}
-                    className="text-xs font-bold text-gray-400 tracking-widest hover:text-[#1E2856] uppercase flex items-center gap-1"
-                >
-                    View All <span className="text-lg">→</span>
-                </Link>
+            <div className="flex justify-between items-end mb-8 text-center w-full">
+                <h2 className="text-3xl font-serif text-[#1E2856] w-full">You May Also Like</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -124,7 +118,7 @@ export default function PDPRelated({ currentProduct }: PDPRelatedProps) {
                                 key={product.id} 
                                 className="group cursor-pointer"
                                 onClick={() => {
-                                    router.push(`/product/${product.id}`);
+                                    router.push(`/shop/${product.id}`);
                                     window.scrollTo(0, 0);
                                 }}
                             >

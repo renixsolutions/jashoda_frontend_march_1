@@ -1,6 +1,8 @@
 import ProductListing from "@/components/product/ProductListing";
 import { Metadata } from "next";
+
 import { Suspense } from "react";
+import GlobalBreadcrumb from "@/components/layout/GlobalBreadcrumb";
 
 export const metadata: Metadata = {
     title: "Shop | Jashoda Jewels",
@@ -9,7 +11,8 @@ export const metadata: Metadata = {
 
 export default function ShopPage() {
     return (
-        <main className="min-h-screen pt-4 pb-8 px-2 md:px-6 bg-white rounded-t-[1rem]">
+        <main className="min-h-screen bg-white">
+            <GlobalBreadcrumb />
             <Suspense fallback={
                 <div className="flex flex-col items-center justify-center p-40">
                     <div className="w-10 h-10 border-2 border-[#702540]/20 border-t-[#702540] rounded-full animate-spin mb-4" />

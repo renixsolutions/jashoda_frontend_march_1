@@ -173,7 +173,7 @@ export default function MegaMenu({ menuName = "All Jewellery" }: MegaMenuProps) 
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="absolute top-full left-0 w-full bg-white shadow-[0_20px_50px_rgba(0,0,0,0.1)] border-t border-gray-100 z-50 flex justify-center"
         >
-            <div className="w-full flex min-h-[300px] h-auto">
+            <div className="w-full flex h-[calc(100vh-220px)]">
                 {/* Left Sidebar - Tabs */}
                 <div className="w-64 bg-[#FBFBFB] border-r border-gray-100 py-6 h-auto sticky top-0">
                     <div className="flex flex-col gap-1 px-3">
@@ -213,7 +213,7 @@ export default function MegaMenu({ menuName = "All Jewellery" }: MegaMenuProps) 
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -10 }}
                             transition={{ duration: 0.3 }}
-                            className="h-full"
+                            className="h-full overflow-y-auto custom-scrollbar pr-4"
                         >
                             {activeTab === "Category" && (
                                 <div className="flex flex-col h-full w-full">
@@ -386,7 +386,7 @@ export default function MegaMenu({ menuName = "All Jewellery" }: MegaMenuProps) 
                 </div>
 
                 {/* Right Side - Promo Queue */}
-                <div className="w-[240px] lg:w-[320px] xl:w-[400px] h-full relative flex-shrink-0 flex flex-col items-center justify-center overflow-hidden bg-[#0A0A0A] border-l border-gray-800">
+                <div className="w-[300px] lg:w-[300px] xl:w-[300px] h-full relative flex-shrink-0 flex flex-col items-center justify-center overflow-hidden bg-[#0A0A0A] border-l border-gray-800">
                     <AnimatePresence mode="wait">
                         {currentPromo ? (
                             <motion.div

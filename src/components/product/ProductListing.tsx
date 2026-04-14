@@ -5,7 +5,7 @@ import ProductCard from "@/components/ui/ProductCard";
 import FilterTopBar from "./FilterTopBar";
 import AdvertisingBanner from "./AdvertisingBanner";
 import ChooseLook from "./ChooseLook";
-import { ArrowRight, Search } from "lucide-react";
+import { ArrowRight, Search, ChevronDown } from "lucide-react";
 import { api } from "@/lib/api";
 import { Product } from "@/lib/mockData";
 import { motion } from "framer-motion";
@@ -110,34 +110,36 @@ export default function ProductListing() {
     }
 
     return (
-        <div className="min-h-screen pt-8 pb-24 px-4 md:px-8 bg-white">
+        <div className="min-h-screen pt-1 md:pt-4 pb-24 px-4 md:px-8 bg-white">
             <div className="max-w-7xl mx-auto">
-                {/* Header */}
                 <motion.div
-                    initial={{ opacity: 0, y: -20 }}
+                    initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="flex flex-col md:flex-row justify-between items-end mb-8 gap-6"
+                    className="flex flex-col md:flex-row md:justify-between items-start md:items-end mb-6 gap-4"
                 >
-                    <div>
-                        <h1 className="text-4xl md:text-5xl font-serif text-[#832729] mb-2 uppercase">
+                    <div className="w-full md:w-auto">
+                        <h1 className="text-xl md:text-5xl font-serif text-[#702540] mb-1 uppercase tracking-wider">
                             {[
                                 genderQuery && getGenderLabel(genderQuery),
                                 occasionQuery && getOccasionLabel(occasionQuery),
                                 (subcategoryQuery || categoryQuery) && getCategoryLabel(subcategoryQuery || categoryQuery)
                             ].filter(Boolean).join(' ') || "All Jewellery"}
-                            <span className="text-lg text-[#832729]/60 align-middle ml-2 font-sans font-normal lowercase italic">({products.length} results)</span>
+                            <span className="text-[11px] md:text-lg text-[#702540]/50 align-middle ml-2 font-sans font-normal lowercase italic font-light italic">({products.length} results)</span>
                         </h1>
                     </div>
 
-                    <div className="flex items-center gap-2 text-[#832729]/80 text-sm">
-                        <span>Sort By:</span>
-                        <select className="bg-white text-[#404040] border border-[#832729]/20 rounded-full px-4 py-2 text-sm focus:outline-none cursor-pointer hover:border-[#832729]/50 transition-colors">
-                            <option value="featured">Best Matches</option>
-                            <option value="newest">Newest</option>
-                            <option value="price-low">Price: Low to High</option>
-                            <option value="price-high">Price: High to Low</option>
-                        </select>
+                    <div className="w-full md:w-auto flex items-center justify-between md:justify-end gap-3 pt-2 md:pt-0 border-t md:border-t-0 border-gray-50">
+                        <span className="text-[#702540]/80 text-[10px] font-bold uppercase tracking-widest">Sort By:</span>
+                        <div className="relative">
+                            <select className="bg-white text-[#404040] border border-gray-100 rounded-lg px-4 py-2 text-[11px] font-bold appearance-none focus:outline-none cursor-pointer hover:border-[#702540] transition-all shadow-sm pr-9 h-9">
+                                <option value="featured">Best Matches</option>
+                                <option value="newest">Newest</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                            </select>
+                            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none" />
+                        </div>
                     </div>
                 </motion.div>
 
