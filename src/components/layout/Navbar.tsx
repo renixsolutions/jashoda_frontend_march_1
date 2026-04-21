@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
-import { Search, Heart, ShoppingBag, User, MapPin, Menu, Diamond, Camera, Mic, X, LogOut, CheckCircle2, Mail, Package, ChevronRight, Sparkles, MessageSquare } from "lucide-react";
+import { Search, Heart, ShoppingBag, User, MapPin, Menu, Diamond, Camera, Mic, X, LogOut, CheckCircle2, Mail, Package, ChevronRight, Sparkles, MessageSquare, Moon, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
 import MegaMenu from "./MegaMenu";
 import { useAuth } from "@/contexts/AuthContext";
@@ -46,9 +46,16 @@ export default function Navbar() {
         messages: { id: number, text: string }[],
         settings: { speed: number, bg_color: string, text_color: string, is_active: boolean }
     } | null>(null);
+    const [isDarkMode, setIsDarkMode] = useState(false);
 
     // Close suggestions on outside click
     useEffect(() => {
+        // Initialize theme
+        const theme = localStorage.getItem('theme');
+        if (theme === 'dark') {
+            setIsDarkMode(true);
+            document.documentElement.classList.add('dark');
+        }
         const fetchMarquee = async () => {
             try {
                 const res = await api.getMarquee();
@@ -121,6 +128,18 @@ export default function Navbar() {
             setIsMobileMenuOpen(false); // Close mobile menu if open
             setShowSuggestions(false);
             router.push(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
+        }
+    };
+
+    const toggleTheme = () => {
+        if (isDarkMode) {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+            setIsDarkMode(false);
+        } else {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+            setIsDarkMode(true);
         }
     };
 
@@ -307,6 +326,13 @@ export default function Navbar() {
 
                     {/* Right Icons */}
                     <div className="flex items-center justify-end gap-5 md:gap-6 w-1/4">
+                        {/* <button
+                            onClick={toggleTheme}
+                            className="text-charcoal hover:text-luxury-pink transition-colors relative"
+                            title="Toggle Theme"
+                        >
+                            {isDarkMode ? <Sun className="w-5 h-5 text-yellow-500" /> : <Moon className="w-5 h-5" />}
+                        </button> */}
                         <button
                             onClick={() => {
                                 if (isAuthenticated) {

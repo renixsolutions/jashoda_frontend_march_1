@@ -69,6 +69,9 @@ export default function ProductListing() {
                     category: categoryQuery,
                     subcategory: subcategoryQuery,
                     occasion: occasionQuery,
+                    gender: genderQuery,
+                    search: searchStr,
+                    collection: collectionQuery,
                     minPrice: minPriceQuery,
                     maxPrice: maxPriceQuery
                 });

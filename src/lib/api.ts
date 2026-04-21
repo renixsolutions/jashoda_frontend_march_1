@@ -211,6 +211,13 @@ export const api = {
     return res.json() as Promise<ApiResponse<{ id: number, title: string, subtitle: string, video_url: string, link_url: string, is_active: boolean, order_index: number }[]>>;
   },
 
+  // Home Video
+  getHomeVideo: async () => {
+    const res = await fetch(`${BASE_URL}/home-videos/active`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch home video');
+    return res.json() as Promise<ApiResponse<{ id: number, top_text: string, title: string, subtitle: string, bottom_text: string, video_url: string, is_active: boolean }>>;
+  },
+
   // Banners
   getBanners: async (activeOnly: boolean = true, type?: string) => {
     const params: any = { activeOnly };
@@ -490,7 +497,23 @@ const handleResponse = async (res: Response, defaultError: string) => {
                     data?.message?.toLowerCase().includes('jwt expired');
 
   if ((isUnauthorized || isExpired) && typeof window !== 'undefined') {
-    window.dispatchEvent(new Event('auth_unauthorized'));
+    // Only dispatch once every 5 seconds to avoid multiple toasts
+    const now = Date.now();
+    const lastDispatch = (window as any)._last_auth_dispatch || 0;
+    
+    if (now - lastDispatch > 5000) {
+      (window as any)._last_auth_dispatch = now;
+      window.dispatchEvent(new Event('auth_unauthorized'));
+    }
+
+    // Return a failed response instead of throwing to avoid dev error overlays
+    // and multiple console errors. The AuthContext handles the UI/Logout.
+    return { 
+      success: false, 
+      message: data.message || 'Session expired', 
+      isAuthError: true,
+      data: null 
+    } as any;
   }
 
   if (!res.ok) {

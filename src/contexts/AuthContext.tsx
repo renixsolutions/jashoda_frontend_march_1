@@ -71,7 +71,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const handleUnauthorized = () => {
       console.warn('Unauthorized access detected. Logging out.');
-      if (token || user) {
+      // Use state from the latest closure or check localStorage if needed
+      // Actually, since we want to toast only if they WERE logged in:
+      const wasLoggedIn = localStorage.getItem('auth_token') || token || user;
+      
+      if (wasLoggedIn) {
         toast.error('Session expired. Please login again.');
         // Optionally trigger promptLogin after a brief delay
         setTimeout(() => {
@@ -87,7 +91,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       window.addEventListener('auth_unauthorized', handleUnauthorized);
       return () => window.removeEventListener('auth_unauthorized', handleUnauthorized);
     }
-  }, []);
+  }, [token, user]); // Added dependencies to ensure fresh state in the listener
 
   const updateUser = useCallback((updatedUser: Partial<User>) => {
     setUser((currentUser) => {
