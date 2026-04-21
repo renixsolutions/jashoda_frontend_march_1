@@ -64,10 +64,11 @@ export default function CartPage() {
                                 {/* Image */}
                                 <div className="relative w-32 h-32 flex-shrink-0 bg-gray-50 rounded-lg overflow-hidden">
                                     <Image
-                                        src={item.images ? item.images[0] : ("/images/placeholder.png")} // Fallback image
+                                        src={item.images?.[0] || item.image_url || "/diamond-pendant.png"} 
                                         alt={item.name}
                                         fill
                                         className="object-cover"
+                                        unoptimized={!!(item.images?.[0] || item.image_url)?.startsWith('http')}
                                     />
                                 </div>
 

@@ -22,6 +22,7 @@ import { ordersApi, usersApi } from "@/lib/api";
 import toast from "react-hot-toast";
 import { STATE_CITY_MAP } from "@/lib/statesCities";
 import { useAuth } from "@/contexts/AuthContext";
+import EmailVerificationModal from "@/components/auth/EmailVerificationModal";
 
 export interface Address {
     id: number;
@@ -49,6 +50,8 @@ export default function CheckoutPage() {
     const [currentStep, setCurrentStep] = useState<CheckoutStep>('shipping');
     const [isProcessing, setIsProcessing] = useState(false);
     const [showMap, setShowMap] = useState(false);
+    const [showVerificationModal, setShowVerificationModal] = useState(false);
+    const { user } = useAuth();
 
     // Address state
     const [savedAddresses, setSavedAddresses] = useState<Address[]>([]);
@@ -126,6 +129,13 @@ export default function CheckoutPage() {
 
     const handleContinueToPayment = (e: React.FormEvent) => {
         e.preventDefault();
+        
+        // Enforce Email Verification for logged in users
+        if (isAuthenticated && user && !user.email_verified) {
+            setShowVerificationModal(true);
+            return;
+        }
+
         setCurrentStep('payment');
         window.scrollTo(0, 0);
     };
@@ -182,6 +192,13 @@ export default function CheckoutPage() {
 
     const handlePlaceOrder = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Final check for email verification
+        if (isAuthenticated && user && !user.email_verified) {
+            setShowVerificationModal(true);
+            return;
+        }
+
         setIsProcessing(true);
 
         try {
@@ -251,7 +268,7 @@ export default function CheckoutPage() {
     };
 
     return (
-        <div className="min-h-screen pt-32 pb-24 bg-gray-50">
+        <div className="min-h-screen pt-6 pb-24 bg-gray-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Checkout Header Steps */}
                 <div className="mb-8 flex items-center gap-2 text-sm text-gray-500">
@@ -575,10 +592,11 @@ export default function CheckoutPage() {
                                     <div key={`${item.id}-${item.size}`} className="flex gap-4 items-start pb-4 border-b border-gray-100 last:border-0 last:pb-0">
                                         <div className="relative w-16 h-16 bg-gray-50 rounded-lg overflow-hidden shrink-0 border border-gray-100">
                                             <Image
-                                                src={item.images ? item.images[0] : ("/images/placeholder.png")}
+                                                src={item.images?.[0] || item.image_url || "/diamond-pendant.png"}
                                                 alt={item.name}
                                                 fill
                                                 className="object-cover"
+                                                unoptimized={!!(item.images?.[0] || item.image_url)?.startsWith('http')}
                                             />
                                             <span className="absolute -top-2 -right-2 bg-gray-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold z-10">
                                                 {item.quantity}
@@ -624,6 +642,13 @@ export default function CheckoutPage() {
                 </div>
             </div>
             <Script src="https://checkout.razorpay.com/v1/checkout.js" />
+            
+            <EmailVerificationModal 
+                isOpen={showVerificationModal}
+                onClose={() => setShowVerificationModal(false)}
+                email={user?.email || formData.email}
+            />
+
             <style jsx global>{`
                 .custom-scrollbar::-webkit-scrollbar { width: 4px; }
                 .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }

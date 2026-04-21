@@ -1,7 +1,5 @@
 import React from "react";
-import Link from "next/link";
 import { Metadata } from "next";
-import Navbar from "@/components/layout/Navbar";
 import PDPGallery from "@/components/product/PDPGallery";
 import PDPInfo from "@/components/product/PDPInfo";
 import PDPTabs from "@/components/product/PDPTabs";
@@ -9,19 +7,12 @@ import PDPRelated from "@/components/product/PDPRelated";
 import GlobalBreadcrumb from "@/components/layout/GlobalBreadcrumb";
 
 export const metadata: Metadata = {
-    title: "Classic Silver Solitaire Ring | Jashoda Jewels",
-    description: "Shop the Classic Silver Solitaire Ring.",
+    title: "Product Details | Jashoda Jewels",
+    description: "View product details and explore our collection.",
 };
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
-    // In server components starting Next 13+ (and strictly 15+), params should be handled carefully
     const { id } = await params;
-
-    // We are using a client side fetching approach inside a server component? 
-    // Actually, we can fetch directly here if we make it an async component (which it is).
-    // But our API lib uses `fetch` with caching options.
-    // Note: Calling localhost API routes from Server Components during build time might be tricky if not running.
-    // However, usually we can use the service directly or just standard fetch.
 
     // Fetch data
     let product = null;
@@ -32,27 +23,28 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             product = json.data;
         }
     } catch (e) {
-        console.error(e);
+        console.error("Failed to fetch product for shop detail page:", e);
     }
 
     if (!product) {
-        return <div className="min-h-screen flex items-center justify-center">Product not found</div>;
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center p-20 text-center">
+                <h2 className="text-2xl font-serif text-[#702540] mb-4">Product Not Found</h2>
+                <p className="text-gray-500 mb-8">We couldn't find the product you're looking for.</p>
+                <a href="/shop" className="px-8 py-3 bg-[#702540] text-white rounded-full font-bold uppercase tracking-widest text-xs">
+                    Return to Shop
+                </a>
+            </div>
+        );
     }
 
     return (
         <div className="bg-white min-h-screen">
-            {/* 
-              Forcing a light theme Navbar or just assuming existing one works/adapts.
-              Since existing Navbar might be transparent/dark, we might need a container or prop to force it dark-text.
-              For now, I'll wrap the page content.
-              If the global Navbar is fixed, we might need to adjust margin.
-            */}
-
             {/* Main Content */}
-            <main className="pt-8 pb-16 px-4 md:px-8 lg:px-12 max-w-[1440px] mx-auto">
+            <main className="pt-4 md:pt-8 pb-16 px-4 md:px-8 lg:px-12 max-w-[1440px] mx-auto">
                 <GlobalBreadcrumb />
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 mb-20">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 mb-20 mt-4">
                     <div className="w-full">
                         <PDPGallery 
                             images={product.images || []} 

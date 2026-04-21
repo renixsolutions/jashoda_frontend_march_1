@@ -5,11 +5,12 @@ import ProductCard from "@/components/ui/ProductCard";
 import FilterTopBar from "./FilterTopBar";
 import AdvertisingBanner from "./AdvertisingBanner";
 import ChooseLook from "./ChooseLook";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Search, ChevronDown } from "lucide-react";
 import { api } from "@/lib/api";
 import { Product } from "@/lib/mockData";
 import { motion } from "framer-motion";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useNavigation } from "@/contexts/NavigationContext";
 
 // Animation Variants
 const container = {
@@ -29,6 +30,7 @@ const item = {
 
 export default function ProductListing() {
     const searchParams = useSearchParams();
+    const router = useRouter();
     const categoryQuery = searchParams.get('category') || undefined;
     const subcategoryQuery = searchParams.get('subcategory') || undefined;
     const occasionQuery = searchParams.get('occasion') || undefined;
@@ -36,6 +38,14 @@ export default function ProductListing() {
     const minPriceQuery = searchParams.get('min') ? Number(searchParams.get('min')) : undefined;
     const maxPriceQuery = searchParams.get('max') ? Number(searchParams.get('max')) : undefined;
     const searchStr = searchParams.get('search') || undefined;
+    const collectionQuery = searchParams.get('collection') || undefined;
+
+    const { categories, genders, occasions } = useNavigation();
+
+    // Helper to get labels for IDs or Slugs
+    const getGenderLabel = (idOrSlug: string) => genders.find(g => String(g.id) === idOrSlug || g.slug === idOrSlug)?.name || idOrSlug;
+    const getOccasionLabel = (idOrSlug: string) => occasions.find(o => String(o.id) === idOrSlug || o.slug === idOrSlug)?.name || idOrSlug;
+    const getCategoryLabel = (idOrSlug: string) => categories.find(c => String(c.id) === idOrSlug || c.slug === idOrSlug)?.name || idOrSlug;
 
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
@@ -47,7 +57,7 @@ export default function ProductListing() {
         setPage(1);
         setProducts([]);
         setHasMore(true);
-    }, [categoryQuery, subcategoryQuery, occasionQuery, genderQuery, minPriceQuery, maxPriceQuery, searchStr]);
+    }, [categoryQuery, subcategoryQuery, occasionQuery, genderQuery, minPriceQuery, maxPriceQuery, searchStr, collectionQuery]);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -61,8 +71,9 @@ export default function ProductListing() {
                     occasion: occasionQuery,
                     gender: genderQuery,
                     search: searchStr,
-                    // minPrice: minPriceQuery,
-                    // maxPrice: maxPriceQuery
+                    collection: collectionQuery,
+                    minPrice: minPriceQuery,
+                    maxPrice: maxPriceQuery
                 });
                 if (response.success) {
                     if (page === 1) {
@@ -83,7 +94,7 @@ export default function ProductListing() {
         };
 
         fetchProducts();
-    }, [page, categoryQuery, subcategoryQuery, occasionQuery, genderQuery, searchStr]);
+    }, [page, categoryQuery, subcategoryQuery, occasionQuery, genderQuery, minPriceQuery, maxPriceQuery, searchStr, collectionQuery]);
 
     const loadMore = () => {
         if (hasMore) {
@@ -92,104 +103,87 @@ export default function ProductListing() {
     };
 
     // Group products by category for display
-    const rings = products.filter(p => p.category === "Rings");
-    const otherProducts = products.filter(p => p.category !== "Rings");
-    const earrings = otherProducts.filter(p => p.category === "Earrings");
-    const remaining = otherProducts.filter(p => p.category !== "Earrings");
+    const rings = products.filter(p => (p.category_name || p.category) === "Rings");
+    const otherProducts = products.filter(p => (p.category_name || p.category) !== "Rings");
+    const earrings = otherProducts.filter(p => (p.category_name || p.category) === "Earrings");
+    const remaining = otherProducts.filter(p => (p.category_name || p.category) !== "Earrings");
 
     if (loading && page === 1) {
         return <div className="min-h-screen flex items-center justify-center p-20 text-[#832729]">Loading...</div>;
     }
 
     return (
-        <div className="min-h-screen pt-8 pb-24 px-4 md:px-8 bg-white">
+        <div className="min-h-screen pt-1 md:pt-4 pb-24 px-4 md:px-8 bg-white">
             <div className="max-w-7xl mx-auto">
-                {/* Header */}
                 <motion.div
-                    initial={{ opacity: 0, y: -20 }}
+                    initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="flex flex-col md:flex-row justify-between items-end mb-8 gap-6"
+                    className="flex flex-col md:flex-row md:justify-between items-start md:items-end mb-6 gap-4"
                 >
-                    <div>
-                        <h1 className="text-4xl md:text-5xl font-serif text-[#832729] mb-2">
-                            All Jewellery <span className="text-lg text-[#832729]/60 align-middle ml-2 font-sans font-normal">({products.length} results)</span>
+                    <div className="w-full md:w-auto">
+                        <h1 className="text-xl md:text-5xl font-serif text-[#702540] mb-1 uppercase tracking-wider">
+                            {[
+                                genderQuery && getGenderLabel(genderQuery),
+                                occasionQuery && getOccasionLabel(occasionQuery),
+                                (subcategoryQuery || categoryQuery) && getCategoryLabel((subcategoryQuery || categoryQuery)!)
+                            ].filter(Boolean).join(' ') || "All Jewellery"}
+                            <span className="text-[11px] md:text-lg text-[#702540]/50 align-middle ml-2 font-sans font-normal lowercase italic font-light italic">({products.length} results)</span>
                         </h1>
                     </div>
 
-                    <div className="flex items-center gap-2 text-[#832729]/80 text-sm">
-                        <span>Sort By:</span>
-                        <select className="bg-white text-[#404040] border border-[#832729]/20 rounded-full px-4 py-2 text-sm focus:outline-none cursor-pointer hover:border-[#832729]/50 transition-colors">
-                            <option value="featured">Best Matches</option>
-                            <option value="newest">Newest</option>
-                            <option value="price-low">Price: Low to High</option>
-                            <option value="price-high">Price: High to Low</option>
-                        </select>
+                    <div className="w-full md:w-auto flex items-center justify-between md:justify-end gap-3 pt-2 md:pt-0 border-t md:border-t-0 border-gray-50">
+                        <span className="text-[#702540]/80 text-[10px] font-bold uppercase tracking-widest">Sort By:</span>
+                        <div className="relative">
+                            <select className="bg-white text-[#404040] border border-gray-100 rounded-lg px-4 py-2 text-[11px] font-bold appearance-none focus:outline-none cursor-pointer hover:border-[#702540] transition-all shadow-sm pr-9 h-9">
+                                <option value="featured">Best Matches</option>
+                                <option value="newest">Newest</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                            </select>
+                            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none" />
+                        </div>
                     </div>
                 </motion.div>
 
                 {/* Top Filters */}
                 <FilterTopBar />
 
-                {/* Section 1: Rings */}
-                {rings.length > 0 && (
-                    <div className="mb-16">
-                        <motion.div
-                            variants={container}
-                            initial="hidden"
-                            whileInView="show"
-                            viewport={{ once: true, margin: "-100px" }}
-                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+                {/* dynamic Grid */}
+                {products.length > 0 ? (
+                    <motion.div
+                        variants={container}
+                        initial="hidden"
+                        animate="show"
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+                    >
+                        {products.map((product) => (
+                            <motion.div key={product.id} variants={item}>
+                                <ProductCard product={{ ...product, image: product.images?.[0] || '/images/placeholder.jpg' }} />
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                ) : (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="py-20 text-center"
+                    >
+                        <div className="mb-6 inline-flex items-center justify-center w-20 h-20 rounded-full bg-rose-50 text-[#832729]">
+                           <Search className="w-10 h-10" />
+                        </div>
+                        <h3 className="text-2xl font-serif text-charcoal mb-2">No products found</h3>
+                        <p className="text-gray-500 max-w-md mx-auto">
+                            We couldn't find any products matching your current filters. 
+                            Try broadening your search or resetting the filters.
+                        </p>
+                        <button 
+                            onClick={() => router.push('/shop')}
+                            className="mt-8 text-[#832729] font-semibold hover:underline"
                         >
-                            {rings.map((product) => (
-                                <motion.div key={product.id} variants={item}>
-                                    <ProductCard product={{ ...product, image: product.images?.[0] || '/images/placeholder.jpg' }} />
-                                </motion.div>
-                            ))}
-                        </motion.div>
-                    </div>
-                )}
-                {/* Advertising Banner */}
-                <AdvertisingBanner />
-
-                {/* Section 2: Earrings */}
-                {earrings.length > 0 && (
-                    <div className="mb-16">
-                        <motion.div
-                            variants={container}
-                            initial="hidden"
-                            whileInView="show"
-                            viewport={{ once: true, margin: "-100px" }}
-                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-                        >
-                            {earrings.map((product) => (
-                                <motion.div key={product.id} variants={item}>
-                                    <ProductCard product={{ ...product, image: product.images?.[0] || '/images/placeholder.jpg' }} />
-                                </motion.div>
-                            ))}
-                        </motion.div>
-                    </div>
-                )}
-
-
-
-                {/* Section 3: Remaining Items */}
-                {remaining.length > 0 && (
-                    <div>
-                        <motion.div
-                            variants={container}
-                            initial="hidden"
-                            whileInView="show"
-                            viewport={{ once: true, margin: "-100px" }}
-                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-                        >
-                            {remaining.map((product) => (
-                                <motion.div key={product.id} variants={item}>
-                                    <ProductCard product={{ ...product, image: product.images?.[0] || '/images/placeholder.jpg' }} />
-                                </motion.div>
-                            ))}
-                        </motion.div>
-                    </div>
+                            Reset all filters
+                        </button>
+                    </motion.div>
                 )}
 
                 {/* Pagination / Load More */}

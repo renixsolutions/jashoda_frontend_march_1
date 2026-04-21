@@ -4,7 +4,7 @@ import { Product, Category, Gender } from './mockData';
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1';
 
 export const getMediaUrl = (path: string | null | undefined) => {
-  if (!path) return '';
+  if (!path) return '/placeholder.png';
   if (path.startsWith('http')) return path;
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1';
   const serverUrl = baseUrl.replace('/api/v1', '');
@@ -38,6 +38,7 @@ const buildQueryString = (params: Record<string, any>) => {
 };
 
 export const api = {
+  getMediaUrl,
   // Products
   getProducts: async (params: {
     page?: number;
@@ -54,6 +55,7 @@ export const api = {
     metalType?: string;
     stoneType?: string;
     inStock?: boolean;
+    collection?: string;
   } = {}) => {
     const queryString = buildQueryString(params);
     const res = await fetch(`${BASE_URL}/products?${queryString}`, { cache: 'no-store' });
@@ -65,6 +67,52 @@ export const api = {
     const res = await fetch(`${BASE_URL}/products/${idOrSlug}`, { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to fetch product');
     return res.json() as Promise<ApiResponse<Product>>;
+  },
+  
+  getProductReviews: async (productId: number | string, params: { page?: number; limit?: number } = {}) => {
+    const queryString = buildQueryString(params);
+    const res = await fetch(`${BASE_URL}/products/${productId}/reviews?${queryString}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch reviews');
+    return res.json() as Promise<ApiResponse<{
+      reviews: any[],
+      average_rating: number,
+      review_count: number,
+      pagination: any
+    }>>;
+  },
+
+  checkReviewEligibility: async (productId: number | string) => {
+    const res = await fetch(`${BASE_URL}/products/${productId}/review-eligibility`, {
+      headers: getAuthHeaders(),
+      cache: 'no-store'
+    });
+    return handleResponse(res, 'Failed to check eligibility');
+  },
+
+  submitReview: async (productId: number | string, data: { rating: number, review_title?: string, review_description?: string, media?: { url: string, type: string }[] }) => {
+    const res = await fetch(`${BASE_URL}/products/${productId}/reviews`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res, 'Failed to submit review');
+  },
+
+  uploadReviewMedia: async (file: File) => {
+    const formData = new FormData();
+    formData.append('media', file);
+    
+    // We need special headers for FormData (no Content-Type set manually)
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    const headers: HeadersInit = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    const res = await fetch(`${BASE_URL}/admin/uploads/review-media`, {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+    return handleResponse(res, 'Failed to upload media');
   },
 
   // Categories
@@ -112,6 +160,21 @@ export const api = {
     if (!res.ok) throw new Error('Failed to fetch occasions');
     return res.json() as Promise<ApiResponse<{ id: number, name: string, slug: string, image?: string, image_url?: string }[]>>;
   },
+  
+  // Collections
+  getCollections: async (params: { page?: number; limit?: number; isActive?: boolean } = {}) => {
+    const queryString = buildQueryString(params);
+    const res = await fetch(`${BASE_URL}/collections?${queryString}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch collections');
+    return res.json() as Promise<ApiResponse<any[]>>;
+  },
+
+  getCollectionProducts: async (idOrSlug: string, params: { page?: number; limit?: number } = {}) => {
+    const queryString = buildQueryString(params);
+    const res = await fetch(`${BASE_URL}/collections/${idOrSlug}/products?${queryString}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch collection products');
+    return res.json() as Promise<ApiResponse<Product[]>>;
+  },
 
   // Promos
   getPromos: async (activeOnly: boolean = true) => {
@@ -120,11 +183,247 @@ export const api = {
     return res.json() as Promise<ApiResponse<{ id: number, title: string, subtitle: string, video_url: string, link_url: string, is_active: boolean, order_index: number }[]>>;
   },
 
+  // Home Ad Cards (dynamic video cards on home page)
+  getHomeAds: async (activeOnly: boolean = true) => {
+    const res = await fetch(`${BASE_URL}/home-ads?activeOnly=${activeOnly}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch home ads');
+    return res.json() as Promise<ApiResponse<{
+      id: number,
+      title: string,
+      subtitle: string,
+      video_url: string,
+      link_url: string,
+      link_text: string,
+      category_id: number | null,
+      gender_id: number | null,
+      occasion_id: number | null,
+      category_slug?: string,
+      gender_slug?: string,
+      occasion_slug?: string,
+      is_active: boolean,
+      order_index: number
+    }[]>>;
+  },
+
   // Stories
   getStories: async (activeOnly: boolean = true) => {
     const res = await fetch(`${BASE_URL}/stories?activeOnly=${activeOnly}`, { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to fetch stories');
     return res.json() as Promise<ApiResponse<{ id: number, title: string, subtitle: string, video_url: string, link_url: string, is_active: boolean, order_index: number }[]>>;
+  },
+
+  // Home Video
+  getHomeVideo: async () => {
+    const res = await fetch(`${BASE_URL}/home-videos/active`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch home video');
+    return res.json() as Promise<ApiResponse<{ id: number, top_text: string, title: string, subtitle: string, bottom_text: string, video_url: string, is_active: boolean }>>;
+  },
+
+  // Banners
+  getBanners: async (activeOnly: boolean = true, type?: string) => {
+    const params: any = { activeOnly };
+    if (type) params.type = type;
+    const queryString = buildQueryString(params);
+    const res = await fetch(`${BASE_URL}/banners?${queryString}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch banners');
+    return res.json() as Promise<ApiResponse<any[]>>;
+  },
+
+  // Testimonials
+  getTestimonials: async (activeOnly: boolean = true) => {
+    const res = await fetch(`${BASE_URL}/testimonials?activeOnly=${activeOnly}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch testimonials');
+    return res.json() as Promise<ApiResponse<{ id: number, name: string, content: string, image_url: string, rating: number, rotation: number, is_active: boolean, order_index: number }[]>>;
+  },
+
+  // Marquee
+  getMarquee: async () => {
+    const res = await fetch(`${BASE_URL}/marquee`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch marquee');
+    return res.json() as Promise<ApiResponse<{
+      messages: { id: number, text: string, display_order: number, is_active: boolean }[],
+      settings: { speed: number, bg_color: string, text_color: string, is_active: boolean }
+    }>>;
+  },
+
+  // Admin Reviews
+  adminGetAllReviews: async (params: { page?: number; limit?: number; status?: string; productId?: number } = {}) => {
+    const queryString = buildQueryString(params);
+    const res = await fetch(`${BASE_URL}/admin/products/reviews?${queryString}`, {
+      headers: getAuthHeaders(),
+      cache: 'no-store'
+    });
+    return handleResponse(res, 'Failed to fetch admin reviews');
+  },
+
+  adminUpdateReview: async (reviewId: number | string, data: { status?: string; rating?: number; review_description?: string }) => {
+    const res = await fetch(`${BASE_URL}/admin/products/reviews/${reviewId}`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res, 'Failed to update review');
+  },
+
+  adminDeleteReview: async (reviewId: number | string) => {
+    const res = await fetch(`${BASE_URL}/admin/products/reviews/${reviewId}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders(),
+    });
+    return handleResponse(res, 'Failed to delete review');
+  },
+
+  // Admin Testimonials
+  adminGetTestimonials: async () => {
+    const res = await fetch(`${BASE_URL}/admin/testimonials`, {
+      headers: getAuthHeaders(),
+      cache: 'no-store'
+    });
+    return handleResponse(res, 'Failed to fetch admin testimonials');
+  },
+
+  adminCreateTestimonial: async (data: any) => {
+    const res = await fetch(`${BASE_URL}/admin/testimonials`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res, 'Failed to create testimonial');
+  },
+
+  adminUpdateTestimonial: async (id: number | string, data: any) => {
+    const res = await fetch(`${BASE_URL}/admin/testimonials/${id}`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res, 'Failed to update testimonial');
+  },
+
+  adminDeleteTestimonial: async (id: number | string) => {
+    const res = await fetch(`${BASE_URL}/admin/testimonials/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders(),
+    });
+    return handleResponse(res, 'Failed to delete testimonial');
+  },
+
+  // Admin Promos
+  adminGetPromos: async (activeOnly: boolean = false) => {
+    const res = await fetch(`${BASE_URL}/admin/promos?activeOnly=${activeOnly}`, {
+      headers: getAuthHeaders(),
+      cache: 'no-store'
+    });
+    return handleResponse(res, 'Failed to fetch admin promos');
+  },
+
+  adminCreatePromo: async (data: any) => {
+    const res = await fetch(`${BASE_URL}/admin/promos`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res, 'Failed to create promo');
+  },
+
+  adminUpdatePromo: async (id: number | string, data: any) => {
+    const res = await fetch(`${BASE_URL}/admin/promos/${id}`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res, 'Failed to update promo');
+  },
+
+  adminDeletePromo: async (id: number | string) => {
+    const res = await fetch(`${BASE_URL}/admin/promos/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders(),
+    });
+    return handleResponse(res, 'Failed to delete promo');
+  },
+
+  // Admin Home Ad Cards
+  adminGetHomeAds: async (activeOnly: boolean = false) => {
+    const res = await fetch(`${BASE_URL}/admin/home-ads?activeOnly=${activeOnly}`, {
+      headers: getAuthHeaders(),
+      cache: 'no-store'
+    });
+    return handleResponse(res, 'Failed to fetch admin home ads');
+  },
+
+  adminCreateHomeAd: async (data: any) => {
+    const res = await fetch(`${BASE_URL}/admin/home-ads`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res, 'Failed to create home ad');
+  },
+
+  adminUpdateHomeAd: async (id: number | string, data: any) => {
+    const res = await fetch(`${BASE_URL}/admin/home-ads/${id}`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res, 'Failed to update home ad');
+  },
+
+  adminDeleteHomeAd: async (id: number | string) => {
+    const res = await fetch(`${BASE_URL}/admin/home-ads/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders(),
+    });
+    return handleResponse(res, 'Failed to delete home ad');
+  },
+  
+  uploadMedia: async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    const headers: HeadersInit = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    const res = await fetch(`${BASE_URL}/admin/uploads`, {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+    return handleResponse(res, 'Failed to upload media');
+  },
+
+  uploadPromoVideo: async (file: File) => {
+    const formData = new FormData();
+    formData.append('video', file);
+    
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    const headers: HeadersInit = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    const res = await fetch(`${BASE_URL}/admin/uploads/promo-video`, {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+    return handleResponse(res, 'Failed to upload video');
+  },
+
+  uploadHomeAdVideo: async (file: File) => {
+    const formData = new FormData();
+    formData.append('video', file);
+    
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    const headers: HeadersInit = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    const res = await fetch(`${BASE_URL}/admin/uploads/home-ad-video`, {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+    return handleResponse(res, 'Failed to upload video');
   }
 };
 
@@ -164,6 +463,14 @@ export const authApi = {
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Failed to complete registration');
     return data;
+  },
+  
+  resendVerification: async () => {
+    const res = await fetch(`${BASE_URL}/auth/resend-verification`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+    });
+    return handleResponse(res, 'Failed to resend verification email');
   }
 };
 
@@ -191,7 +498,23 @@ const handleResponse = async (res: Response, defaultError: string) => {
                     data?.message?.toLowerCase().includes('jwt expired');
 
   if ((isUnauthorized || isExpired) && typeof window !== 'undefined') {
-    window.dispatchEvent(new Event('auth_unauthorized'));
+    // Only dispatch once every 5 seconds to avoid multiple toasts
+    const now = Date.now();
+    const lastDispatch = (window as any)._last_auth_dispatch || 0;
+    
+    if (now - lastDispatch > 5000) {
+      (window as any)._last_auth_dispatch = now;
+      window.dispatchEvent(new Event('auth_unauthorized'));
+    }
+
+    // Return a failed response instead of throwing to avoid dev error overlays
+    // and multiple console errors. The AuthContext handles the UI/Logout.
+    return { 
+      success: false, 
+      message: data.message || 'Session expired', 
+      isAuthError: true,
+      data: null 
+    } as any;
   }
 
   if (!res.ok) {

@@ -16,6 +16,7 @@ interface OrderItem {
     product_id?: string | number;
     name?: string;
     image?: string;
+    image_url?: string;
     quantity?: number;
     price?: number;
 }
@@ -24,8 +25,8 @@ export interface Order {
     id: string | number;
     created_at?: string;
     date?: string; // fallback
-    status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
-    total_amount: number;
+    status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'confirmed';
+    total: number;
     items: OrderItem[];
 }
 
@@ -94,6 +95,7 @@ export default function OrdersPage() {
     const getStatusIcon = (status: Order['status']) => {
         switch (status) {
             case 'processing': return <Clock className="w-4 h-4 text-amber-500" />;
+            case 'confirmed': return <CheckCircle2 className="w-4 h-4 text-[#1E2856]" />;
             case 'shipped': return <Truck className="w-4 h-4 text-blue-500" />;
             case 'delivered': return <CheckCircle2 className="w-4 h-4 text-green-500" />;
             default: return null;
@@ -103,9 +105,10 @@ export default function OrdersPage() {
     const getStatusText = (status: Order['status']) => {
         switch (status) {
             case 'processing': return 'Processing';
+            case 'confirmed': return 'Confirmed';
             case 'shipped': return 'Shipped';
             case 'delivered': return 'Delivered';
-            default: return 'Unknown';
+            default: return status || 'Unknown';
         }
     };
 
@@ -161,7 +164,7 @@ export default function OrdersPage() {
                                         </div>
                                         <div>
                                             <p className="text-gray-500 font-medium mb-1">Total</p>
-                                            <p className="text-[#1E2856] font-semibold">₹{(order.total_amount || 0).toLocaleString()}</p>
+                                            <p className="text-[#1E2856] font-semibold">₹{(order.total || 0).toLocaleString()}</p>
                                         </div>
                                         <div>
                                             <p className="text-gray-500 font-medium mb-1">Ship To</p>
@@ -170,7 +173,7 @@ export default function OrdersPage() {
                                     </div>
                                     <div className="flex flex-col md:items-end">
                                         <p className="text-gray-500 font-medium mb-1">Order # {order.id}</p>
-                                        <Link href={`#`} className="text-blue-600 hover:text-blue-800 flex items-center gap-1 font-medium group/link">
+                                        <Link href={`/orders/${order.id}`} className="text-blue-600 hover:text-blue-800 flex items-center gap-1 font-medium group/link">
                                             View Details <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1" />
                                         </Link>
                                     </div>
@@ -179,7 +182,7 @@ export default function OrdersPage() {
                                 {/* Order Body */}
                                 <div className="p-6">
                                     <div className="mb-6">
-                                        <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border uppercase tracking-wide bg-transparent ${order.status === 'processing' ? 'text-amber-600 border-amber-200' : order.status === 'shipped' ? 'text-blue-600 border-blue-200' : 'text-green-600 border-green-200'}`}>
+                                        <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border uppercase tracking-wide bg-transparent ${order.status === 'processing' ? 'text-amber-600 border-amber-200' : order.status === 'shipped' ? 'text-blue-600 border-blue-200' : (order.status === 'confirmed' || order.status === 'delivered') ? 'text-green-600 border-green-200' : 'text-gray-600 border-gray-200'}`}>
                                             {getStatusIcon(order.status)}
                                             {getStatusText(order.status)}
                                         </div>
@@ -191,10 +194,11 @@ export default function OrdersPage() {
                                                 <div className="flex flex-1 items-start gap-6">
                                                     <div className="relative w-24 h-24 bg-gray-50 rounded-xl overflow-hidden shrink-0 shadow-sm border border-gray-50">
                                                         <Image
-                                                            src={item.image || "/images/placeholder.png"}
+                                                            src={item.image || item.image_url || "/diamond-pendant.png"}
                                                             alt={item.name || "Product Image"}
                                                             fill
                                                             className="object-cover"
+                                                            unoptimized={!!(item.image || item.image_url)?.startsWith('http')}
                                                         />
                                                     </div>
                                                     <div className="flex flex-col justify-center min-w-0 pt-2">

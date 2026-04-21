@@ -102,6 +102,15 @@ export default function CompleteRegistrationModal({
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           className="relative w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden flex"
         >
+          {/* Global Close Button */}
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 text-gray-400 hover:text-[#702540] transition-colors z-[110] p-2 hover:bg-gray-100 rounded-full"
+            aria-label="Close"
+          >
+            <X className="w-6 h-6" />
+          </button>
+
           {/* Left Section - Form */}
           <div className="w-full md:w-1/2 p-8 md:p-10 flex flex-col bg-gradient-to-br from-orange-50 to-white">
             <div className="flex-1 flex flex-col justify-center">
@@ -199,12 +208,6 @@ export default function CompleteRegistrationModal({
 
           {/* Right Section - Promotional */}
           <div className="hidden md:flex w-1/2 bg-gradient-to-br from-orange-100 to-orange-50 relative overflow-hidden">
-            <button
-              onClick={onClose}
-              className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 transition-colors z-10"
-            >
-              <X className="w-6 h-6" />
-            </button>
             <div className="relative z-10 p-8 flex flex-col items-center justify-center text-center h-full">
               <div className="mb-8 flex justify-center">
                 <img

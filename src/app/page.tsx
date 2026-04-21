@@ -2,7 +2,7 @@ import Hero from "@/components/home/Hero";
 import BenefitsStrip from "@/components/home/BenefitsStrip";
 import SilverAdBanner from "@/components/home/SilverAdBanner";
 import CategoryGrid from "@/components/home/CategoryGrid";
-import TrendingCarousel from "@/components/home/TrendingCarousel";
+import DynamicCollections from "@/components/home/DynamicCollections";
 import PromoCarousel from "@/components/home/PromoCarousel";
 import NewArrivals from "@/components/home/NewArrivals";
 import VideoAdCards from "@/components/home/VideoAdCards";
@@ -29,7 +29,7 @@ export default function Home() {
       <ImageShowcase />
       <NewArrivals />
       <CategoryGrid />
-      <TrendingCarousel />
+      <DynamicCollections />
       <SilverAdBanner />
       <VideoAdCards />
       <VideoStories />

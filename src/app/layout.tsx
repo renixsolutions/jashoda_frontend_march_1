@@ -13,10 +13,12 @@ import GlobalBreadcrumb from "@/components/layout/GlobalBreadcrumb";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
+import { NavigationProvider } from "@/contexts/NavigationContext";
 import AuthModalManager from "@/components/auth/AuthModalManager";
 import { Toaster } from "react-hot-toast";
 import NextTopLoader from "nextjs-toploader";
 import Preloader from "@/components/layout/Preloader";
+import { Suspense } from "react";
 
 export default function RootLayout({
   children,
@@ -29,19 +31,24 @@ export default function RootLayout({
         className={`antialiased font-sans`}
       >
         <AuthProvider>
-          <CartProvider>
-            <WishlistProvider>
-              <Preloader />
-              <SmoothScroll>
-                <Navbar />
-                <GlobalBreadcrumb />
-                <Toaster position="top-center" />
-                {children}
-                <Footer />
-                <AuthModalManager />
-              </SmoothScroll>
-            </WishlistProvider>
-          </CartProvider>
+          <NavigationProvider>
+            <CartProvider>
+              <WishlistProvider>
+                <Preloader />
+                <SmoothScroll>
+                  <Suspense fallback={<div className="h-[110px] md:h-[190px]" />}>
+                    <Navbar />
+                  </Suspense>
+                  <Toaster position="top-center" />
+                  <div className="pt-[110px] md:pt-[190px]">
+                    {children}
+                  </div>
+                  <Footer />
+                  <AuthModalManager />
+                </SmoothScroll>
+              </WishlistProvider>
+            </CartProvider>
+          </NavigationProvider>
         </AuthProvider>
       </body>
     </html>

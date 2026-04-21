@@ -5,57 +5,24 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-/**
- * Defines the categories to be displayed in the grid.
- * We are using placeholder images generated or existing in the project.
- * For a real app, these would be fetched from a CMS or API.
- */
-const categories = [
-    {
-        id: 1,
-        name: "EARRINGS",
-        image: "/floral-bloom.png",
-        href: "/shop/earrings",
-    },
-    {
-        id: 2,
-        name: "FINGER RINGS",
-        image: "/gold-rings-banner.png",
-        href: "/shop/rings",
-    },
-    {
-        id: 3,
-        name: "PENDANTS",
-        image: "/diamond-pendant.png",
-        href: "/shop/pendants",
-    },
-    {
-        id: 4,
-        name: "MANGALSUTRA",
-        image: "/mangalsutra.png",
-        href: "/shop/mangalsutra",
-    },
-    {
-        id: 5,
-        name: "BRACELETS",
-        image: "/gold-chain.png", // Using chain as placeholder for bracelets if needed, or better, reuse loop
-        href: "/shop/bracelets",
-    },
-    {
-        id: 6,
-        name: "BANGLES",
-        image: "/diamond-bangle.png",
-        href: "/shop/bangles",
-    },
-    {
-        id: 7,
-        name: "CHAINS",
-        image: "/gold-chain.png",
-        href: "/shop/chains",
-    },
-];
+import { useNavigation } from "@/contexts/NavigationContext";
+import { getMediaUrl } from "@/lib/api";
 
 export default function CategoryGrid() {
+    const { categories, loading } = useNavigation();
+
+    // Show only first 7 categories to keep the grid balanced with the "View All" card
+    const displayCategories = categories.slice(0, 7);
+
+    if (loading && categories.length === 0) {
+        return (
+            <section className="py-24 px-4 md:px-8 bg-white overflow-hidden">
+                <div className="max-w-7xl mx-auto flex justify-center py-12">
+                     <div className="w-8 h-8 border-4 border-[#702540] border-t-transparent rounded-full animate-spin"></div>
+                </div>
+            </section>
+        );
+    }
     return (
         <section className="py-24 px-4 md:px-8 bg-white" id="shop-categories">
             <div className="max-w-7xl mx-auto">
@@ -84,38 +51,43 @@ export default function CategoryGrid() {
 
                 {/* Grid Layout */}
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
-                    {categories.map((category, index) => (
-                        <div key={category.id} className="flex flex-col items-center">
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                                whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: index * 0.1 }}
-                                viewport={{ once: true }}
-                                className="group relative w-full aspect-square rounded-[2rem] overflow-hidden cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-500"
-                            >
-                                <Link href={category.href}>
-                                    {/* Image with zoom effect */}
-                                    <div className="absolute inset-0 bg-gray-100">
-                                        <img
-                                            src={category.image}
-                                            alt={category.name}
-                                            className="w-full h-full object-cover transform scale-100 group-hover:scale-110 transition-transform duration-1000 ease-out"
-                                        />
-                                    </div>
-
-                                    {/* Subtle Overlay */}
-                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500" />
+                    {displayCategories.map((category, index) => {
+                        const href = `/shop?category=${category.slug}`;
+                        const imageUrl = category.image_url ? getMediaUrl(category.image_url) : (category.image || '/placeholder.png');
+                        
+                        return (
+                            <div key={category.id} className="flex flex-col items-center">
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                                    whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                                    viewport={{ once: true }}
+                                    className="group relative w-full aspect-square rounded-[2rem] overflow-hidden cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-500"
+                                >
+                                    <Link href={href}>
+                                        {/* Image with zoom effect */}
+                                        <div className="absolute inset-0 bg-gray-100">
+                                            <img
+                                                src={imageUrl}
+                                                alt={category.name}
+                                                className="w-full h-full object-cover transform scale-100 group-hover:scale-110 transition-transform duration-1000 ease-out"
+                                            />
+                                        </div>
+    
+                                        {/* Subtle Overlay */}
+                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500" />
+                                    </Link>
+                                </motion.div>
+    
+                                {/* Category Name Below Card */}
+                                <Link href={href}>
+                                    <h3 className="mt-6 text-[#1E1E1E] font-serif text-sm md:text-base font-semibold uppercase tracking-widest hover:text-[#C8A165] transition-colors duration-300">
+                                        {category.name}
+                                    </h3>
                                 </Link>
-                            </motion.div>
-
-                            {/* Category Name Below Card */}
-                            <Link href={category.href}>
-                                <h3 className="mt-6 text-[#1E1E1E] font-serif text-sm md:text-base font-semibold uppercase tracking-widest hover:text-[#C8A165] transition-colors duration-300">
-                                    {category.name}
-                                </h3>
-                            </Link>
-                        </div>
-                    ))}
+                            </div>
+                        );
+                    })}
 
                     {/* "View All" Special Card */}
                     <div className="flex flex-col items-center">
@@ -127,9 +99,11 @@ export default function CategoryGrid() {
                             className="group relative w-full aspect-square rounded-[2rem] overflow-hidden cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 bg-white border border-gray-100 flex flex-col justify-center items-center text-center p-6"
                         >
                             <Link href="/shop" className="w-full h-full flex flex-col justify-center items-center">
-                                <span className="font-serif text-6xl text-[#702540] mb-2 font-medium">10+</span>
+                                <span className="font-serif text-6xl text-[#702540] mb-2 font-medium">
+                                    {categories.length > 7 ? `${categories.length - 7}+` : categories.length}
+                                </span>
                                 <span className="text-gray-500 text-xs uppercase tracking-wide font-medium max-w-[120px] leading-relaxed">
-                                    Categories to choose from
+                                    {categories.length > 7 ? 'More Categories' : 'Total Categories'} to choose from
                                 </span>
 
                                 {/* Arrow Icon Circle */}
@@ -138,13 +112,14 @@ export default function CategoryGrid() {
                                 </div>
                             </Link>
                         </motion.div>
-
-                        <Link href="/shop">
-                            <h3 className="mt-6 text-[#1E1E1E] font-serif text-sm md:text-base font-semibold uppercase tracking-widest hover:text-[#C8A165] transition-colors duration-300">
-                                VIEW ALL
-                            </h3>
-                        </Link>
-                    </div>
+    
+                            <Link href="/shop">
+                                <h3 className="mt-6 text-[#1E1E1E] font-serif text-sm md:text-base font-semibold uppercase tracking-widest hover:text-[#C8A165] transition-colors duration-300">
+                                    VIEW ALL
+                                </h3>
+                            </Link>
+                        </div>
+                    
 
                 </div>
             </div>

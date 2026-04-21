@@ -46,41 +46,41 @@ export default function LuxuryShowcase() {
     };
 
     return (
-        <section className="py-20 bg-white">
-            <div className="container mx-auto px-4 mb-12 relative flex items-center justify-between">
-                <div>
-                    <h2 className="text-3xl md:text-5xl font-serif text-[#702540] mb-2 uppercase tracking-wide">
-                        Luxury Collections
+        <section className="py-8 bg-white overflow-hidden">
+            <div className="container mx-auto px-4 mb-10 text-center">
+                <div className="mb-6">
+                    <h2 className="text-3xl md:text-5xl font-serif text-[#702540] mb-3 uppercase tracking-[0.2em]">
+                        Luxury Collection
                     </h2>
-                    <div className="w-24 h-1 bg-[#702540]/20 rounded-full"></div>
+                    <div className="w-32 h-0.5 bg-[#702540] mx-auto opacity-30"></div>
                 </div>
 
-                {/* Navigation Buttons */}
-                <div className="flex gap-4">
+                {/* Navigation Buttons - Centered */}
+                <div className="flex justify-center gap-4">
                     <button
                         onClick={scrollLeft}
                         aria-label="Previous slide"
-                        className="w-12 h-12 rounded-full border border-[#702540]/30 flex items-center justify-center text-[#702540] hover:bg-[#702540] hover:text-white transition-all duration-300 transform hover:scale-110 active:scale-95"
+                        className="w-10 h-10 rounded-full border border-[#702540]/20 flex items-center justify-center text-[#702540] hover:bg-[#702540] hover:text-white transition-all duration-300"
                     >
-                        <ArrowLeft size={20} />
+                        <ArrowLeft size={16} />
                     </button>
                     <button
                         onClick={scrollRight}
                         aria-label="Next slide"
-                        className="w-12 h-12 rounded-full border border-[#702540]/30 flex items-center justify-center text-[#702540] hover:bg-[#702540] hover:text-white transition-all duration-300 transform hover:scale-110 active:scale-95"
+                        className="w-10 h-10 rounded-full border border-[#702540]/20 flex items-center justify-center text-[#702540] hover:bg-[#702540] hover:text-white transition-all duration-300"
                     >
-                        <ArrowRight size={20} />
+                        <ArrowRight size={16} />
                     </button>
                 </div>
             </div>
 
             {/* Horizontal Scroll Container */}
             <div
-                className="w-full overflow-x-auto no-scrollbar"
+                className="w-full overflow-x-auto no-scrollbar scroll-smooth"
                 ref={scrollContainerRef}
                 style={{ scrollSnapType: "x mandatory" }}
             >
-                <div className="flex gap-6 pb-12 w-max px-4 md:px-[max(1rem,calc((100vw-1200px)/2))]">
+                <div className="flex gap-2 pb-10 w-max px-4 md:px-[5vw]">
                     {collections.map((collection) => (
                         <div
                             key={collection.id}
@@ -91,7 +91,7 @@ export default function LuxuryShowcase() {
                                     promptLogin();
                                 }
                             }}
-                            className="block relative w-[85vw] md:w-[900px] aspect-[16/9] md:h-[500px] rounded-[2rem] overflow-hidden shrink-0 snap-center shadow-xl group cursor-pointer"
+                            className="block relative w-[92vw] md:w-[75vw] lg:w-[850px] xl:w-[1000px] aspect-[16/9] rounded-xl overflow-hidden shrink-0 snap-center group cursor-pointer"
                         >
                             <Image
                                 src={collection.image}
@@ -102,15 +102,7 @@ export default function LuxuryShowcase() {
                             />
                             
                             {/* Subtle hover effect overlay */}
-                            <div className="absolute inset-0 bg-[#702540]/0 group-hover:bg-[#702540]/10 transition-colors duration-500"></div>
-                            
-                            {/* Visual highlight on hover */}
-                            <motion.div 
-                                className="absolute bottom-0 left-0 w-full h-1 bg-[#702540]"
-                                initial={{ scaleX: 0 }}
-                                whileHover={{ scaleX: 1 }}
-                                transition={{ duration: 0.5 }}
-                            />
+                            <div className="absolute inset-0 bg-[#702540]/0 group-hover:bg-[#702540]/5 transition-colors duration-500"></div>
                         </div>
                     ))}
                 </div>
