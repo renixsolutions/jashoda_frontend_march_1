@@ -55,6 +55,7 @@ export const api = {
     metalType?: string;
     stoneType?: string;
     inStock?: boolean;
+    collection?: string;
   } = {}) => {
     const queryString = buildQueryString(params);
     const res = await fetch(`${BASE_URL}/products?${queryString}`, { cache: 'no-store' });

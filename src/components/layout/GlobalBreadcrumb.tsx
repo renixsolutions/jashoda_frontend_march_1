@@ -5,8 +5,9 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useNavigation } from "@/contexts/NavigationContext";
+import { Suspense } from "react";
 
-export default function GlobalBreadcrumb() {
+function GlobalBreadcrumbInner() {
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const { categories, genders, occasions } = useNavigation();
@@ -136,5 +137,13 @@ export default function GlobalBreadcrumb() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function GlobalBreadcrumb() {
+    return (
+        <Suspense fallback={<div className="h-10" />}>
+            <GlobalBreadcrumbInner />
+        </Suspense>
     );
 }

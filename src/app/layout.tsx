@@ -18,6 +18,7 @@ import AuthModalManager from "@/components/auth/AuthModalManager";
 import { Toaster } from "react-hot-toast";
 import NextTopLoader from "nextjs-toploader";
 import Preloader from "@/components/layout/Preloader";
+import { Suspense } from "react";
 
 export default function RootLayout({
   children,
@@ -35,7 +36,9 @@ export default function RootLayout({
               <WishlistProvider>
                 <Preloader />
                 <SmoothScroll>
-                  <Navbar />
+                  <Suspense fallback={<div className="h-[110px] md:h-[190px]" />}>
+                    <Navbar />
+                  </Suspense>
                   <Toaster position="top-center" />
                   <div className="pt-[110px] md:pt-[190px]">
                     {children}

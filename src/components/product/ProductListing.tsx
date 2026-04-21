@@ -126,7 +126,7 @@ export default function ProductListing() {
                             {[
                                 genderQuery && getGenderLabel(genderQuery),
                                 occasionQuery && getOccasionLabel(occasionQuery),
-                                (subcategoryQuery || categoryQuery) && getCategoryLabel(subcategoryQuery || categoryQuery)
+                                (subcategoryQuery || categoryQuery) && getCategoryLabel((subcategoryQuery || categoryQuery)!)
                             ].filter(Boolean).join(' ') || "All Jewellery"}
                             <span className="text-[11px] md:text-lg text-[#702540]/50 align-middle ml-2 font-sans font-normal lowercase italic font-light italic">({products.length} results)</span>
                         </h1>
