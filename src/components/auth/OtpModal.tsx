@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { authApi } from '@/lib/api';
@@ -156,7 +157,7 @@ export default function OtpModal({ isOpen, onClose, phone, onOtpVerified }: OtpM
           </div>
 
           {/* Right Section - OTP Form */}
-          <div className="w-full md:w-1/2 p-8 md:p-10 flex flex-col">
+          <div className="w-full md:w-1/2 p-6 sm:p-8 md:p-10 flex flex-col relative">
             <button
               onClick={onClose}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10"
@@ -165,15 +166,15 @@ export default function OtpModal({ isOpen, onClose, phone, onOtpVerified }: OtpM
             </button>
 
             <div className="flex-1 flex flex-col justify-center">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Verify with OTP</h2>
-              <p className="text-gray-600 mb-8">Sent to {maskedPhone}</p>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Verify with OTP</h2>
+              <p className="text-sm sm:text-base text-gray-600 mb-8">Sent to {maskedPhone}</p>
 
               <div className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-3">
                     Enter OTP
                   </label>
-                  <div className="flex gap-3 justify-center">
+                  <div className="flex gap-1.5 sm:gap-3 justify-center">
                     {otp.map((digit, index) => (
                       <input
                         key={index}
@@ -187,7 +188,7 @@ export default function OtpModal({ isOpen, onClose, phone, onOtpVerified }: OtpM
                         onChange={(e) => handleOtpChange(index, e.target.value)}
                         onKeyDown={(e) => handleKeyDown(index, e)}
                         onPaste={index === 0 ? handlePaste : undefined}
-                        className="w-14 h-14 text-center text-2xl font-semibold border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#702540] focus:border-[#702540] transition-all bg-white text-gray-900"
+                        className="w-9 h-11 sm:w-14 sm:h-14 text-center text-xl sm:text-2xl font-semibold border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#702540] focus:border-[#702540] transition-all bg-white text-gray-900"
                       />
                     ))}
                   </div>
@@ -215,16 +216,16 @@ export default function OtpModal({ isOpen, onClose, phone, onOtpVerified }: OtpM
                 <button
                   onClick={handleVerify}
                   disabled={isLoading || otp.join('').length !== 6}
-                  className="w-full bg-[#702540] text-white py-3 px-6 rounded-lg font-medium hover:bg-[#8a3052] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-[#702540] text-white py-3 px-6 rounded-lg font-medium hover:bg-[#8a3052] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                 >
                   {isLoading ? 'Verifying...' : 'Verify OTP'}
                 </button>
 
-                <p className="text-xs text-gray-500 text-center">
+                <p className="text-[11px] sm:text-xs text-gray-500 text-center leading-relaxed">
                   By continuing, I agree to{' '}
-                  <a href="#" className="text-[#702540] underline">Terms of Use</a>
+                  <Link href="/terms-and-conditions" onClick={onClose} className="text-[#702540] underline font-medium">Terms & Conditions</Link>
                   {' '}&{' '}
-                  <a href="#" className="text-[#702540] underline">Privacy Policy</a>
+                  <Link href="/privacy-policy" onClick={onClose} className="text-[#702540] underline font-medium">Privacy Policy</Link>
                 </p>
               </div>
             </div>

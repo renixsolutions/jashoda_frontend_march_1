@@ -47,9 +47,11 @@ export default function Navbar() {
         settings: { speed: number, bg_color: string, text_color: string, is_active: boolean }
     } | null>(null);
     const [isDarkMode, setIsDarkMode] = useState(false);
+    const [hasMounted, setHasMounted] = useState(false);
 
     // Close suggestions on outside click
     useEffect(() => {
+        setHasMounted(true);
         // Initialize theme
         const theme = localStorage.getItem('theme');
         if (theme === 'dark') {
@@ -363,7 +365,7 @@ export default function Navbar() {
                             <Heart className="w-5 h-5" />
                         </button>
                         <div className="relative">
-                            {isAuthenticated && user ? (
+                            {hasMounted && isAuthenticated && user ? (
                                 <button
                                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                                     className="text-charcoal hover:text-luxury-pink transition-colors relative flex items-center gap-2"
@@ -462,7 +464,7 @@ export default function Navbar() {
                         >
                             <div className="relative">
                                 <ShoppingBag className="w-5 h-5" />
-                                {totalItems > 0 && (
+                                {hasMounted && totalItems > 0 && (
                                     <span className="absolute -top-1 -right-1 flex h-3 w-3 items-center justify-center rounded-full bg-[#702540] text-[8px] text-white font-bold">
                                         {totalItems}
                                     </span>
@@ -541,7 +543,7 @@ export default function Navbar() {
 
                 <div className="hidden md:block border-b border-gray-100 bg-white relative">
                     <div className="container mx-auto px-4 md:px-8 min-h-[3.5rem] py-1 flex items-center justify-center gap-4 md:gap-6 lg:gap-10 text-sm font-medium text-gray-600 flex-wrap">
-                        {visibleLinks.map((link) => (
+                        {hasMounted && visibleLinks.map((link) => (
                             <div
                                 key={link.name}
                                 className="h-full flex items-center"
@@ -576,7 +578,7 @@ export default function Navbar() {
                             </div>
                         ))}
 
-                        {moreLinks.length > 0 && (
+                        {hasMounted && moreLinks.length > 0 && (
                             <div 
                                 className="h-full flex items-center relative"
                                 onMouseEnter={() => setActiveMenu("More")}
@@ -729,7 +731,7 @@ export default function Navbar() {
 
                         {/* Links */}
                         <div className="flex flex-col">
-                            {[...visibleLinks, ...moreLinks].map(link => {
+                            {hasMounted && [...visibleLinks, ...moreLinks].map(link => {
                                 const isExpanded = mobileSubMenu === link.name;
                                 return (
                                     <div key={link.name} className="flex flex-col border-b border-gray-100">

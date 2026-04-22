@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { authApi } from '@/lib/api';
@@ -104,31 +105,40 @@ export default function WelcomeModal({ isOpen, onClose, onOtpSent }: WelcomeModa
           </div>
 
           {/* Right Section - Form */}
-          <div className="w-full md:w-1/2 p-8 md:p-10 flex flex-col">
+          <div className="w-full md:w-1/2 p-6 sm:p-8 md:p-10 flex flex-col relative">
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10"
             >
               <X className="w-6 h-6" />
             </button>
 
             <div className="flex-1 flex flex-col justify-center">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome to Jashoda!</h2>
-              <p className="text-gray-600 mb-8">Login/Signup to get exclusive Jashoda privileges</p>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Welcome to Jashoda!</h2>
+              <p className="text-sm sm:text-base text-gray-600 mb-8">Login/Signup to get exclusive Jashoda privileges</p>
 
               <form onSubmit={handleRequestOtp} className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Mobile Number
                   </label>
-                  <div className="flex gap-2">
-                    <select
-                      value={countryCode}
-                      onChange={(e) => setCountryCode(e.target.value)}
-                      className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#702540] focus:border-[#702540] bg-white text-gray-900 cursor-pointer transition-colors hover:border-[#702540]"
-                    >
-                      <option value="+91">🇮🇳 +91</option>
-                    </select>
+                  <div className="flex items-center gap-2">
+                    <div className="shrink-0">
+                      <select
+                        value={countryCode}
+                        onChange={(e) => setCountryCode(e.target.value)}
+                        className="h-[50px] pl-3 pr-8 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#702540] focus:border-[#702540] bg-white text-gray-900 cursor-pointer transition-colors hover:border-[#702540] text-sm appearance-none"
+                        style={{
+                          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                          backgroundRepeat: 'no-repeat',
+                          backgroundPosition: 'right 0.5rem center',
+                          backgroundSize: '1.5em 1.5em',
+                          minWidth: '85px'
+                        }}
+                      >
+                        <option value="+91">+91</option>
+                      </select>
+                    </div>
                     <input
                       type="tel"
                       value={phone}
@@ -137,7 +147,7 @@ export default function WelcomeModal({ isOpen, onClose, onOtpSent }: WelcomeModa
                         if (value.length <= 10) setPhone(value);
                       }}
                       placeholder="Enter mobile number"
-                      className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#702540] focus:border-transparent bg-white text-gray-900 placeholder:text-gray-400"
+                      className="flex-1 min-w-0 h-[50px] px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#702540] focus:border-transparent bg-white text-gray-900 placeholder:text-gray-400 text-sm"
                       maxLength={10}
                     />
                   </div>
@@ -149,16 +159,16 @@ export default function WelcomeModal({ isOpen, onClose, onOtpSent }: WelcomeModa
                 <button
                   type="submit"
                   disabled={isLoading || !phone || phone.length < 10}
-                  className="w-full bg-[#702540] text-white py-3 px-6 rounded-lg font-medium hover:bg-[#8a3052] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-[#702540] text-white py-3 px-6 rounded-lg font-medium hover:bg-[#8a3052] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                 >
                   {isLoading ? 'Sending...' : 'Request OTP'}
                 </button>
 
-                <p className="text-xs text-gray-500 text-center">
+                <p className="text-[11px] sm:text-xs text-gray-500 text-center leading-relaxed">
                   By continuing, I agree to{' '}
-                  <a href="#" className="text-[#702540] underline">Terms of Use</a>
+                  <Link href="/terms-and-conditions" onClick={onClose} className="text-[#702540] underline font-medium">Terms & Conditions</Link>
                   {' '}&{' '}
-                  <a href="#" className="text-[#702540] underline">Privacy Policy</a>
+                  <Link href="/privacy-policy" onClick={onClose} className="text-[#702540] underline font-medium">Privacy Policy</Link>
                 </p>
               </form>
             </div>

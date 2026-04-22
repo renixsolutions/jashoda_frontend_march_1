@@ -157,9 +157,11 @@ export default function Footer() {
                         <h4 className="font-serif text-lg mb-6 text-white">Support</h4>
                         <ul className="space-y-4 text-sm text-white/70">
                             <li><Link href="#" className="hover:text-rose-gold transition-colors">Contact Us</Link></li>
-                            <li><Link href="#" className="hover:text-rose-gold transition-colors">Shipping & Returns</Link></li>
+                            <li><Link href="/privacy-policy" className="hover:text-rose-gold transition-colors">Privacy Policy</Link></li>
+                            <li><Link href="/return-and-refund-policy" className="hover:text-rose-gold transition-colors">Return & Refund Policy</Link></li>
                             <li><Link href="#" className="hover:text-rose-gold transition-colors">Care Guide</Link></li>
                             <li><Link href="#" className="hover:text-rose-gold transition-colors">FAQ</Link></li>
+                            <li><Link href="/terms-and-conditions" className="hover:text-rose-gold transition-colors">Terms & Conditions</Link></li>
                             <li><Link href="#" className="hover:text-rose-gold transition-colors">Store Locator</Link></li>
                         </ul>
                     </div>
@@ -185,9 +187,10 @@ export default function Footer() {
 
                 <div className="border-t border-white/10 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-white/50">
                     <p>© 2026 Jashoda Jewels. All rights reserved.</p>
-                    <div className="flex gap-6 mt-4 md:mt-0">
-                        <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
-                        <Link href="#" className="hover:text-white transition-colors">Terms of Service</Link>
+                    <div className="flex flex-wrap gap-x-8 gap-y-2 mt-4 md:mt-0 justify-center">
+                        <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+                        <Link href="/return-and-refund-policy" className="hover:text-white transition-colors">Return & Refund Policy</Link>
+                        <Link href="/terms-and-conditions" className="hover:text-white transition-colors">Terms & Conditions</Link>
                     </div>
                 </div>
             </div>
