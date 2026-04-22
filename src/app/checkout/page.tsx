@@ -58,6 +58,7 @@ export default function CheckoutPage() {
     const [selectedAddressId, setSelectedAddressId] = useState<number | null>(null);
     const [showNewAddressForm, setShowNewAddressForm] = useState(true);
     const [isLoadingAddresses, setIsLoadingAddresses] = useState(false);
+    const [hasAgreed, setHasAgreed] = useState(false);
 
     React.useEffect(() => {
         const fetchAddresses = async () => {
@@ -130,6 +131,11 @@ export default function CheckoutPage() {
     const handleContinueToPayment = (e: React.FormEvent) => {
         e.preventDefault();
         
+        if (!hasAgreed) {
+            toast.error("Please agree to the Terms & Conditions and Policies to continue.");
+            return;
+        }
+
         // Enforce Email Verification for logged in users
         if (isAuthenticated && user && !user.email_verified) {
             setShowVerificationModal(true);
@@ -496,6 +502,25 @@ export default function CheckoutPage() {
                                             </>
                                         )}
                                     </div>
+                                    <div className="mt-8 mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                                        <div className="flex items-start gap-3">
+                                            <input 
+                                                id="policy-agree"
+                                                type="checkbox" 
+                                                required
+                                                checked={hasAgreed}
+                                                onChange={(e) => setHasAgreed(e.target.checked)}
+                                                className="mt-1 w-4 h-4 text-[#1E2856] border-gray-300 rounded focus:ring-[#1E2856] cursor-pointer"
+                                            />
+                                            <label htmlFor="policy-agree" className="text-sm text-gray-600 leading-relaxed cursor-pointer select-none">
+                                                I have read and agree to the 
+                                                <Link href="/terms-and-conditions" target="_blank" className="text-[#1E2856] font-bold hover:underline mx-1">Terms & Conditions</Link>, 
+                                                <Link href="/return-and-refund-policy" target="_blank" className="text-[#1E2856] font-bold hover:underline mx-1">Return & Refund Policy</Link>, and 
+                                                <Link href="/privacy-policy" target="_blank" className="text-[#1E2856] font-bold hover:underline mx-1">Privacy Policy</Link>.
+                                            </label>
+                                        </div>
+                                    </div>
+
                                     <Button type="submit" className="w-full py-4 bg-[#1E2856] text-white rounded-lg hover:bg-[#151b3b] font-medium text-lg flex items-center justify-center gap-2">
                                         Continue to Payment <ChevronRight className="w-5 h-5" />
                                     </Button>
