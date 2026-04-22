@@ -62,7 +62,7 @@ export default function CategoryGrid() {
                                     whileInView={{ opacity: 1, scale: 1, y: 0 }}
                                     transition={{ duration: 0.6, delay: index * 0.1 }}
                                     viewport={{ once: true }}
-                                    className="group relative w-full aspect-square rounded-[2rem] overflow-hidden cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-500"
+                                    className="group relative w-full aspect-square rounded-[1.5rem] md:rounded-[2rem] overflow-hidden cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-500"
                                 >
                                     <Link href={href}>
                                         {/* Image with zoom effect */}
@@ -96,19 +96,19 @@ export default function CategoryGrid() {
                             whileInView={{ opacity: 1, scale: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.8 }} // Last item delay
                             viewport={{ once: true }}
-                            className="group relative w-full aspect-square rounded-[2rem] overflow-hidden cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 bg-white border border-gray-100 flex flex-col justify-center items-center text-center p-6"
+                            className="group relative w-full aspect-square rounded-[1.5rem] md:rounded-[2rem] overflow-hidden cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 bg-white border border-gray-100 flex flex-col justify-center items-center text-center p-3 sm:p-6"
                         >
                             <Link href="/shop" className="w-full h-full flex flex-col justify-center items-center">
-                                <span className="font-serif text-6xl text-[#702540] mb-2 font-medium">
+                                <span className="font-serif text-4xl sm:text-6xl text-[#702540] mb-1 sm:mb-2 font-medium">
                                     {categories.length > 7 ? `${categories.length - 7}+` : categories.length}
                                 </span>
-                                <span className="text-gray-500 text-xs uppercase tracking-wide font-medium max-w-[120px] leading-relaxed">
+                                <span className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-wide font-medium max-w-[80px] sm:max-w-[120px] leading-tight sm:leading-relaxed">
                                     {categories.length > 7 ? 'More Categories' : 'Total Categories'} to choose from
                                 </span>
-
+    
                                 {/* Arrow Icon Circle */}
-                                <div className="mt-8 w-12 h-12 rounded-full border border-[#702540]/30 flex items-center justify-center text-[#702540] group-hover:bg-[#702540] group-hover:text-white group-hover:border-transparent transition-all duration-500">
-                                    <ArrowRight size={20} strokeWidth={1.5} />
+                                <div className="mt-4 sm:mt-8 w-8 h-8 sm:w-12 sm:h-12 rounded-full border border-[#702540]/30 flex items-center justify-center text-[#702540] group-hover:bg-[#702540] group-hover:text-white group-hover:border-transparent transition-all duration-500">
+                                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={1.5} />
                                 </div>
                             </Link>
                         </motion.div>

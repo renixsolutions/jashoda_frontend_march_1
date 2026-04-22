@@ -136,6 +136,25 @@ export default function CheckoutPage() {
             return;
         }
 
+        // Validation for New Address form
+        if (showNewAddressForm) {
+            const email = formData.email.trim().toLowerCase();
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            const commonTypos = ['.con', '.gmil', '.gnail', 'gmil.', 'gnail.'];
+            const hasTypo = commonTypos.some(typo => email.includes(typo));
+
+            if (!email || !emailRegex.test(email) || hasTypo) {
+                toast.error("Please enter a valid email address");
+                return;
+            }
+
+            const cleanedPhone = formData.phone.replace(/\D/g, '');
+            if (cleanedPhone.length !== 10) {
+                toast.error("Please enter a valid 10-digit mobile number");
+                return;
+            }
+        }
+
         // Enforce Email Verification for logged in users
         if (isAuthenticated && user && !user.email_verified) {
             setShowVerificationModal(true);
@@ -296,6 +315,7 @@ export default function CheckoutPage() {
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: -20 }}
                                     onSubmit={handleContinueToPayment}
+                                    noValidate
                                     className="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-gray-100"
                                 >
                                     <div className="mb-8">
@@ -534,6 +554,7 @@ export default function CheckoutPage() {
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: -20 }}
                                     onSubmit={handlePlaceOrder}
+                                    noValidate
                                     className="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-gray-100"
                                 >
                                     <div className="mb-8">

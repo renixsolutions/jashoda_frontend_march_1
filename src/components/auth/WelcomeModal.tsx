@@ -22,14 +22,21 @@ export default function WelcomeModal({ isOpen, onClose, onOtpSent }: WelcomeModa
     e.preventDefault();
     setError('');
     
-    if (!phone || phone.length < 10) {
-      setError('Please enter a valid mobile number');
+    // Basic validation for phone number length
+    const cleanedPhone = phone.replace(/\D/g, '');
+    if (!cleanedPhone) {
+      setError('Mobile number is required');
+      return;
+    }
+
+    if (cleanedPhone.length !== 10) {
+      setError('Please enter a valid 10-digit mobile number');
       return;
     }
 
     setIsLoading(true);
     try {
-      const fullPhone = countryCode + phone.replace(/\D/g, '');
+      const fullPhone = countryCode + cleanedPhone;
       await authApi.requestOtp(fullPhone);
       onOtpSent(fullPhone);
     } catch (err: any) {
@@ -117,7 +124,7 @@ export default function WelcomeModal({ isOpen, onClose, onOtpSent }: WelcomeModa
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Welcome to Jashoda!</h2>
               <p className="text-sm sm:text-base text-gray-600 mb-8">Login/Signup to get exclusive Jashoda privileges</p>
 
-              <form onSubmit={handleRequestOtp} className="space-y-6">
+              <form onSubmit={handleRequestOtp} noValidate className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Mobile Number

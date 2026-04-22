@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { authApi } from '@/lib/api';
@@ -40,12 +41,14 @@ export default function CompleteRegistrationModal({
       return;
     }
 
-    if (!formData.email.trim()) {
-      setError('Email is required');
-      return;
-    }
+    const email = formData.email.trim().toLowerCase();
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    
+    // Check for common typos specifically requested/implied
+    const commonTypos = ['.con', '.gmil', '.gnail', 'gmil.', 'gnail.'];
+    const hasTypo = commonTypos.some(typo => email.includes(typo));
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    if (!email || !emailRegex.test(email) || hasTypo) {
       setError('Please enter a valid email address');
       return;
     }
@@ -117,7 +120,7 @@ export default function CompleteRegistrationModal({
               <h2 className="text-3xl font-bold text-[#702540] mb-2">Almost there!</h2>
               <p className="text-gray-600 mb-8">Welcome back, Please fill the missing fields.</p>
 
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} noValidate className="space-y-5">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Title
@@ -198,9 +201,9 @@ export default function CompleteRegistrationModal({
 
                 <p className="text-xs text-gray-500 text-center">
                   By continuing, I agree to{' '}
-                  <a href="#" className="text-[#702540] underline">Terms of Use</a>
+                  <Link href="/terms-and-conditions" onClick={onClose} className="text-[#702540] underline">Terms & Conditions</Link>
                   {' '}&{' '}
-                  <a href="#" className="text-[#702540] underline">Privacy Policy</a>
+                  <Link href="/privacy-policy" onClick={onClose} className="text-[#702540] underline">Privacy Policy</Link>
                 </p>
               </form>
             </div>
