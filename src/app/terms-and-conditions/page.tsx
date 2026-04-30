@@ -18,7 +18,7 @@ const TermsPage = () => {
           className="text-center mb-16"
         >
           <h1 className="text-4xl md:text-5xl font-serif text-[#131e42] mb-4">JASHODA JEWELS</h1>
-          <p className="text-xl text-luxury-pink font-medium mb-6">Online Silver Jewellery Store</p>
+          <p className="text-xl text-charcoal font-medium mb-6">Online Silver Jewellery Store</p>
           <div className="flex flex-wrap justify-center items-center gap-4 text-sm text-charcoal/60 font-medium">
             <span className="flex items-center gap-1 uppercase tracking-wider">Terms & Conditions</span>
             <span className="w-1 h-1 bg-charcoal/20 rounded-full" />
@@ -46,7 +46,7 @@ const TermsPage = () => {
           {/* 1. Introduction */}
           <section id="introduction" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Info className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">1. Introduction</h2>
@@ -62,7 +62,7 @@ const TermsPage = () => {
           {/* 2. Definitions */}
           <section id="definitions" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <FileText className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">2. Definitions</h2>
@@ -70,35 +70,35 @@ const TermsPage = () => {
             <p className="mb-4">For the purpose of these Terms and Conditions, the following definitions shall apply:</p>
             <ul className="space-y-4 list-none">
               <li className="flex gap-2">
-                <span className="text-luxury-pink font-bold">•</span>
+                <span className="text-charcoal font-bold">•</span>
                 <span><strong>"Website"</strong> refers to the official Jashoda Jewels website and all associated subdomains and mobile interfaces.</span>
               </li>
               <li className="flex gap-2">
-                <span className="text-luxury-pink font-bold">•</span>
+                <span className="text-charcoal font-bold">•</span>
                 <span><strong>"Customer", "User", "You", or "Your"</strong> refers to any individual who accesses, browses, or transacts on the Website.</span>
               </li>
               <li className="flex gap-2">
-                <span className="text-luxury-pink font-bold">•</span>
+                <span className="text-charcoal font-bold">•</span>
                 <span><strong>"Products"</strong> refers to all silver jewellery items, silver coins, silver bars, and customised/made-to-order items listed on the Website.</span>
               </li>
               <li className="flex gap-2">
-                <span className="text-luxury-pink font-bold">•</span>
+                <span className="text-charcoal font-bold">•</span>
                 <span><strong>"Order"</strong> means a confirmed purchase request placed by you through the Website for one or more Products.</span>
               </li>
               <li className="flex gap-2">
-                <span className="text-luxury-pink font-bold">•</span>
+                <span className="text-charcoal font-bold">•</span>
                 <span><strong>"925 Silver"</strong> refers to Sterling Silver, an alloy composed of 92.5% pure silver and 7.5% other metals, typically copper, for strength and durability.</span>
               </li>
               <li className="flex gap-2">
-                <span className="text-luxury-pink font-bold">•</span>
+                <span className="text-charcoal font-bold">•</span>
                 <span><strong>"999 Silver"</strong> refers to Fine Silver with a purity of 99.9%, valued for its high purity and used primarily in coins, bars, and high-value jewellery.</span>
               </li>
               <li className="flex gap-2">
-                <span className="text-luxury-pink font-bold">•</span>
+                <span className="text-charcoal font-bold">•</span>
                 <span><strong>"Custom/Made-to-Order Item"</strong> refers to any Product that is personalised, engraved, or manufactured specifically as per the customer's design specifications or instructions.</span>
               </li>
               <li className="flex gap-2">
-                <span className="text-luxury-pink font-bold">•</span>
+                <span className="text-charcoal font-bold">•</span>
                 <span><strong>"Delivery Partner"</strong> means any third-party courier or logistics company engaged by Jashoda Jewels to facilitate the shipping of Orders.</span>
               </li>
             </ul>
@@ -107,17 +107,17 @@ const TermsPage = () => {
           {/* 3. Eligibility */}
           <section id="eligibility" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <UserCheck className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">3. Eligibility</h2>
             </div>
             <p className="mb-4">To place an Order on the Website, you must:</p>
             <ul className="space-y-3 list-none mb-4">
-              <li className="flex gap-2"><span className="text-luxury-pink">•</span><span>Be at least 18 years of age or the age of legal majority in your jurisdiction;</span></li>
-              <li className="flex gap-2"><span className="text-luxury-pink">•</span><span>Be legally competent to enter into a binding contract under the Indian Contract Act, 1872;</span></li>
-              <li className="flex gap-2"><span className="text-luxury-pink">•</span><span>Provide accurate, current, and complete information during registration and order placement;</span></li>
-              <li className="flex gap-2"><span className="text-luxury-pink">•</span><span>Not be a person barred from receiving services under applicable Indian law.</span></li>
+              <li className="flex gap-2"><span className="text-charcoal">•</span><span>Be at least 18 years of age or the age of legal majority in your jurisdiction;</span></li>
+              <li className="flex gap-2"><span className="text-charcoal">•</span><span>Be legally competent to enter into a binding contract under the Indian Contract Act, 1872;</span></li>
+              <li className="flex gap-2"><span className="text-charcoal">•</span><span>Provide accurate, current, and complete information during registration and order placement;</span></li>
+              <li className="flex gap-2"><span className="text-charcoal">•</span><span>Not be a person barred from receiving services under applicable Indian law.</span></li>
             </ul>
             <p>By placing an Order, you represent and warrant that you meet all of the above eligibility criteria.</p>
           </section>
@@ -125,7 +125,7 @@ const TermsPage = () => {
           {/* 4. Product Information */}
           <section id="product-info" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Sparkles className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">4. Product Information</h2>
@@ -157,15 +157,15 @@ const TermsPage = () => {
                 <p className="mb-4">All Products displayed on the Website are subject to the following variations, which shall not constitute grounds for return or dispute:</p>
                 <ul className="space-y-3 list-none">
                   <li className="flex gap-2">
-                    <span className="text-luxury-pink">•</span>
+                    <span className="text-charcoal">•</span>
                     <span><strong>Weight:</strong> The actual weight of jewellery items may vary by a margin of ±2–5% from the listed weight, owing to handcrafting processes, stone settings, and finishing techniques.</span>
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-luxury-pink">•</span>
+                    <span className="text-charcoal">•</span>
                     <span><strong>Colour and Finish:</strong> On-screen representation of product colour and sheen may differ from the actual product due to monitor calibrations, photography lighting conditions, and natural variations in silver.</span>
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-luxury-pink">•</span>
+                    <span className="text-charcoal">•</span>
                     <span><strong>Design:</strong> Handcrafted and artisanal items may carry minor design variations from the product images displayed online, as each piece is individually crafted.</span>
                   </li>
                 </ul>
@@ -177,7 +177,7 @@ const TermsPage = () => {
           {/* 5. Pricing and Payments */}
           <section id="pricing" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <CreditCard className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">5. Pricing and Payments</h2>
@@ -198,10 +198,10 @@ const TermsPage = () => {
                 <h3 className="text-lg font-bold text-charcoal mb-2">5.2 Payment Methods</h3>
                 <p className="mb-4">The following payment methods are accepted on the Website:</p>
                 <ul className="list-none space-y-2 mb-4">
-                  <li className="flex gap-2"><span className="text-luxury-pink">•</span><span>Unified Payments Interface (UPI)</span></li>
-                  <li className="flex gap-2"><span className="text-luxury-pink">•</span><span>Debit Cards and Credit Cards (Visa, MasterCard, RuPay, and other accepted networks)</span></li>
-                  <li className="flex gap-2"><span className="text-luxury-pink">•</span><span>Net Banking</span></li>
-                  <li className="flex gap-2"><span className="text-luxury-pink">•</span><span>Digital Wallets and Prepaid Payment Instruments (as available on the platform)</span></li>
+                  <li className="flex gap-2"><span className="text-charcoal">•</span><span>Unified Payments Interface (UPI)</span></li>
+                  <li className="flex gap-2"><span className="text-charcoal">•</span><span>Debit Cards and Credit Cards (Visa, MasterCard, RuPay, and other accepted networks)</span></li>
+                  <li className="flex gap-2"><span className="text-charcoal">•</span><span>Net Banking</span></li>
+                  <li className="flex gap-2"><span className="text-charcoal">•</span><span>Digital Wallets and Prepaid Payment Instruments (as available on the platform)</span></li>
                 </ul>
                 <p>All online transactions are processed through secure, PCI-DSS compliant payment gateways. Jashoda Jewels does not store card numbers, CVV, or other sensitive payment credentials on its servers. By initiating a payment, you authorise the transaction and agree to the terms of the applicable payment gateway.</p>
               </div>
@@ -218,7 +218,7 @@ const TermsPage = () => {
           {/* 6. Order Acceptance and Cancellation */}
           <section id="order" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <ShoppingBag className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">6. Order Acceptance and Cancellation</h2>
@@ -240,7 +240,7 @@ const TermsPage = () => {
                 <p className="mt-3">
                   Custom and Made-to-Order items cannot be cancelled once the manufacturing process has commenced, regardless of the time elapsed since the Order was placed. This is due to the bespoke nature of such items, which are crafted specifically to the customer's specifications.
                 </p>
-                <p className="mt-3 font-semibold text-luxury-pink">
+                <p className="mt-3 font-semibold text-charcoal">
                   Orders for 999 Silver coins and bars cannot be cancelled once confirmed, as these are subject to live commodity pricing and immediate procurement.
                 </p>
               </div>
@@ -257,7 +257,7 @@ const TermsPage = () => {
           {/* 7. Shipping and Delivery */}
           <section id="shipping" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Package className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">7. Shipping and Delivery</h2>
@@ -316,7 +316,7 @@ const TermsPage = () => {
           {/* 9. Product Care Guidelines */}
           <section id="care" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <ShieldCheck className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">9. Product Care Guidelines</h2>
@@ -329,10 +329,10 @@ const TermsPage = () => {
                   925 Sterling Silver naturally tarnishes over time due to the oxidation of the copper alloy content when exposed to air, moisture, sulphur compounds (found in rubber, eggs, and certain foods), perspiration, lotions, and perfumes. Tarnishing is not a manufacturing defect. To preserve the lustre of 925 silver:
                 </p>
                 <ul className="list-none space-y-3">
-                  <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Store jewellery in a sealed zip-lock pouch or airtight container when not in use.</span></li>
-                  <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Avoid contact with water, household chemicals, chlorine, and beauty products.</span></li>
-                  <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Clean gently with a soft silver polishing cloth. Avoid abrasive materials.</span></li>
-                  <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Remove jewellery before swimming, bathing, or engaging in physical activity.</span></li>
+                  <li className="flex gap-3"><span className="text-charcoal">•</span><span>Store jewellery in a sealed zip-lock pouch or airtight container when not in use.</span></li>
+                  <li className="flex gap-3"><span className="text-charcoal">•</span><span>Avoid contact with water, household chemicals, chlorine, and beauty products.</span></li>
+                  <li className="flex gap-3"><span className="text-charcoal">•</span><span>Clean gently with a soft silver polishing cloth. Avoid abrasive materials.</span></li>
+                  <li className="flex gap-3"><span className="text-charcoal">•</span><span>Remove jewellery before swimming, bathing, or engaging in physical activity.</span></li>
                 </ul>
               </div>
 
@@ -342,9 +342,9 @@ const TermsPage = () => {
                   999 Fine Silver, due to its high purity, is softer and more susceptible to scratching, bending, and surface marking than 925 silver. Customers are advised to handle 999 silver products with particular care and to avoid:
                 </p>
                 <ul className="list-none space-y-3">
-                  <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Dropping or subjecting items to impact, as fine silver dents and deforms more easily.</span></li>
-                  <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Stacking fine silver jewellery with harder metals that may cause abrasion.</span></li>
-                  <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Exposure to harsh chemicals or cleaning agents.</span></li>
+                  <li className="flex gap-3"><span className="text-charcoal">•</span><span>Dropping or subjecting items to impact, as fine silver dents and deforms more easily.</span></li>
+                  <li className="flex gap-3"><span className="text-charcoal">•</span><span>Stacking fine silver jewellery with harder metals that may cause abrasion.</span></li>
+                  <li className="flex gap-3"><span className="text-charcoal">•</span><span>Exposure to harsh chemicals or cleaning agents.</span></li>
                 </ul>
                 <p className="mt-4 font-medium text-[#131e42]">Damage caused by improper care or handling is not covered under any return or exchange provision.</p>
               </div>
@@ -354,7 +354,7 @@ const TermsPage = () => {
           {/* 10. Intellectual Property */}
           <section id="ip" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Scale className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">10. Intellectual Property</h2>
@@ -370,19 +370,19 @@ const TermsPage = () => {
           {/* 11. User Conduct */}
           <section id="conduct" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Globe className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">11. User Conduct</h2>
             </div>
             <p className="mb-4">By using the Website, you agree not to:</p>
             <ul className="list-none space-y-3">
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Provide false, misleading, or fraudulent information during registration, ordering, or communication.</span></li>
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Attempt to gain unauthorised access to any part of the Website, server, or associated network.</span></li>
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Transmit viruses, malware, or any harmful code through the Website.</span></li>
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Use the Website for any unlawful, fraudulent, or commercially exploitative purpose.</span></li>
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Post or share defamatory, abusive, obscene, or otherwise objectionable content.</span></li>
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Circumvent or attempt to circumvent any security, verification, or access control feature of the Website.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span>Provide false, misleading, or fraudulent information during registration, ordering, or communication.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span>Attempt to gain unauthorised access to any part of the Website, server, or associated network.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span>Transmit viruses, malware, or any harmful code through the Website.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span>Use the Website for any unlawful, fraudulent, or commercially exploitative purpose.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span>Post or share defamatory, abusive, obscene, or otherwise objectionable content.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span>Circumvent or attempt to circumvent any security, verification, or access control feature of the Website.</span></li>
             </ul>
             <p className="mt-4">Jashoda Jewels reserves the right to suspend or permanently block access for any user found to be in violation of these conduct requirements.</p>
           </section>
@@ -390,7 +390,7 @@ const TermsPage = () => {
           {/* 12. Fraud Prevention */}
           <section id="fraud" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Lock className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">12. Fraud Prevention and Order Verification</h2>
@@ -406,17 +406,17 @@ const TermsPage = () => {
           {/* 13. Limitation of Liability */}
           <section id="liability" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Gavel className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">13. Limitation of Liability</h2>
             </div>
             <p className="mb-4">To the fullest extent permitted under applicable Indian law, Jashoda Jewels and its directors, officers, employees, agents, and affiliates shall not be liable for:</p>
             <ul className="list-none space-y-3">
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Any indirect, incidental, special, consequential, or punitive damages arising out of your use of the Website or Products;</span></li>
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Losses arising from delays or failures of third-party Delivery Partners, payment gateways, or technology service providers;</span></li>
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Losses due to natural tarnishing, wear and tear, or damage caused by improper use or care of Products;</span></li>
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Errors or inaccuracies in product descriptions, prices, or images, provided reasonable efforts have been made to ensure accuracy.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span>Any indirect, incidental, special, consequential, or punitive damages arising out of your use of the Website or Products;</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span>Losses arising from delays or failures of third-party Delivery Partners, payment gateways, or technology service providers;</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span>Losses due to natural tarnishing, wear and tear, or damage caused by improper use or care of Products;</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span>Errors or inaccuracies in product descriptions, prices, or images, provided reasonable efforts have been made to ensure accuracy.</span></li>
             </ul>
             <p className="mt-4 font-semibold">Our total aggregate liability to any customer for any claim arising from a specific Order shall not exceed the total purchase price paid by that customer for that Order.</p>
           </section>
@@ -424,7 +424,7 @@ const TermsPage = () => {
           {/* 14. Third-Party Services */}
           <section id="third-party" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Globe className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">14. Third-Party Services</h2>
@@ -437,7 +437,7 @@ const TermsPage = () => {
           {/* 15. Force Majeure */}
           <section id="force-majeure" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <AlertTriangle className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">15. Force Majeure</h2>
@@ -450,7 +450,7 @@ const TermsPage = () => {
           {/* 16. Governing Law */}
           <section id="law" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Gavel className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">16. Governing Law and Jurisdiction</h2>
@@ -463,7 +463,7 @@ const TermsPage = () => {
           {/* 17. Dispute Resolution */}
           <section id="dispute" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Scale className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">17. Dispute Resolution</h2>
@@ -479,7 +479,7 @@ const TermsPage = () => {
           {/* 18. Amendments */}
           <section id="amendments" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Clock className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">18. Amendments</h2>
@@ -492,7 +492,7 @@ const TermsPage = () => {
           {/* 19. Contact Information */}
           <section id="contact" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Mail className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">19. Contact Information</h2>
@@ -502,21 +502,21 @@ const TermsPage = () => {
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
-                  <div className="mt-1 text-luxury-pink"><Info className="w-5 h-5" /></div>
+                  <div className="mt-1 text-charcoal"><Info className="w-5 h-5" /></div>
                   <div>
                     <p className="font-bold text-charcoal">Business Name</p>
                     <p>Jashoda Jewels</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <div className="mt-1 text-luxury-pink"><Mail className="w-5 h-5" /></div>
+                  <div className="mt-1 text-charcoal"><Mail className="w-5 h-5" /></div>
                   <div>
                     <p className="font-bold text-charcoal">Email</p>
                     <p>jashodajewels@gmail.com</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <div className="mt-1 text-luxury-pink"><Phone className="w-5 h-5" /></div>
+                  <div className="mt-1 text-charcoal"><Phone className="w-5 h-5" /></div>
                   <div>
                     <p className="font-bold text-charcoal">Phone</p>
                     <p>+91 85917 88821</p>
@@ -525,14 +525,14 @@ const TermsPage = () => {
               </div>
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
-                  <div className="mt-1 text-luxury-pink"><MapPin className="w-5 h-5" /></div>
+                  <div className="mt-1 text-charcoal"><MapPin className="w-5 h-5" /></div>
                   <div>
                     <p className="font-bold text-charcoal">Address</p>
                     <p>Shop no 1, Chsl, LT Rd, opposite Miniso, Gyan Nagar, Mhatre Wadi, Borivali West, Mumbai, Maharashtra 400092, India</p>
                   </div>
                 </div>
                 {/* <div className="flex items-start gap-4">
-                  <div className="mt-1 text-luxury-pink"><UserCheck className="w-5 h-5" /></div>
+                  <div className="mt-1 text-charcoal"><UserCheck className="w-5 h-5" /></div>
                   <div>
                     <p className="font-bold text-charcoal">Grievance Officer</p>
                     <p>[Name], reachable at [email]</p>

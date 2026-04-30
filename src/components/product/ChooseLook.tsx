@@ -19,7 +19,7 @@ const LookCard = ({ label, image, className = "" }: LookCardProps) => (
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60" />
         </div>
-        <p className="mt-3 text-center text-[#702540] font-medium font-serif">{label}</p>
+        <p className="mt-3 text-center text-[#111827] font-medium font-serif">{label}</p>
     </div>
 );
 
@@ -68,13 +68,13 @@ export default function ChooseLook() {
                 {/* Navigation Buttons */}
                 <button
                     onClick={() => scroll('left')}
-                    className="absolute top-1/2 -translate-y-1/2 left-0 p-3 rounded-full bg-white/50 hover:bg-white text-[#702540] transition-all shadow-md z-20"
+                    className="absolute top-1/2 -translate-y-1/2 left-0 p-3 rounded-full bg-white/50 hover:bg-white text-[#111827] transition-all shadow-md z-20"
                 >
                     <ArrowLeft className="w-5 h-5" />
                 </button>
                 <button
                     onClick={() => scroll('right')}
-                    className="absolute top-1/2 -translate-y-1/2 right-0 p-3 rounded-full bg-white/50 hover:bg-white text-[#702540] transition-all shadow-md z-20"
+                    className="absolute top-1/2 -translate-y-1/2 right-0 p-3 rounded-full bg-white/50 hover:bg-white text-[#111827] transition-all shadow-md z-20"
                 >
                     <ArrowRight className="w-5 h-5" />
                 </button>

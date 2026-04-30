@@ -18,7 +18,7 @@ const ReturnRefundPage = () => {
           className="text-center mb-16"
         >
           <h1 className="text-4xl md:text-5xl font-serif text-[#131e42] mb-4">JASHODA JEWELS</h1>
-          <p className="text-xl text-luxury-pink font-medium mb-6">Online Silver Jewellery Store</p>
+          <p className="text-xl text-charcoal font-medium mb-6">Online Silver Jewellery Store</p>
           <div className="flex flex-wrap justify-center items-center gap-4 text-sm text-charcoal/60 font-medium">
             <span className="flex items-center gap-1 uppercase tracking-wider">Return & Refund Policy</span>
             <span className="w-1 h-1 bg-charcoal/20 rounded-full" />
@@ -54,7 +54,7 @@ const ReturnRefundPage = () => {
           {/* 1. Policy Overview */}
           <section id="overview" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <FileText className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">1. Policy Overview</h2>
@@ -107,7 +107,7 @@ const ReturnRefundPage = () => {
           {/* 3. Conditions for Eligible Returns */}
           <section id="conditions" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <ShieldCheck className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">3. Conditions for Eligible Returns</h2>
@@ -115,35 +115,35 @@ const ReturnRefundPage = () => {
             <p className="mb-6">To be considered for a return under any of the three eligible exceptions listed in Section 2, ALL of the following conditions must be strictly met:</p>
             <ul className="space-y-6 list-none">
               <li className="flex gap-4">
-                <div className="w-6 h-6 rounded-full bg-luxury-pink/10 text-luxury-pink flex items-center justify-center shrink-0 mt-1 font-bold text-xs">1</div>
+                <div className="w-6 h-6 rounded-full bg-charcoal/10 text-charcoal flex items-center justify-center shrink-0 mt-1 font-bold text-xs">1</div>
                 <div>
                   <strong>Reporting Deadline:</strong>
                   <p>The issue must be reported to Jashoda Jewels within 24 to 48 hours of confirmed delivery (as per courier tracking records). Reports submitted beyond this window will not be entertained under any circumstances.</p>
                 </div>
               </li>
               <li className="flex gap-4">
-                <div className="w-6 h-6 rounded-full bg-luxury-pink/10 text-luxury-pink flex items-center justify-center shrink-0 mt-1 font-bold text-xs">2</div>
+                <div className="w-6 h-6 rounded-full bg-charcoal/10 text-charcoal flex items-center justify-center shrink-0 mt-1 font-bold text-xs">2</div>
                 <div>
                   <strong>Mandatory Documentation:</strong>
                   <p>Customers must submit clear photographic and/or video evidence of (a) the damaged, wrong, or defective product; (b) the product alongside its original packaging and courier seal; and (c) the delivery label showing the order ID and delivery address. Evidence must be submitted by email to <strong>jashodajewels@gmail.com</strong> with the subject line 'Return Request – Order ID [XXXX]'.</p>
                 </div>
               </li>
               <li className="flex gap-4">
-                <div className="w-6 h-6 rounded-full bg-luxury-pink/10 text-luxury-pink flex items-center justify-center shrink-0 mt-1 font-bold text-xs">3</div>
+                <div className="w-6 h-6 rounded-full bg-charcoal/10 text-charcoal flex items-center justify-center shrink-0 mt-1 font-bold text-xs">3</div>
                 <div>
                   <strong>Unused and Unaltered Condition:</strong>
                   <p>The product must be unworn, unused, unaltered, and free from any signs of customer-induced damage or modification.</p>
                 </div>
               </li>
               <li className="flex gap-4">
-                <div className="w-6 h-6 rounded-full bg-luxury-pink/10 text-luxury-pink flex items-center justify-center shrink-0 mt-1 font-bold text-xs">4</div>
+                <div className="w-6 h-6 rounded-full bg-charcoal/10 text-charcoal flex items-center justify-center shrink-0 mt-1 font-bold text-xs">4</div>
                 <div>
                   <strong>Original Packaging:</strong>
                   <p>The product must be returned in its original packaging, with all tags, pouches, certificates of authenticity, and accompanying accessories intact.</p>
                 </div>
               </li>
               <li className="flex gap-4">
-                <div className="w-6 h-6 rounded-full bg-luxury-pink/10 text-luxury-pink flex items-center justify-center shrink-0 mt-1 font-bold text-xs">5</div>
+                <div className="w-6 h-6 rounded-full bg-charcoal/10 text-charcoal flex items-center justify-center shrink-0 mt-1 font-bold text-xs">5</div>
                 <div>
                   <strong>Return Authorisation:</strong>
                   <p>A return will only be processed upon receipt of a written Return Authorisation confirmation from Jashoda Jewels. Unauthorised returns will be rejected and returned to sender at the customer's cost.</p>
@@ -184,29 +184,29 @@ const ReturnRefundPage = () => {
           {/* 5. Return Process */}
           <section id="process" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <RefreshCw className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">5. Return Process — Eligible Cases Only</h2>
             </div>
             <div className="space-y-6 relative before:absolute before:left-[11px] before:top-4 before:bottom-4 before:w-0.5 before:bg-stone-100">
               <div className="relative pl-10">
-                <div className="absolute left-0 top-1 w-6 h-6 rounded-full bg-white border-2 border-luxury-pink z-10" />
+                <div className="absolute left-0 top-1 w-6 h-6 rounded-full bg-white border-2 border-charcoal z-10" />
                 <p className="font-bold text-[#131e42]">Step 1 — Approval Confirmation</p>
                 <p className="text-sm">You will receive a written Return Authorisation email with a unique Return Reference Number and instructions for packaging and shipping.</p>
               </div>
               <div className="relative pl-10">
-                <div className="absolute left-0 top-1 w-6 h-6 rounded-full bg-white border-2 border-luxury-pink z-10" />
+                <div className="absolute left-0 top-1 w-6 h-6 rounded-full bg-white border-2 border-charcoal z-10" />
                 <p className="font-bold text-[#131e42]">Step 2 — Secure Packaging</p>
                 <p className="text-sm">Package the item securely in its original packaging. Write the Return Reference Number on the outer package. Insured shipping is recommended at the customer's expense.</p>
               </div>
               <div className="relative pl-10">
-                <div className="absolute left-0 top-1 w-6 h-6 rounded-full bg-white border-2 border-luxury-pink z-10" />
+                <div className="absolute left-0 top-1 w-6 h-6 rounded-full bg-white border-2 border-charcoal z-10" />
                 <p className="font-bold text-[#131e42]">Step 3 — Dispatch and Tracking</p>
                 <p className="text-sm">Dispatch the product within 3 business days of receiving the Return Authorisation email. Share the tracking ID with us via email.</p>
               </div>
               <div className="relative pl-10">
-                <div className="absolute left-0 top-1 w-6 h-6 rounded-full bg-white border-2 border-luxury-pink z-10" />
+                <div className="absolute left-0 top-1 w-6 h-6 rounded-full bg-white border-2 border-charcoal z-10" />
                 <p className="font-bold text-[#131e42]">Step 4 — Quality Inspection</p>
                 <p className="text-sm">Upon receipt, our quality team will inspect the product within 3–5 business days. We reserve the right to reject returns that don't conform to conditions.</p>
               </div>
@@ -216,7 +216,7 @@ const ReturnRefundPage = () => {
           {/* 6. Refund Policy */}
           <section id="refund" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <CreditCard className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">6. Refund Policy — Approved Cases Only</h2>
@@ -233,15 +233,15 @@ const ReturnRefundPage = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="bg-stone-50 p-4 rounded-xl text-center">
                     <p className="text-xs text-charcoal/50 uppercase font-bold mb-1">UPI & Net Banking</p>
-                    <p className="font-bold text-luxury-pink">5–7 Days</p>
+                    <p className="font-bold text-charcoal">5–7 Days</p>
                   </div>
                   <div className="bg-stone-50 p-4 rounded-xl text-center">
                     <p className="text-xs text-charcoal/50 uppercase font-bold mb-1">Cards</p>
-                    <p className="font-bold text-luxury-pink">7–10 Days</p>
+                    <p className="font-bold text-charcoal">7–10 Days</p>
                   </div>
                   <div className="bg-stone-50 p-4 rounded-xl text-center">
                     <p className="text-xs text-charcoal/50 uppercase font-bold mb-1">Wallets</p>
-                    <p className="font-bold text-luxury-pink">3–5 Days</p>
+                    <p className="font-bold text-charcoal">3–5 Days</p>
                   </div>
                 </div>
               </div>
@@ -249,9 +249,9 @@ const ReturnRefundPage = () => {
               <div>
                 <h3 className="text-lg font-bold text-charcoal mb-2">6.3 Deductions</h3>
                 <ul className="list-none space-y-2">
-                  <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Original shipping charges are non-refundable.</span></li>
-                  <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Return shipping costs are borne by the customer unless it's our error.</span></li>
-                  <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>GST component deductions as applicable under current tax law.</span></li>
+                  <li className="flex gap-3"><span className="text-charcoal">•</span><span>Original shipping charges are non-refundable.</span></li>
+                  <li className="flex gap-3"><span className="text-charcoal">•</span><span>Return shipping costs are borne by the customer unless it's our error.</span></li>
+                  <li className="flex gap-3"><span className="text-charcoal">•</span><span>GST component deductions as applicable under current tax law.</span></li>
                 </ul>
               </div>
 
@@ -265,7 +265,7 @@ const ReturnRefundPage = () => {
           {/* 7. Contact */}
           <section id="contact" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Mail className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">7. Contact for Return and Refund Queries</h2>
@@ -275,15 +275,15 @@ const ReturnRefundPage = () => {
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
-                  <div className="mt-1 text-luxury-pink"><Mail className="w-5 h-5" /></div>
+                  <div className="mt-1 text-charcoal"><Mail className="w-5 h-5" /></div>
                   <div>
                     <p className="font-bold text-charcoal">Email</p>
-                    <p className="text-luxury-pink font-medium">jashodajewels@gmail.com</p>
+                    <p className="text-charcoal font-medium">jashodajewels@gmail.com</p>
                     <p className="text-xs text-charcoal/50 mt-1">Subject: Return Request – Order ID [XXXX]</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <div className="mt-1 text-luxury-pink"><Phone className="w-5 h-5" /></div>
+                  <div className="mt-1 text-charcoal"><Phone className="w-5 h-5" /></div>
                   <div>
                     <p className="font-bold text-charcoal">Phone</p>
                     <p>+91 85917 88821</p>
@@ -292,7 +292,7 @@ const ReturnRefundPage = () => {
               </div>
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
-                  <div className="mt-1 text-luxury-pink"><MapPin className="w-5 h-5" /></div>
+                  <div className="mt-1 text-charcoal"><MapPin className="w-5 h-5" /></div>
                   <div>
                     <p className="font-bold text-charcoal">Address</p>
                     <p className="text-sm">Shop no 1, Chsl, LT Rd, opposite Miniso, Gyan Nagar, Mhatre Wadi, Borivali West, Mumbai, Maharashtra 400092, India</p>

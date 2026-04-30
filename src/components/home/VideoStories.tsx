@@ -93,7 +93,7 @@ export default function VideoStories() {
     if (loading) {
         return (
             <section className="py-24 relative overflow-hidden flex justify-center items-center min-h-[600px]">
-                <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#702540] via-[#8a3052] to-[#5c1c33] opacity-90" />
+                <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#111827] via-[#8a3052] to-[#5c1c33] opacity-90" />
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white relative z-10"></div>
             </section>
         );
@@ -106,7 +106,7 @@ export default function VideoStories() {
     return (
         <section className="py-24 relative overflow-hidden">
             {/* Animated Background */}
-            <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#702540] via-[#8a3052] to-[#5c1c33] bg-[length:400%_400%] animate-gradient-xy opacity-90" />
+            <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#111827] via-[#8a3052] to-[#5c1c33] bg-[length:400%_400%] animate-gradient-xy opacity-90" />
 
             {/* Decorative Elements */}
             <div className="absolute top-0 left-0 w-full h-full z-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] mix-blend-overlay pointer-events-none" />

@@ -31,15 +31,15 @@ export default function Loading() {
                     transition={{ delay: 0.3, duration: 0.8 }}
                     className="text-center"
                 >
-                    <h2 className="text-[#702540] font-serif text-xl md:text-2xl tracking-[0.3em] uppercase mb-2">
+                    <h2 className="text-[#111827] font-serif text-xl md:text-2xl tracking-[0.3em] uppercase mb-2">
                         Jashoda Jewels
                     </h2>
                     <div className="flex items-center justify-center gap-4">
-                        <div className="h-[1px] bg-[#702540]/20 w-8" />
+                        <div className="h-[1px] bg-[#111827]/20 w-8" />
                         <span className="text-[#8B5E3C] text-[10px] tracking-[0.5em] uppercase font-light animate-pulse">
                             Curating Elegance
                         </span>
-                        <div className="h-[1px] bg-[#702540]/20 w-8" />
+                        <div className="h-[1px] bg-[#111827]/20 w-8" />
                     </div>
                 </motion.div>
 
@@ -48,7 +48,7 @@ export default function Loading() {
                     <motion.div
                         animate={{ rotate: 360 }}
                         transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                        className="w-full h-full border border-dashed border-[#702540]/5 rounded-full"
+                        className="w-full h-full border border-dashed border-[#111827]/5 rounded-full"
                     />
                 </div>
             </div>
@@ -63,7 +63,7 @@ export default function Loading() {
                         repeat: Infinity,
                         ease: "easeInOut"
                     }}
-                    className="w-full h-full bg-gradient-to-r from-transparent via-[#702540] to-transparent"
+                    className="w-full h-full bg-gradient-to-r from-transparent via-[#111827] to-transparent"
                 />
             </div>
             
@@ -71,7 +71,7 @@ export default function Loading() {
             <div 
                 className="absolute inset-0 pointer-events-none opacity-[0.02]"
                 style={{
-                    backgroundImage: "radial-gradient(circle at center, #702540 0%, transparent 70%)"
+                    backgroundImage: "radial-gradient(circle at center, #111827 0%, transparent 70%)"
                 }}
             />
         </div>

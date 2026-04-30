@@ -3,8 +3,10 @@ import { Metadata } from "next";
 import PDPGallery from "@/components/product/PDPGallery";
 import PDPInfo from "@/components/product/PDPInfo";
 import PDPTabs from "@/components/product/PDPTabs";
+import PDPActions from "@/components/product/PDPActions";
 import PDPRelated from "@/components/product/PDPRelated";
 import GlobalBreadcrumb from "@/components/layout/GlobalBreadcrumb";
+import ReviewSection from "@/components/product/ReviewSection";
 
 export const metadata: Metadata = {
     title: "Product Details | Jashoda Jewels",
@@ -56,7 +58,12 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                     <div className="w-full">
                         <PDPInfo product={product} />
                         <PDPTabs product={product} />
+                        <PDPActions product={product} />
                     </div>
+                </div>
+
+                <div className="mb-20">
+                    <ReviewSection productId={product.id} horizontal={true} />
                 </div>
 
                 <PDPRelated currentProduct={product} />

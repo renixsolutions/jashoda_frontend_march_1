@@ -55,14 +55,14 @@ export default function ShopHero() {
                                 className={cn(
                                     "whitespace-nowrap md:whitespace-normal text-left px-5 py-3.5 text-sm font-medium transition-all duration-300 rounded-xl flex items-center justify-between group min-w-fit md:min-w-0",
                                     activeTab === tab
-                                        ? "text-[#702540] bg-white shadow-sm ring-1 ring-gray-100 font-bold"
+                                        ? "text-[#111827] bg-white shadow-sm ring-1 ring-gray-100 font-bold"
                                         : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
                                 )}
                             >
                                 <span className="flex items-center gap-3">
                                     <div className={cn(
                                         "hidden md:block w-1.5 h-1.5 rounded-full transition-all duration-300",
-                                        activeTab === tab ? "bg-[#702540] scale-125" : "bg-transparent group-hover:bg-gray-300"
+                                        activeTab === tab ? "bg-[#111827] scale-125" : "bg-transparent group-hover:bg-gray-300"
                                     )} />
                                     {tab}
                                 </span>
@@ -107,7 +107,7 @@ export default function ShopHero() {
                                                         <Image src="/diamond-pendant.png" alt={cat.name} fill className="object-contain p-2" />
                                                     )}
                                                 </div>
-                                                <span className="text-xs md:text-sm font-semibold text-[#1E2856] group-hover:text-[#702540] transition-colors">{cat.name}</span>
+                                                <span className="text-xs md:text-sm font-semibold text-[#1E2856] group-hover:text-[#111827] transition-colors">{cat.name}</span>
                                             </Link>
                                         ))}
                                     </div>
@@ -122,10 +122,10 @@ export default function ShopHero() {
                                             <Link
                                                 key={range.label}
                                                 href={`/shop?min=${range.min}&max=${range.max}`}
-                                                className="flex items-center justify-between p-5 rounded-2xl border border-gray-100 hover:border-[#702540]/30 hover:bg-rose-50/20 transition-all group"
+                                                className="flex items-center justify-between p-5 rounded-2xl border border-gray-100 hover:border-[#111827]/30 hover:bg-rose-50/20 transition-all group"
                                             >
-                                                <span className="text-[#1E2856] font-bold group-hover:text-[#702540]">{range.label}</span>
-                                                <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-[#702540]" />
+                                                <span className="text-[#1E2856] font-bold group-hover:text-[#111827]">{range.label}</span>
+                                                <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-[#111827]" />
                                             </Link>
                                         ))}
                                     </div>
@@ -136,7 +136,7 @@ export default function ShopHero() {
                             {(activeTab === "Occasion" || activeTab === "Gender") && (
                                 <div className="py-20 text-center text-gray-400">
                                     <p>Browse our curated collections for various {activeTab.toLowerCase()}s by clicking below.</p>
-                                    <Link href="/shop" className="mt-4 inline-block text-[#702540] font-bold hover:underline">View All</Link>
+                                    <Link href="/shop" className="mt-4 inline-block text-[#111827] font-bold hover:underline">View All</Link>
                                 </div>
                             )}
                         </motion.div>
@@ -159,7 +159,7 @@ export default function ShopHero() {
                             <div className="absolute bottom-10 left-10 text-white">
                                 <span className="inline-block px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-widest mb-3">Featured</span>
                                 <h4 className="text-3xl font-serif italic mb-4">{currentPromo.title || "Elite Collection"}</h4>
-                                <Link href={currentPromo.link_url || "/shop"} className="inline-flex items-center gap-2 bg-white text-black py-3 px-8 rounded-full font-bold uppercase text-[11px] tracking-widest hover:bg-[#702540] hover:text-white transition-all">
+                                <Link href={currentPromo.link_url || "/shop"} className="inline-flex items-center gap-2 bg-white text-black py-3 px-8 rounded-full font-bold uppercase text-[11px] tracking-widest hover:bg-[#111827] hover:text-white transition-all">
                                     Explore <ChevronRight size={14} />
                                 </Link>
                             </div>

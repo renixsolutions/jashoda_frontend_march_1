@@ -45,7 +45,7 @@ export default function CustomSelect({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#702540] focus:border-[#702540] bg-white text-gray-900 cursor-pointer transition-colors hover:border-[#702540] flex items-center justify-between"
+        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#111827] focus:border-[#111827] bg-white text-gray-900 cursor-pointer transition-colors hover:border-[#111827] flex items-center justify-between"
       >
         <span className={selectedOption ? "text-gray-900" : "text-gray-500"}>
           {selectedOption ? selectedOption.label : placeholder}
@@ -74,8 +74,8 @@ export default function CustomSelect({
                     }}
                     className={`w-full text-left px-4 py-2 text-sm transition-colors flex items-center justify-between ${
                       value === option.value
-                        ? 'bg-[#702540] text-white'
-                        : 'text-gray-900 hover:bg-[#702540] hover:text-white'
+                        ? 'bg-[#111827] text-white'
+                        : 'text-gray-900 hover:bg-[#111827] hover:text-white'
                     }`}
                   >
                     <span>{option.label}</span>

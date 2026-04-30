@@ -163,7 +163,7 @@ export default function ProductCard({ product, variant = 'light' }: ProductCardP
 
                 {/* Quick Add Overlay - Animated Up */}
                 <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-30 glass-effect">
-                    <Button className={`w-full shadow-lg font-serif tracking-wide ${isDark ? 'bg-white text-[#702540] hover:bg-white/90 rounded-md py-3' : 'bg-[#832729] text-white hover:bg-[#6b1f21] rounded-none py-4'}`} onClick={handleAddToCart}>
+                    <Button className={`w-full shadow-lg font-serif tracking-wide ${isDark ? 'bg-white text-[#111827] hover:bg-white/90 rounded-md py-3' : 'bg-[#832729] text-white hover:bg-[#6b1f21] rounded-none py-4'}`} onClick={handleAddToCart}>
                         <ShoppingBag className="w-4 h-4 mr-2" /> {isDark ? 'Quick Add' : 'ADD TO CART'}
                     </Button>
                 </div>

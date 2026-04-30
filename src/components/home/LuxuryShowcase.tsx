@@ -49,10 +49,10 @@ export default function LuxuryShowcase() {
         <section className="py-8 bg-white overflow-hidden">
             <div className="container mx-auto px-4 mb-10 text-center">
                 <div className="mb-6">
-                    <h2 className="text-3xl md:text-5xl font-serif text-[#702540] mb-3 uppercase tracking-[0.2em]">
+                    <h2 className="text-3xl md:text-5xl font-serif text-[#111827] mb-3 uppercase tracking-[0.2em]">
                         Luxury Collection
                     </h2>
-                    <div className="w-32 h-0.5 bg-[#702540] mx-auto opacity-30"></div>
+                    <div className="w-32 h-0.5 bg-[#111827] mx-auto opacity-30"></div>
                 </div>
 
                 {/* Navigation Buttons - Centered */}
@@ -60,14 +60,14 @@ export default function LuxuryShowcase() {
                     <button
                         onClick={scrollLeft}
                         aria-label="Previous slide"
-                        className="w-10 h-10 rounded-full border border-[#702540]/20 flex items-center justify-center text-[#702540] hover:bg-[#702540] hover:text-white transition-all duration-300"
+                        className="w-10 h-10 rounded-full border border-[#111827]/20 flex items-center justify-center text-[#111827] hover:bg-[#111827] hover:text-white transition-all duration-300"
                     >
                         <ArrowLeft size={16} />
                     </button>
                     <button
                         onClick={scrollRight}
                         aria-label="Next slide"
-                        className="w-10 h-10 rounded-full border border-[#702540]/20 flex items-center justify-center text-[#702540] hover:bg-[#702540] hover:text-white transition-all duration-300"
+                        className="w-10 h-10 rounded-full border border-[#111827]/20 flex items-center justify-center text-[#111827] hover:bg-[#111827] hover:text-white transition-all duration-300"
                     >
                         <ArrowRight size={16} />
                     </button>
@@ -102,7 +102,7 @@ export default function LuxuryShowcase() {
                             />
                             
                             {/* Subtle hover effect overlay */}
-                            <div className="absolute inset-0 bg-[#702540]/0 group-hover:bg-[#702540]/5 transition-colors duration-500"></div>
+                            <div className="absolute inset-0 bg-[#111827]/0 group-hover:bg-[#111827]/5 transition-colors duration-500"></div>
                         </div>
                     ))}
                 </div>

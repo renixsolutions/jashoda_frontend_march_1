@@ -52,12 +52,12 @@ export default function Preloader() {
                             transition={{ delay: 0.5, duration: 1 }}
                             className="text-center"
                         >
-                            <h2 className="text-[#702540] font-serif text-xl md:text-2xl tracking-[0.3em] uppercase mb-2">
+                            <h2 className="text-[#111827] font-serif text-xl md:text-2xl tracking-[0.3em] uppercase mb-2">
                                 Jashoda Jewels
                             </h2>
                             <div className="flex items-center justify-center gap-4">
                                 <motion.div 
-                                    className="h-[1px] bg-[#702540]/30 w-12"
+                                    className="h-[1px] bg-[#111827]/30 w-12"
                                     initial={{ width: 0 }}
                                     animate={{ width: 48 }}
                                     transition={{ delay: 0.8, duration: 0.8 }}
@@ -66,7 +66,7 @@ export default function Preloader() {
                                     Crafting Elegance
                                 </span>
                                 <motion.div 
-                                    className="h-[1px] bg-[#702540]/30 w-12"
+                                    className="h-[1px] bg-[#111827]/30 w-12"
                                     initial={{ width: 0 }}
                                     animate={{ width: 48 }}
                                     transition={{ delay: 0.8, duration: 0.8 }}
@@ -83,7 +83,7 @@ export default function Preloader() {
                                     duration: 2, 
                                     ease: "easeInOut"
                                 }}
-                                className="w-full h-full bg-[#702540]"
+                                className="w-full h-full bg-[#111827]"
                             />
                         </div>
                     </div>
@@ -95,7 +95,7 @@ export default function Preloader() {
                         transition={{ duration: 2 }}
                         className="absolute inset-0 pointer-events-none"
                         style={{
-                            backgroundImage: "radial-gradient(circle at center, #702540 0%, transparent 70%)"
+                            backgroundImage: "radial-gradient(circle at center, #111827 0%, transparent 70%)"
                         }}
                     />
                 </motion.div>

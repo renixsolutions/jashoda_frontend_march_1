@@ -122,20 +122,20 @@ export default function ProductListing() {
                     className="flex flex-col md:flex-row md:justify-between items-start md:items-end mb-6 gap-4"
                 >
                     <div className="w-full md:w-auto">
-                        <h1 className="text-xl md:text-5xl font-serif text-[#702540] mb-1 uppercase tracking-wider">
+                        <h1 className="text-xl md:text-5xl font-serif text-[#111827] mb-1 uppercase tracking-wider">
                             {[
                                 genderQuery && getGenderLabel(genderQuery),
                                 occasionQuery && getOccasionLabel(occasionQuery),
                                 (subcategoryQuery || categoryQuery) && getCategoryLabel((subcategoryQuery || categoryQuery)!)
                             ].filter(Boolean).join(' ') || "All Jewellery"}
-                            <span className="text-[11px] md:text-lg text-[#702540]/50 align-middle ml-2 font-sans font-normal lowercase italic font-light italic">({products.length} results)</span>
+                            <span className="text-[11px] md:text-lg text-[#111827]/50 align-middle ml-2 font-sans font-normal lowercase italic font-light italic">({products.length} results)</span>
                         </h1>
                     </div>
 
                     <div className="w-full md:w-auto flex items-center justify-between md:justify-end gap-3 pt-2 md:pt-0 border-t md:border-t-0 border-gray-50">
-                        <span className="text-[#702540]/80 text-[10px] font-bold uppercase tracking-widest">Sort By:</span>
+                        <span className="text-[#111827]/80 text-[10px] font-bold uppercase tracking-widest">Sort By:</span>
                         <div className="relative">
-                            <select className="bg-white text-[#404040] border border-gray-100 rounded-lg px-4 py-2 text-[11px] font-bold appearance-none focus:outline-none cursor-pointer hover:border-[#702540] transition-all shadow-sm pr-9 h-9">
+                            <select className="bg-white text-[#404040] border border-gray-100 rounded-lg px-4 py-2 text-[11px] font-bold appearance-none focus:outline-none cursor-pointer hover:border-[#111827] transition-all shadow-sm pr-9 h-9">
                                 <option value="featured">Best Matches</option>
                                 <option value="newest">Newest</option>
                                 <option value="price-low">Price: Low to High</option>

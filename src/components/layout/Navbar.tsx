@@ -301,7 +301,7 @@ export default function Navbar() {
                                                         <div className="flex flex-col flex-1 min-w-0">
                                                             <span className="text-sm font-bold text-gray-900 line-clamp-1">{item.name}</span>
                                                             <div className="flex items-center justify-between mt-0.5">
-                                                                <span className="text-xs text-[#702540] font-bold">{item.price_label || `₹${Number(item.price).toLocaleString()}`}</span>
+                                                                <span className="text-xs text-[#111827] font-bold">{item.price_label || `₹${Number(item.price).toLocaleString()}`}</span>
                                                                 <span className="text-[10px] text-gray-400 uppercase tracking-tighter">View Detail</span>
                                                             </div>
                                                         </div>
@@ -423,7 +423,7 @@ export default function Navbar() {
                                         </Link>
                                         {/* <Link
                                             href="/admin/reviews"
-                                            className="w-full px-4 py-2 text-left text-sm text-[#702540] hover:bg-gray-50 flex items-center gap-2 border-b border-gray-50 font-bold"
+                                            className="w-full px-4 py-2 text-left text-sm text-[#111827] hover:bg-gray-50 flex items-center gap-2 border-b border-gray-50 font-bold"
                                             onClick={() => setIsUserMenuOpen(false)}
                                         >
                                             <MessageSquare className="w-4 h-4" />
@@ -431,7 +431,7 @@ export default function Navbar() {
                                         </Link> */}
                                         {/* <Link
                                             href="/admin/testimonials"
-                                            className="w-full px-4 py-2 text-left text-sm text-[#702540] hover:bg-gray-50 flex items-center gap-2 border-b border-gray-50 font-bold"
+                                            className="w-full px-4 py-2 text-left text-sm text-[#111827] hover:bg-gray-50 flex items-center gap-2 border-b border-gray-50 font-bold"
                                             onClick={() => setIsUserMenuOpen(false)}
                                         >
                                             <Sparkles className="w-4 h-4" />
@@ -465,7 +465,7 @@ export default function Navbar() {
                             <div className="relative">
                                 <ShoppingBag className="w-5 h-5" />
                                 {hasMounted && totalItems > 0 && (
-                                    <span className="absolute -top-1 -right-1 flex h-3 w-3 items-center justify-center rounded-full bg-[#702540] text-[8px] text-white font-bold">
+                                    <span className="absolute -top-1 -right-1 flex h-3 w-3 items-center justify-center rounded-full bg-[#111827] text-[8px] text-white font-bold">
                                         {totalItems}
                                     </span>
                                 )}
@@ -479,7 +479,7 @@ export default function Navbar() {
                     <div 
                         className="w-full overflow-hidden py-2 flex text-xs md:text-sm tracking-widest font-medium uppercase relative"
                         style={{ 
-                            backgroundColor: marqueeData.settings.bg_color || '#702540', 
+                            backgroundColor: marqueeData.settings.bg_color || '#111827', 
                             color: marqueeData.settings.text_color || '#ffffff' 
                         }}
                     >
@@ -511,7 +511,7 @@ export default function Navbar() {
                         </motion.div>
                     </div>
                 ) : !marqueeData && (
-                    <div className="w-full overflow-hidden bg-[#702540] text-white py-2 flex text-xs md:text-sm tracking-widest font-medium uppercase relative">
+                    <div className="w-full overflow-hidden bg-[#111827] text-white py-2 flex text-xs md:text-sm tracking-widest font-medium uppercase relative">
                         <motion.div
                             animate={{ x: ["0%", "-50%"] }}
                             transition={{ ease: "linear", duration: 25, repeat: Infinity }}
@@ -553,17 +553,17 @@ export default function Navbar() {
                                 <Link
                                     href={link.href}
                                     className={cn(
-                                        "relative flex items-center gap-2 hover:text-[#702540] transition-colors h-full px-2 group",
-                                        activeMenu === link.name ? "text-[#702540]" : "hover:text-[#702540]",
+                                        "relative flex items-center gap-2 hover:text-[#111827] transition-colors h-full px-2 group",
+                                        activeMenu === link.name ? "text-[#111827]" : "hover:text-[#111827]",
                                         (link.name.toLowerCase() === "gift" || link.name.toLowerCase() === "gifting") ? "text-red-500 font-semibold" : 
-                                        (link.name.toLowerCase() === "wedding" || link.name.toLowerCase() === "party wear") ? "text-[#702540] font-semibold" : ""
+                                        (link.name.toLowerCase() === "wedding" || link.name.toLowerCase() === "party wear") ? "text-[#111827] font-semibold" : ""
                                     )}
                                 >
                                     {link.name}
                                     {activeMenu === link.name && (
                                         <motion.div 
                                             layoutId="nav-underline"
-                                            className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#702540]"
+                                            className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#111827]"
                                             initial={false}
                                         />
                                     )}
@@ -586,8 +586,8 @@ export default function Navbar() {
                             >
                                 <button
                                     className={cn(
-                                        "relative flex items-center gap-2 hover:text-[#702540] transition-colors h-full px-4 group py-4",
-                                        activeMenu === "More" ? "text-[#702540]" : "text-gray-600"
+                                        "relative flex items-center gap-2 hover:text-[#111827] transition-colors h-full px-4 group py-4",
+                                        activeMenu === "More" ? "text-[#111827]" : "text-gray-600"
                                     )}
                                 >
                                     More
@@ -595,7 +595,7 @@ export default function Navbar() {
                                     {activeMenu === "More" && (
                                         <motion.div 
                                             layoutId="nav-underline"
-                                            className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#702540]"
+                                            className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#111827]"
                                             initial={false}
                                         />
                                     )}
@@ -614,7 +614,7 @@ export default function Navbar() {
                                                     <Link
                                                         key={link.name}
                                                         href={link.href}
-                                                        className="flex items-center justify-between px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#702540] transition-all group/item"
+                                                        className="flex items-center justify-between px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#111827] transition-all group/item"
                                                         onClick={() => setActiveMenu(null)}
                                                     >
                                                         <span className={cn(
@@ -623,7 +623,7 @@ export default function Navbar() {
                                                         )}>
                                                             {link.name}
                                                         </span>
-                                                        <ChevronRight className="w-3 h-3 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-1 transition-all text-[#702540]" />
+                                                        <ChevronRight className="w-3 h-3 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-1 transition-all text-[#111827]" />
                                                     </Link>
                                                 ))}
                                             </div>
@@ -704,7 +704,7 @@ export default function Navbar() {
                                                         <div className="flex flex-col flex-1 min-w-0">
                                                             <span className="text-sm font-bold text-gray-900 line-clamp-1">{item.name}</span>
                                                             <div className="flex items-center justify-between mt-1">
-                                                                <span className="text-xs text-[#702540] font-bold">{item.price_label || `₹${Number(item.price).toLocaleString()}`}</span>
+                                                                <span className="text-xs text-[#111827] font-bold">{item.price_label || `₹${Number(item.price).toLocaleString()}`}</span>
                                                                 <ChevronRight className="w-4 h-4 text-gray-300" />
                                                             </div>
                                                         </div>
@@ -786,7 +786,7 @@ export default function Navbar() {
                                                                             key={c.id} 
                                                                             href={`/shop?category=${c.slug}`}
                                                                             onClick={() => setIsMobileMenuOpen(false)}
-                                                                            className="p-2 text-xs bg-white border border-gray-50 rounded-md text-gray-600 hover:text-[#702540]"
+                                                                            className="p-2 text-xs bg-white border border-gray-50 rounded-md text-gray-600 hover:text-[#111827]"
                                                                         >
                                                                             {c.name}
                                                                         </Link>
@@ -794,7 +794,7 @@ export default function Navbar() {
                                                                     <Link 
                                                                         href="/shop"
                                                                         onClick={() => setIsMobileMenuOpen(false)}
-                                                                        className="p-2 text-xs bg-[#702540]/5 border border-[#702540]/20 rounded-md text-[#702540] font-bold text-center col-span-2"
+                                                                        className="p-2 text-xs bg-[#111827]/5 border border-[#111827]/20 rounded-md text-[#111827] font-bold text-center col-span-2"
                                                                     >
                                                                         View All Jewellery
                                                                     </Link>
@@ -896,7 +896,7 @@ export default function Navbar() {
                             <div className="mt-10 mb-6">
                                 <div className="flex items-center gap-2 mb-4">
                                     <span className="w-8 h-[1px] bg-luxury-pink"></span>
-                                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#702540]">Featured Collections</span>
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#111827]">Featured Collections</span>
                                 </div>
                                 <Link 
                                     href={promos[0].link_url || "/shop"} 

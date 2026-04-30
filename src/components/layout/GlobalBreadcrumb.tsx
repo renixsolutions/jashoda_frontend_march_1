@@ -120,13 +120,13 @@ function GlobalBreadcrumbInner() {
     return (
         <div className="py-2 md:py-4 relative z-10">
             <div className="container mx-auto px-4 md:px-8">
-                <div className="flex flex-wrap items-center justify-center gap-1.5 md:gap-3 text-xs md:text-sm font-bold tracking-widest text-[#702540] uppercase">
+                <div className="flex flex-wrap items-center justify-center gap-1.5 md:gap-3 text-xs md:text-sm font-bold tracking-widest text-[#111827] uppercase">
                     <Link href="/" className="hover:opacity-70 transition-opacity">HOME</Link>
                     {breadcrumbs.map((crumb, index) => (
                         <React.Fragment key={index}>
                             <span className="opacity-40 font-light">/</span>
                             {crumb.isLast ? (
-                                <span className="underline underline-offset-4 decoration-[#702540]/20">{crumb.name}</span>
+                                <span className="underline underline-offset-4 decoration-[#111827]/20">{crumb.name}</span>
                             ) : (
                                 <Link href={crumb.href} className="hover:opacity-70 transition-opacity">
                                     {crumb.name}

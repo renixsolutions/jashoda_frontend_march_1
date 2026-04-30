@@ -75,14 +75,14 @@ export default function WelcomeModal({ isOpen, onClose, onOtpSent }: WelcomeModa
             </div>
             <div className="relative z-10 p-8 flex flex-col items-center justify-center text-center">
               <div className="mb-6">
-                <div className="w-24 h-24 bg-[#702540] rounded-full flex items-center justify-center mb-4 mx-auto">
+                <div className="w-24 h-24 bg-[#111827] rounded-full flex items-center justify-center mb-4 mx-auto">
                   <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
-                    <div className="w-12 h-12 bg-[#702540] rounded-full"></div>
+                    <div className="w-12 h-12 bg-[#111827] rounded-full"></div>
                   </div>
                 </div>
                 <div className="bg-white/80 backdrop-blur-sm rounded-lg px-6 py-3 mb-4">
                   <p className="text-sm text-gray-600 mb-1">On your first order get</p>
-                  <p className="text-3xl font-bold text-[#702540]">₹500 off</p>
+                  <p className="text-3xl font-bold text-[#111827]">₹500 off</p>
                 </div>
               </div>
               <div className="mt-6">
@@ -90,7 +90,7 @@ export default function WelcomeModal({ isOpen, onClose, onOtpSent }: WelcomeModa
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 text-gray-700">
                     <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                      <span className="text-sm font-bold text-[#702540]">N</span>
+                      <span className="text-sm font-bold text-[#111827]">N</span>
                     </div>
                     <span className="text-sm">Encircle & Tata Neu coins</span>
                   </div>
@@ -134,7 +134,7 @@ export default function WelcomeModal({ isOpen, onClose, onOtpSent }: WelcomeModa
                       <select
                         value={countryCode}
                         onChange={(e) => setCountryCode(e.target.value)}
-                        className="h-[50px] pl-3 pr-8 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#702540] focus:border-[#702540] bg-white text-gray-900 cursor-pointer transition-colors hover:border-[#702540] text-sm appearance-none"
+                        className="h-[50px] pl-3 pr-8 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#111827] focus:border-[#111827] bg-white text-gray-900 cursor-pointer transition-colors hover:border-[#111827] text-sm appearance-none"
                         style={{
                           backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
                           backgroundRepeat: 'no-repeat',
@@ -154,7 +154,7 @@ export default function WelcomeModal({ isOpen, onClose, onOtpSent }: WelcomeModa
                         if (value.length <= 10) setPhone(value);
                       }}
                       placeholder="Enter mobile number"
-                      className="flex-1 min-w-0 h-[50px] px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#702540] focus:border-transparent bg-white text-gray-900 placeholder:text-gray-400 text-sm"
+                      className="flex-1 min-w-0 h-[50px] px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#111827] focus:border-transparent bg-white text-gray-900 placeholder:text-gray-400 text-sm"
                       maxLength={10}
                     />
                   </div>
@@ -166,16 +166,16 @@ export default function WelcomeModal({ isOpen, onClose, onOtpSent }: WelcomeModa
                 <button
                   type="submit"
                   disabled={isLoading || !phone || phone.length < 10}
-                  className="w-full bg-[#702540] text-white py-3 px-6 rounded-lg font-medium hover:bg-[#8a3052] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
+                  className="w-full bg-[#111827] text-white py-3 px-6 rounded-lg font-medium hover:bg-[#8a3052] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                 >
                   {isLoading ? 'Sending...' : 'Request OTP'}
                 </button>
 
                 <p className="text-[11px] sm:text-xs text-gray-500 text-center leading-relaxed">
                   By continuing, I agree to{' '}
-                  <Link href="/terms-and-conditions" onClick={onClose} className="text-[#702540] underline font-medium">Terms & Conditions</Link>
+                  <Link href="/terms-and-conditions" onClick={onClose} className="text-[#111827] underline font-medium">Terms & Conditions</Link>
                   {' '}&{' '}
-                  <Link href="/privacy-policy" onClick={onClose} className="text-[#702540] underline font-medium">Privacy Policy</Link>
+                  <Link href="/privacy-policy" onClick={onClose} className="text-[#111827] underline font-medium">Privacy Policy</Link>
                 </p>
               </form>
             </div>

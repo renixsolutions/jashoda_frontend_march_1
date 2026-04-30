@@ -18,7 +18,7 @@ const PrivacyPolicyPage = () => {
           className="text-center mb-16"
         >
           <h1 className="text-4xl md:text-5xl font-serif text-[#131e42] mb-4">JASHODA JEWELS</h1>
-          <p className="text-xl text-luxury-pink font-medium mb-6">Online Silver Jewellery Store</p>
+          <p className="text-xl text-charcoal font-medium mb-6">Online Silver Jewellery Store</p>
           <div className="flex flex-wrap justify-center items-center gap-4 text-sm text-charcoal/60 font-medium">
             <span className="flex items-center gap-1 uppercase tracking-wider">Privacy Policy</span>
             <span className="w-1 h-1 bg-charcoal/20 rounded-full" />
@@ -46,7 +46,7 @@ const PrivacyPolicyPage = () => {
           {/* 1. Information We Collect */}
           <section id="collection" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Database className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">1. Information We Collect</h2>
@@ -57,12 +57,12 @@ const PrivacyPolicyPage = () => {
                 <h3 className="text-lg font-bold text-charcoal mb-3">1.1 Information You Provide to Us</h3>
                 <p className="mb-4">We collect the following categories of personal information that you voluntarily provide when registering, placing an Order, or interacting with us:</p>
                 <ul className="space-y-3 list-none">
-                  <li className="flex gap-3"><span className="text-luxury-pink">•</span><span><strong>Identity Information:</strong> Full name, date of birth (if provided).</span></li>
-                  <li className="flex gap-3"><span className="text-luxury-pink">•</span><span><strong>Contact Information:</strong> Email address, mobile/phone number.</span></li>
-                  <li className="flex gap-3"><span className="text-luxury-pink">•</span><span><strong>Delivery Information:</strong> Shipping address, billing address, PIN code, city, state, and country.</span></li>
-                  <li className="flex gap-3"><span className="text-luxury-pink">•</span><span><strong>Payment Information:</strong> Details necessary to process payments are handled securely by our payment gateway partners. We do not directly store credit/debit card numbers, CVV codes, or UPI PINs on our servers.</span></li>
-                  <li className="flex gap-3"><span className="text-luxury-pink">•</span><span><strong>Communication Records:</strong> Messages, queries, or feedback submitted through contact forms, email, or customer support channels.</span></li>
-                  <li className="flex gap-3"><span className="text-luxury-pink">•</span><span><strong>Custom Order Details:</strong> Design specifications, personalisation instructions, and associated content submitted for made-to-order items.</span></li>
+                  <li className="flex gap-3"><span className="text-charcoal">•</span><span><strong>Identity Information:</strong> Full name, date of birth (if provided).</span></li>
+                  <li className="flex gap-3"><span className="text-charcoal">•</span><span><strong>Contact Information:</strong> Email address, mobile/phone number.</span></li>
+                  <li className="flex gap-3"><span className="text-charcoal">•</span><span><strong>Delivery Information:</strong> Shipping address, billing address, PIN code, city, state, and country.</span></li>
+                  <li className="flex gap-3"><span className="text-charcoal">•</span><span><strong>Payment Information:</strong> Details necessary to process payments are handled securely by our payment gateway partners. We do not directly store credit/debit card numbers, CVV codes, or UPI PINs on our servers.</span></li>
+                  <li className="flex gap-3"><span className="text-charcoal">•</span><span><strong>Communication Records:</strong> Messages, queries, or feedback submitted through contact forms, email, or customer support channels.</span></li>
+                  <li className="flex gap-3"><span className="text-charcoal">•</span><span><strong>Custom Order Details:</strong> Design specifications, personalisation instructions, and associated content submitted for made-to-order items.</span></li>
                 </ul>
               </div>
 
@@ -70,9 +70,9 @@ const PrivacyPolicyPage = () => {
                 <h3 className="text-lg font-bold text-charcoal mb-3">1.2 Information We Collect Automatically</h3>
                 <p className="mb-4">When you visit our Website, we may automatically collect the following technical data:</p>
                 <ul className="space-y-3 list-none">
-                  <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>IP address, browser type and version, device type and operating system.</span></li>
-                  <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Pages visited, time spent on pages, links clicked, and referring URL.</span></li>
-                  <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Cookie data and session identifiers (see Section 7 — Cookies).</span></li>
+                  <li className="flex gap-3"><span className="text-charcoal">•</span><span>IP address, browser type and version, device type and operating system.</span></li>
+                  <li className="flex gap-3"><span className="text-charcoal">•</span><span>Pages visited, time spent on pages, links clicked, and referring URL.</span></li>
+                  <li className="flex gap-3"><span className="text-charcoal">•</span><span>Cookie data and session identifiers (see Section 7 — Cookies).</span></li>
                 </ul>
               </div>
             </div>
@@ -81,28 +81,28 @@ const PrivacyPolicyPage = () => {
           {/* 2. How We Use Your Information */}
           <section id="usage" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Eye className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">2. How We Use Your Information</h2>
             </div>
             <p className="mb-4">We use the personal information collected from you for the following specific and legitimate business purposes:</p>
             <ul className="space-y-3 list-none">
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span><strong>Order Processing and Fulfillment:</strong> To verify, process, and confirm your Order; generate invoices; coordinate with Delivery Partners for dispatch and tracking; and communicate your Order status.</span></li>
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span><strong>Payment Processing:</strong> To facilitate secure payment transactions through our integrated payment gateway partners.</span></li>
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span><strong>Customer Support:</strong> To respond to your queries, complaints, return requests, and post-purchase assistance.</span></li>
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span><strong>Delivery Coordination:</strong> To share your name and delivery address with our third-party logistics partners solely for the purpose of delivering your Order.</span></li>
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span><strong>Legal and Regulatory Compliance:</strong> To maintain transaction records as required under Indian tax laws (GST), consumer protection regulations, and audit obligations.</span></li>
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span><strong>Fraud Detection and Security:</strong> To detect, investigate, and prevent fraudulent transactions, identity misuse, and security breaches on our platform.</span></li>
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span><strong>Service Improvement and Analytics:</strong> To understand customer preferences, improve product listings and website performance, and enhance the overall user experience on our platform.</span></li>
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span><strong>Marketing and Promotions:</strong> To send you information about new collections, offers, seasonal promotions, and updates — only where you have provided consent or have not opted out. You may unsubscribe at any time by clicking the 'Unsubscribe' link or by writing to <strong>jashodajewels@gmail.com</strong>.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span><strong>Order Processing and Fulfillment:</strong> To verify, process, and confirm your Order; generate invoices; coordinate with Delivery Partners for dispatch and tracking; and communicate your Order status.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span><strong>Payment Processing:</strong> To facilitate secure payment transactions through our integrated payment gateway partners.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span><strong>Customer Support:</strong> To respond to your queries, complaints, return requests, and post-purchase assistance.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span><strong>Delivery Coordination:</strong> To share your name and delivery address with our third-party logistics partners solely for the purpose of delivering your Order.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span><strong>Legal and Regulatory Compliance:</strong> To maintain transaction records as required under Indian tax laws (GST), consumer protection regulations, and audit obligations.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span><strong>Fraud Detection and Security:</strong> To detect, investigate, and prevent fraudulent transactions, identity misuse, and security breaches on our platform.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span><strong>Service Improvement and Analytics:</strong> To understand customer preferences, improve product listings and website performance, and enhance the overall user experience on our platform.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span><strong>Marketing and Promotions:</strong> To send you information about new collections, offers, seasonal promotions, and updates — only where you have provided consent or have not opted out. You may unsubscribe at any time by clicking the 'Unsubscribe' link or by writing to <strong>jashodajewels@gmail.com</strong>.</span></li>
             </ul>
           </section>
 
           {/* 3. Sharing of Your Information */}
           <section id="sharing" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Share2 className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">3. Sharing of Your Information</h2>
@@ -110,19 +110,19 @@ const PrivacyPolicyPage = () => {
             <p className="mb-4">Jashoda Jewels does not sell, rent, or commercially transfer your personal data to any unauthorised third party. We may share your information only with the following categories of authorised service providers, strictly for the purposes described:</p>
             <ul className="space-y-4 list-none mb-4">
               <li className="flex gap-3">
-                <span className="text-luxury-pink font-bold">•</span>
+                <span className="text-charcoal font-bold">•</span>
                 <span><strong>Payment Gateway Partners:</strong> Your payment information is securely transmitted to and processed by authorised and PCI-DSS compliant payment gateway operators (such as Razorpay, PayU, CCAvenue, or similar platforms). These partners process payment data under their own security standards and privacy policies.</span>
               </li>
               <li className="flex gap-3">
-                <span className="text-luxury-pink font-bold">•</span>
+                <span className="text-charcoal font-bold">•</span>
                 <span><strong>Logistics and Delivery Partners:</strong> Your name, contact number, and delivery address are shared with our third-party courier and logistics companies for the sole purpose of delivering your Order. These partners are contractually bound to use your data only for delivery purposes.</span>
               </li>
               <li className="flex gap-3">
-                <span className="text-luxury-pink font-bold">•</span>
+                <span className="text-charcoal font-bold">•</span>
                 <span><strong>Legal and Regulatory Authorities:</strong> We may disclose your personal information to law enforcement agencies, regulatory authorities, or judicial bodies when required to do so by applicable law, court order, or government directive.</span>
               </li>
               <li className="flex gap-3">
-                <span className="text-luxury-pink font-bold">•</span>
+                <span className="text-charcoal font-bold">•</span>
                 <span><strong>Technology Service Providers:</strong> We may share limited technical data with authorised IT and cloud service providers who assist in website hosting, maintenance, and security — strictly under confidentiality agreements.</span>
               </li>
             </ul>
@@ -134,7 +134,7 @@ const PrivacyPolicyPage = () => {
           {/* 4. Data Retention */}
           <section id="retention" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Clock className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">4. Data Retention</h2>
@@ -147,17 +147,17 @@ const PrivacyPolicyPage = () => {
           {/* 5. Data Security */}
           <section id="security" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Lock className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">5. Data Security</h2>
             </div>
             <p className="mb-4">Jashoda Jewels employs reasonable and industry-appropriate technical and organisational security measures to safeguard your personal data against unauthorised access, disclosure, alteration, or destruction. These measures include:</p>
             <ul className="space-y-3 list-none mb-4">
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Secure HTTPS encryption for all data transmitted between your browser and our Website.</span></li>
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Restricted internal access to customer data on a need-to-know basis.</span></li>
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Integration of PCI-DSS compliant payment gateways to handle all payment transactions.</span></li>
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Regular security reviews and updates to our Website infrastructure.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span>Secure HTTPS encryption for all data transmitted between your browser and our Website.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span>Restricted internal access to customer data on a need-to-know basis.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span>Integration of PCI-DSS compliant payment gateways to handle all payment transactions.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span>Regular security reviews and updates to our Website infrastructure.</span></li>
             </ul>
             <p className="text-sm">While we take all reasonable precautions, no method of electronic transmission or storage is entirely immune to security risks. In the event of a data breach that may materially affect your rights or interests, we will notify affected users in accordance with applicable Indian law.</p>
           </section>
@@ -165,7 +165,7 @@ const PrivacyPolicyPage = () => {
           {/* 6. Your Rights */}
           <section id="rights" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <UserCheck className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">6. Your Rights as a Data Subject</h2>
@@ -183,16 +183,16 @@ const PrivacyPolicyPage = () => {
           {/* 7. Cookies Policy */}
           <section id="cookies" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Cookie className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">7. Cookies Policy</h2>
             </div>
             <p className="mb-4">Our Website uses cookies and similar tracking technologies to enhance your browsing experience. Cookies are small text files placed on your device that help us:</p>
             <ul className="space-y-3 list-none mb-4">
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Remember your login session and cart contents during a visit.</span></li>
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Understand Website usage patterns to improve navigation and content.</span></li>
-              <li className="flex gap-3"><span className="text-luxury-pink">•</span><span>Deliver relevant promotional content where permitted.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span>Remember your login session and cart contents during a visit.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span>Understand Website usage patterns to improve navigation and content.</span></li>
+              <li className="flex gap-3"><span className="text-charcoal">•</span><span>Deliver relevant promotional content where permitted.</span></li>
             </ul>
             <p>You may configure your browser to refuse all cookies or to alert you when cookies are being sent. However, please note that disabling cookies may affect the functionality of certain features on our Website, including the shopping cart and checkout process. By continuing to use our Website with cookies enabled, you consent to our use of cookies as described above.</p>
           </section>
@@ -200,7 +200,7 @@ const PrivacyPolicyPage = () => {
           {/* 8. Children's Privacy */}
           <section id="children" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <UserX className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">8. Children's Privacy</h2>
@@ -213,7 +213,7 @@ const PrivacyPolicyPage = () => {
           {/* 9. Third-Party Links */}
           <section id="links" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <ExternalLink className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">9. Links to Third-Party Websites</h2>
@@ -226,7 +226,7 @@ const PrivacyPolicyPage = () => {
           {/* 10. Changes */}
           <section id="changes" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Clock className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">10. Changes to This Privacy Policy</h2>
@@ -239,7 +239,7 @@ const PrivacyPolicyPage = () => {
           {/* 11. Grievance Officer */}
           <section id="grievance" className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-luxury-pink/10 rounded-lg text-luxury-pink">
+              <div className="p-2 bg-charcoal/10 rounded-lg text-charcoal">
                 <Shield className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-serif text-[#131e42]">11. Grievance Officer</h2>
@@ -249,16 +249,16 @@ const PrivacyPolicyPage = () => {
             <div className="bg-stone-50 p-6 rounded-xl border border-stone-100 grid md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <p className="text-sm font-bold text-charcoal uppercase tracking-wider">Contact Person</p>
-                <p className="text-luxury-pink font-medium">Customer Support Team</p>
+                <p className="text-charcoal font-medium">Customer Support Team</p>
                 <p className="text-xs text-charcoal/50 uppercase">Designation: Data Protection Desk</p>
               </div>
               <div className="space-y-3">
                 <div className="flex items-center gap-2 text-sm">
-                  <Mail className="w-4 h-4 text-luxury-pink" />
+                  <Mail className="w-4 h-4 text-charcoal" />
                   <span>jashodajewels@gmail.com</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <MapPin className="w-4 h-4 text-luxury-pink" />
+                  <MapPin className="w-4 h-4 text-charcoal" />
                   <span className="text-xs">Borivali West, Mumbai, India</span>
                 </div>
               </div>

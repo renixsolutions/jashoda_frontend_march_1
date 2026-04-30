@@ -5,8 +5,10 @@ import Navbar from "@/components/layout/Navbar";
 import PDPGallery from "@/components/product/PDPGallery";
 import PDPInfo from "@/components/product/PDPInfo";
 import PDPTabs from "@/components/product/PDPTabs";
+import PDPActions from "@/components/product/PDPActions";
 import PDPRelated from "@/components/product/PDPRelated";
 import GlobalBreadcrumb from "@/components/layout/GlobalBreadcrumb";
+import ReviewSection from "@/components/product/ReviewSection";
 
 export const metadata: Metadata = {
     title: "Classic Silver Solitaire Ring | Jashoda Jewels",
@@ -52,19 +54,26 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             <main className="pt-8 pb-16 px-4 md:px-8 lg:px-12 max-w-[1440px] mx-auto">
                 <GlobalBreadcrumb />
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 mb-20">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 mb-20 items-start">
                     <div className="w-full">
-                        <PDPGallery 
-                            images={product.images || []} 
-                            videoUrl={product.video_url}
-                            rating={product.average_rating} 
-                            reviews={product.review_count} 
-                        />
+                        <div className="lg:sticky lg:top-24 mb-12">
+                            <PDPGallery 
+                                images={product.images || []} 
+                                videoUrl={product.video_url}
+                                rating={product.average_rating} 
+                                reviews={product.review_count} 
+                            />
+                        </div>
+                        <PDPTabs product={product} />
+                        <PDPActions product={product} />
                     </div>
                     <div className="w-full">
                         <PDPInfo product={product} />
-                        <PDPTabs product={product} />
                     </div>
+                </div>
+
+                <div className="mb-20">
+                    <ReviewSection productId={product.id} horizontal={true} />
                 </div>
 
                 <PDPRelated currentProduct={product} />

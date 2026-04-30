@@ -18,7 +18,7 @@ export default function CategoryGrid() {
         return (
             <section className="py-24 px-4 md:px-8 bg-white overflow-hidden">
                 <div className="max-w-7xl mx-auto flex justify-center py-12">
-                     <div className="w-8 h-8 border-4 border-[#702540] border-t-transparent rounded-full animate-spin"></div>
+                     <div className="w-8 h-8 border-4 border-[#111827] border-t-transparent rounded-full animate-spin"></div>
                 </div>
             </section>
         );
@@ -99,7 +99,7 @@ export default function CategoryGrid() {
                             className="group relative w-full aspect-square rounded-[1.5rem] md:rounded-[2rem] overflow-hidden cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 bg-white border border-gray-100 flex flex-col justify-center items-center text-center p-3 sm:p-6"
                         >
                             <Link href="/shop" className="w-full h-full flex flex-col justify-center items-center">
-                                <span className="font-serif text-4xl sm:text-6xl text-[#702540] mb-1 sm:mb-2 font-medium">
+                                <span className="font-serif text-4xl sm:text-6xl text-[#111827] mb-1 sm:mb-2 font-medium">
                                     {categories.length > 7 ? `${categories.length - 7}+` : categories.length}
                                 </span>
                                 <span className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-wide font-medium max-w-[80px] sm:max-w-[120px] leading-tight sm:leading-relaxed">
@@ -107,7 +107,7 @@ export default function CategoryGrid() {
                                 </span>
     
                                 {/* Arrow Icon Circle */}
-                                <div className="mt-4 sm:mt-8 w-8 h-8 sm:w-12 sm:h-12 rounded-full border border-[#702540]/30 flex items-center justify-center text-[#702540] group-hover:bg-[#702540] group-hover:text-white group-hover:border-transparent transition-all duration-500">
+                                <div className="mt-4 sm:mt-8 w-8 h-8 sm:w-12 sm:h-12 rounded-full border border-[#111827]/30 flex items-center justify-center text-[#111827] group-hover:bg-[#111827] group-hover:text-white group-hover:border-transparent transition-all duration-500">
                                     <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={1.5} />
                                 </div>
                             </Link>

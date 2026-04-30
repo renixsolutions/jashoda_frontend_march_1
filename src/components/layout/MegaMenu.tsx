@@ -184,14 +184,14 @@ export default function MegaMenu({ menuName = "All Jewellery" }: MegaMenuProps) 
                                 className={cn(
                                     "text-left px-5 py-3.5 text-sm font-medium transition-all duration-300 rounded-xl flex items-center justify-between group",
                                     activeTab === tab
-                                        ? "text-[#702540] bg-white shadow-sm ring-1 ring-gray-100 font-bold"
+                                        ? "text-[#111827] bg-white shadow-sm ring-1 ring-gray-100 font-bold"
                                         : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
                                 )}
                             >
                                 <div className="flex items-center gap-3">
                                     <div className={cn(
                                         "w-1.5 h-1.5 rounded-full transition-all duration-300",
-                                        activeTab === tab ? "bg-[#702540] scale-125" : "bg-transparent group-hover:bg-gray-300"
+                                        activeTab === tab ? "bg-[#111827] scale-125" : "bg-transparent group-hover:bg-gray-300"
                                     )} />
                                     {tab}
                                 </div>
@@ -222,7 +222,7 @@ export default function MegaMenu({ menuName = "All Jewellery" }: MegaMenuProps) 
                                         <div className="flex items-center gap-3 mb-8 pb-4 border-b border-gray-50">
                                             <button
                                                 onClick={handleBackClick}
-                                                className="p-2 rounded-full bg-gray-50 hover:bg-[#702540] transition-all text-gray-400 hover:text-white group"
+                                                className="p-2 rounded-full bg-gray-50 hover:bg-[#111827] transition-all text-gray-400 hover:text-white group"
                                             >
                                                 <ChevronLeft className="w-5 h-5 group-hover:scale-110 transition-transform" />
                                             </button>
@@ -252,7 +252,7 @@ export default function MegaMenu({ menuName = "All Jewellery" }: MegaMenuProps) 
                                                     onClick={(e) => handleCategoryClick(e, cat)}
                                                     className="flex flex-col items-center gap-4 group text-center"
                                                 >
-                                                    <div className="w-24 h-24 relative bg-white rounded-2xl p-2 border border-gray-100 shadow-[0_4px_12px_rgba(0,0,0,0.03)] group-hover:shadow-[0_12px_24px_rgba(112,37,64,0.12)] group-hover:border-[#702540]/20 transition-all duration-500 overflow-hidden transform group-hover:-translate-y-1">
+                                                    <div className="w-24 h-24 relative bg-white rounded-2xl p-2 border border-gray-100 shadow-[0_4px_12px_rgba(0,0,0,0.03)] group-hover:shadow-[0_12px_24px_rgba(112,37,64,0.12)] group-hover:border-[#111827]/20 transition-all duration-500 overflow-hidden transform group-hover:-translate-y-1">
                                                         {(cat.image_url || cat.image) ? (() => {
                                                             const imgStr = (cat.image_url || cat.image) as string;
                                                             const imgSrc = imgStr.startsWith('http') ? imgStr : `${process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '') || 'http://localhost:3000'}${imgStr.startsWith('/') ? '' : '/'}${imgStr}`;
@@ -276,9 +276,9 @@ export default function MegaMenu({ menuName = "All Jewellery" }: MegaMenuProps) 
                                                                 className="object-contain p-2"
                                                             />
                                                         )}
-                                                        <div className="absolute inset-0 bg-gradient-to-t from-[#702540]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                                                        <div className="absolute inset-0 bg-gradient-to-t from-[#111827]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                                                     </div>
-                                                    <span className="text-sm font-semibold text-[#1E2856] group-hover:text-[#702540] transition-colors">{cat.name}</span>
+                                                    <span className="text-sm font-semibold text-[#1E2856] group-hover:text-[#111827] transition-colors">{cat.name}</span>
                                                 </button>
                                             ))
                                         ) : (
@@ -331,13 +331,13 @@ export default function MegaMenu({ menuName = "All Jewellery" }: MegaMenuProps) 
                                             <Link
                                                 key={range.label}
                                                 href={`/shop?min=${range.min}&max=${range.max}${genderQuery}`}
-                                                className="flex items-center justify-between p-5 rounded-2xl border border-gray-100 hover:border-[#702540]/30 hover:bg-rose-50/20 hover:shadow-lg hover:shadow-[#702540]/5 transition-all group"
+                                                className="flex items-center justify-between p-5 rounded-2xl border border-gray-100 hover:border-[#111827]/30 hover:bg-rose-50/20 hover:shadow-lg hover:shadow-[#111827]/5 transition-all group"
                                             >
                                                 <div className="flex flex-col">
                                                     <span className="text-xs text-gray-400 uppercase tracking-tighter mb-0.5">Starting</span>
-                                                    <span className="text-[#1E2856] font-bold group-hover:text-[#702540]">{range.label}</span>
+                                                    <span className="text-[#1E2856] font-bold group-hover:text-[#111827]">{range.label}</span>
                                                 </div>
-                                                <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-[#702540] transition-colors">
+                                                <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-[#111827] transition-colors">
                                                     <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-white" />
                                                 </div>
                                             </Link>
@@ -349,7 +349,7 @@ export default function MegaMenu({ menuName = "All Jewellery" }: MegaMenuProps) 
                                                 initial={{ width: 0 }}
                                                 animate={{ width: "65%" }}
                                                 transition={{ duration: 1.5, ease: "easeOut" }}
-                                                className="absolute left-0 top-0 h-full bg-gradient-to-r from-[#702540] to-[#D4AF37] rounded-full" 
+                                                className="absolute left-0 top-0 h-full bg-gradient-to-r from-[#111827] to-[#D4AF37] rounded-full" 
                                             />
                                         </div>
                                         <div className="flex justify-between text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-4">
@@ -373,7 +373,7 @@ export default function MegaMenu({ menuName = "All Jewellery" }: MegaMenuProps) 
                                                 <div className="absolute inset-0 bg-[#FBFBFB] group-hover:bg-rose-50 transition-colors" />
                                                 <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
                                                     <span className="text-2xl font-serif italic text-[#1E2856] mb-2">{g.name}</span>
-                                                    <div className="h-0.5 w-12 bg-[#702540]/20 group-hover:w-20 group-hover:bg-[#702540] transition-all duration-500" />
+                                                    <div className="h-0.5 w-12 bg-[#111827]/20 group-hover:w-20 group-hover:bg-[#111827] transition-all duration-500" />
                                                     <span className="mt-4 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">Shop Collection</span>
                                                 </div>
                                             </Link>
@@ -407,7 +407,7 @@ export default function MegaMenu({ menuName = "All Jewellery" }: MegaMenuProps) 
                                     onEnded={handleVideoEnded}
                                     onError={(e) => {
                                         // Fallback to a placeholder if video fails
-                                        (e.target as HTMLVideoElement).parentElement!.style.background = "linear-gradient(45deg, #1E2856, #702540)";
+                                        (e.target as HTMLVideoElement).parentElement!.style.background = "linear-gradient(45deg, #1E2856, #111827)";
                                     }}
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#1E2856] via-transparent to-black/20" />
@@ -430,7 +430,7 @@ export default function MegaMenu({ menuName = "All Jewellery" }: MegaMenuProps) 
                                         {currentPromo.link_url && (
                                             <Link 
                                                 href={currentPromo.link_url} 
-                                                className="group inline-flex items-center gap-2 text-[9px] xl:text-[11px] font-bold uppercase tracking-[0.2em] bg-white text-[#1E2856] py-2 px-5 xl:py-3 xl:px-8 rounded-full hover:bg-[#702540] hover:text-white transition-all duration-300 shadow-lg active:scale-95"
+                                                className="group inline-flex items-center gap-2 text-[9px] xl:text-[11px] font-bold uppercase tracking-[0.2em] bg-white text-[#1E2856] py-2 px-5 xl:py-3 xl:px-8 rounded-full hover:bg-[#111827] hover:text-white transition-all duration-300 shadow-lg active:scale-95"
                                             >
                                                 Explore
                                                 <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />

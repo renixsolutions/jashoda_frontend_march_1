@@ -149,8 +149,8 @@ export default function OtpModal({ isOpen, onClose, phone, onOtpVerified }: OtpM
             <div className="relative z-10 p-8 flex flex-col items-center justify-center text-center">
               <div className="mb-6">
                 <div className="text-2xl font-bold text-gray-800 mb-2">Personalized</div>
-                <div className="text-4xl font-bold text-[#702540] mb-4">Curations</div>
-                <div className="w-32 h-1 bg-[#702540] mx-auto mb-4"></div>
+                <div className="text-4xl font-bold text-[#111827] mb-4">Curations</div>
+                <div className="w-32 h-1 bg-[#111827] mx-auto mb-4"></div>
               </div>
               <p className="text-gray-700 text-lg">Explore curations based on your interests</p>
             </div>
@@ -188,7 +188,7 @@ export default function OtpModal({ isOpen, onClose, phone, onOtpVerified }: OtpM
                         onChange={(e) => handleOtpChange(index, e.target.value)}
                         onKeyDown={(e) => handleKeyDown(index, e)}
                         onPaste={index === 0 ? handlePaste : undefined}
-                        className="w-9 h-11 sm:w-14 sm:h-14 text-center text-xl sm:text-2xl font-semibold border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#702540] focus:border-[#702540] transition-all bg-white text-gray-900"
+                        className="w-9 h-11 sm:w-14 sm:h-14 text-center text-xl sm:text-2xl font-semibold border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#111827] focus:border-[#111827] transition-all bg-white text-gray-900"
                       />
                     ))}
                   </div>
@@ -206,7 +206,7 @@ export default function OtpModal({ isOpen, onClose, phone, onOtpVerified }: OtpM
                     <button
                       onClick={handleResend}
                       disabled={isLoading}
-                      className="text-sm text-[#702540] hover:underline font-medium disabled:opacity-50"
+                      className="text-sm text-[#111827] hover:underline font-medium disabled:opacity-50"
                     >
                       Resend OTP
                     </button>
@@ -216,16 +216,16 @@ export default function OtpModal({ isOpen, onClose, phone, onOtpVerified }: OtpM
                 <button
                   onClick={handleVerify}
                   disabled={isLoading || otp.join('').length !== 6}
-                  className="w-full bg-[#702540] text-white py-3 px-6 rounded-lg font-medium hover:bg-[#8a3052] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
+                  className="w-full bg-[#111827] text-white py-3 px-6 rounded-lg font-medium hover:bg-[#8a3052] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                 >
                   {isLoading ? 'Verifying...' : 'Verify OTP'}
                 </button>
 
                 <p className="text-[11px] sm:text-xs text-gray-500 text-center leading-relaxed">
                   By continuing, I agree to{' '}
-                  <Link href="/terms-and-conditions" onClick={onClose} className="text-[#702540] underline font-medium">Terms & Conditions</Link>
+                  <Link href="/terms-and-conditions" onClick={onClose} className="text-[#111827] underline font-medium">Terms & Conditions</Link>
                   {' '}&{' '}
-                  <Link href="/privacy-policy" onClick={onClose} className="text-[#702540] underline font-medium">Privacy Policy</Link>
+                  <Link href="/privacy-policy" onClick={onClose} className="text-[#111827] underline font-medium">Privacy Policy</Link>
                 </p>
               </div>
             </div>

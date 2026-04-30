@@ -6,8 +6,9 @@ import { Star, MessageSquare, CheckCircle2, AlertCircle, Upload, X, Film, Image 
 import { api } from "@/lib/api";
 import { Button } from "@/components/ui/Button";
 import { toast } from "react-hot-toast";
+import { cn } from "@/lib/utils";
 
-export default function ReviewSection({ productId }: { productId: string | number }) {
+export default function ReviewSection({ productId, horizontal = false }: { productId: string | number, horizontal?: boolean }) {
     const router = useRouter();
     const [reviews, setReviews] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -256,10 +257,16 @@ export default function ReviewSection({ productId }: { productId: string | numbe
             )}
 
             {/* List of Reviews */}
-            <div className="space-y-8">
+            <div className={horizontal ? "flex overflow-x-auto gap-6 no-scrollbar pb-6 -mx-4 px-4" : "space-y-8"}>
                 {reviews.length > 0 ? (
                     reviews.map((review, idx) => (
-                        <div key={idx} className="group border-b border-gray-100 pb-8 last:border-0">
+                        <div 
+                            key={idx} 
+                            className={horizontal 
+                                ? "min-w-[320px] md:min-w-[400px] max-w-[450px] bg-white border border-gray-100 rounded-[32px] p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col" 
+                                : "group border-b border-gray-100 pb-8 last:border-0"
+                            }
+                        >
                             <div className="flex justify-between items-start mb-4">
                                 <div className="flex items-center gap-4">
                                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#1E2856] to-[#2c3a7a] flex items-center justify-center text-white font-bold text-lg shadow-inner">
@@ -288,18 +295,21 @@ export default function ReviewSection({ productId }: { productId: string | numbe
                                     {new Date(review.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
                                 </span>
                             </div>
-                            <div className="ml-16 space-y-4">
-                                <p className="text-gray-600 leading-relaxed text-base italic">
+                            <div className={horizontal ? "flex-1 mt-2" : "ml-16 space-y-4"}>
+                                <p className={`text-gray-600 leading-relaxed italic ${horizontal ? 'text-sm line-clamp-3' : 'text-base'}`}>
                                     "{review.review_description}"
                                 </p>
                                 
                                 {review.media && review.media.length > 0 && (
-                                    <div className="flex flex-wrap gap-3 pt-2">
+                                    <div className="flex flex-wrap gap-2 pt-2">
                                         {review.media.map((item: any, mIdx: number) => (
                                             <div 
                                                 key={mIdx} 
                                                 onClick={() => setSelectedMedia(item)}
-                                                className="w-24 h-24 md:w-32 md:h-32 rounded-xl overflow-hidden border border-gray-100 shadow-sm relative group cursor-pointer bg-gray-50"
+                                                className={cn(
+                                                    "rounded-xl overflow-hidden border border-gray-100 shadow-sm relative group cursor-pointer bg-gray-50",
+                                                    horizontal ? "w-16 h-16" : "w-24 h-24 md:w-32 md:h-32"
+                                                )}
                                             >
                                                 {item.type === 'video' ? (
                                                     <div className="w-full h-full relative">

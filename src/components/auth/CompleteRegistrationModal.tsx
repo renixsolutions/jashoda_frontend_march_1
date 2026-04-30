@@ -108,7 +108,7 @@ export default function CompleteRegistrationModal({
           {/* Global Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-gray-400 hover:text-[#702540] transition-colors z-[110] p-2 hover:bg-gray-100 rounded-full"
+            className="absolute top-4 right-4 text-gray-400 hover:text-[#111827] transition-colors z-[110] p-2 hover:bg-gray-100 rounded-full"
             aria-label="Close"
           >
             <X className="w-6 h-6" />
@@ -117,7 +117,7 @@ export default function CompleteRegistrationModal({
           {/* Left Section - Form */}
           <div className="w-full md:w-1/2 p-8 md:p-10 flex flex-col bg-gradient-to-br from-orange-50 to-white">
             <div className="flex-1 flex flex-col justify-center">
-              <h2 className="text-3xl font-bold text-[#702540] mb-2">Almost there!</h2>
+              <h2 className="text-3xl font-bold text-[#111827] mb-2">Almost there!</h2>
               <p className="text-gray-600 mb-8">Welcome back, Please fill the missing fields.</p>
 
               <form onSubmit={handleSubmit} noValidate className="space-y-5">
@@ -148,7 +148,7 @@ export default function CompleteRegistrationModal({
                     value={formData.fullName}
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                     placeholder="Enter your full name"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#702540] focus:border-transparent bg-white text-gray-900 placeholder:text-gray-400"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#111827] focus:border-transparent bg-white text-gray-900 placeholder:text-gray-400"
                     required
                   />
                 </div>
@@ -182,7 +182,7 @@ export default function CompleteRegistrationModal({
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder="Enter your email"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#702540] focus:border-transparent bg-white text-gray-900 placeholder:text-gray-400"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#111827] focus:border-transparent bg-white text-gray-900 placeholder:text-gray-400"
                     required
                   />
                 </div>
@@ -194,16 +194,16 @@ export default function CompleteRegistrationModal({
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-[#702540] text-white py-3 px-6 rounded-lg font-medium hover:bg-[#8a3052] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-[#111827] text-white py-3 px-6 rounded-lg font-medium hover:bg-[#8a3052] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? 'Completing...' : 'Continue'}
                 </button>
 
                 <p className="text-xs text-gray-500 text-center">
                   By continuing, I agree to{' '}
-                  <Link href="/terms-and-conditions" onClick={onClose} className="text-[#702540] underline">Terms & Conditions</Link>
+                  <Link href="/terms-and-conditions" onClick={onClose} className="text-[#111827] underline">Terms & Conditions</Link>
                   {' '}&{' '}
-                  <Link href="/privacy-policy" onClick={onClose} className="text-[#702540] underline">Privacy Policy</Link>
+                  <Link href="/privacy-policy" onClick={onClose} className="text-[#111827] underline">Privacy Policy</Link>
                 </p>
               </form>
             </div>
@@ -219,9 +219,9 @@ export default function CompleteRegistrationModal({
                   className="w-[500px] h-auto object-contain"
                 />
               </div>
-              <div className="w-48 h-0.5 bg-[#702540] mb-4"></div>
+              <div className="w-48 h-0.5 bg-[#111827] mb-4"></div>
               <p className="text-xl font-semibold text-gray-800">DIAMONDS INSPIRED BY ROYALTY</p>
-              <div className="w-48 h-0.5 bg-[#702540] mt-4"></div>
+              <div className="w-48 h-0.5 bg-[#111827] mt-4"></div>
             </div>
           </div>
         </motion.div>

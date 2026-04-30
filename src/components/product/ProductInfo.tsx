@@ -95,7 +95,7 @@ export default function ProductInfo() {
                 </Button>
                 <Button
                     variant="outline"
-                    className="h-14 w-14 rounded-full border-white/20 text-white/70 hover:bg-white hover:text-[#702540] p-0 flex items-center justify-center"
+                    className="h-14 w-14 rounded-full border-white/20 text-white/70 hover:bg-white hover:text-[#111827] p-0 flex items-center justify-center"
                     onClick={() => setIsAROpen(true)}
                 >
                     <Camera className="w-6 h-6" />
@@ -113,7 +113,7 @@ export default function ProductInfo() {
                     }}
                     className={`h-14 w-14 rounded-full border border-white/20 flex items-center justify-center transition-all ${isInWishlist("1")
                         ? 'bg-rose-500 text-white border-rose-500'
-                        : 'text-white/70 hover:bg-white hover:text-[#702540]'
+                        : 'text-white/70 hover:bg-white hover:text-[#111827]'
                         }`}
                 >
                     <Heart className={`w-6 h-6 ${isInWishlist("1") ? 'fill-current' : ''}`} />
