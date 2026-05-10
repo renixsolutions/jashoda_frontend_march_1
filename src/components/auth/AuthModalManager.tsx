@@ -7,6 +7,7 @@ import CompleteRegistrationModal from './CompleteRegistrationModal';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Notification from '@/components/ui/Notification';
+import { useLenis } from 'lenis/react';
 
 type ModalState = 'welcome' | 'otp' | 'complete' | null;
 
@@ -14,7 +15,18 @@ function AuthModalManagerInner() {
   const { isAuthenticated, user, updateUser, login } = useAuth();
   const searchParams = useSearchParams();
   const router = useRouter();
+  const lenis = useLenis();
   const [currentModal, setCurrentModal] = useState<ModalState>(null);
+  
+  // Lock scroll when modal is open
+  useEffect(() => {
+    if (currentModal) {
+      lenis?.stop();
+    } else {
+      lenis?.start();
+    }
+  }, [currentModal, lenis]);
+
   const [phone, setPhone] = useState('');
   const [tempToken, setTempToken] = useState('');
   const [notification, setNotification] = useState<{

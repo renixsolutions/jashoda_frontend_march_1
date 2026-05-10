@@ -3,10 +3,13 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { api } from "@/lib/api";
+import { useLenis } from "lenis/react";
+
 
 export default function HomeVideo() {
   const [videoData, setVideoData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const lenis = useLenis();
 
   useEffect(() => {
     const fetchVideo = async () => {
@@ -19,10 +22,12 @@ export default function HomeVideo() {
         console.error("Failed to fetch home video", error);
       } finally {
         setLoading(false);
+        setTimeout(() => lenis?.resize(), 100);
       }
     };
     fetchVideo();
-  }, []);
+  }, [lenis]);
+
 
   const displayData = videoData || {
     top_text: "A Legacy of Craftsmanship",
@@ -32,8 +37,8 @@ export default function HomeVideo() {
     video_url: "/video/jashoda_video.mp4"
   };
 
-  const videoUrl = displayData.video_url.startsWith('http') 
-    ? displayData.video_url 
+  const videoUrl = displayData.video_url.startsWith('http')
+    ? displayData.video_url
     : (displayData.video_url.startsWith('/video') ? displayData.video_url : api.getMediaUrl(displayData.video_url));
 
   return (
@@ -63,16 +68,19 @@ export default function HomeVideo() {
         >
           {displayData.top_text}
         </motion.p>
-        
+
         <motion.h1
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-          className="text-4xl md:text-6xl lg:text-7xl font-serif text-white mb-6 uppercase tracking-widest leading-tight"
+          className="text-3xl md:text-6xl lg:text-7xl font-serif text-white mb-6 tracking-widest leading-tight"
         >
           {displayData.title} <br />
           <span className="text-[#C8A165]">{displayData.subtitle}</span>
         </motion.h1>
+        ...
+
+
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}

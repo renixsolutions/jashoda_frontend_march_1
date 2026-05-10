@@ -36,11 +36,11 @@ export default function RootLayout({
               <WishlistProvider>
                 <Preloader />
                 <SmoothScroll>
-                  <Suspense fallback={<div className="h-[110px] md:h-[190px]" />}>
+                  <Suspense fallback={<div className="h-[60px] md:h-[118px]" />}>
                     <Navbar />
                   </Suspense>
                   <Toaster position="top-center" />
-                  <div className="pt-[110px] md:pt-[190px]">
+                  <div className="pt-[44px] md:pt-[80px]">
                     {children}
                   </div>
                   <Footer />

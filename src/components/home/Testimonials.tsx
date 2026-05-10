@@ -5,10 +5,12 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { api } from "@/lib/api";
 import { Star } from "lucide-react";
+import { useLenis } from "lenis/react";
 
 export default function Testimonials() {
     const [testimonials, setTestimonials] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const lenis = useLenis();
 
     useEffect(() => {
         const fetchTestimonials = async () => {
@@ -21,10 +23,12 @@ export default function Testimonials() {
                 console.error("Failed to fetch testimonials", error);
             } finally {
                 setLoading(false);
+                setTimeout(() => lenis?.resize(), 100);
             }
         };
         fetchTestimonials();
-    }, []);
+    }, [lenis]);
+
 
     if (loading || testimonials.length === 0) return null;
 
@@ -51,16 +55,18 @@ export default function Testimonials() {
                             x: {
                                 repeat: Infinity,
                                 repeatType: "loop",
-                                duration: 3 * (testimonials.length > 0 ? (marqueeItems.length / testimonials.length) : 1),
+                                duration: 50, // Smoother, slower duration
                                 ease: "linear",
                             },
                         }}
+                        style={{ willChange: "transform" }}
                     >
                         {marqueeItems.map((item, index) => (
                             <div
                                 key={`${item.id}-${index}`}
-                                className="relative w-[360px] flex-shrink-0 pt-10 group px-4"
+                                className="relative w-[300px] flex-shrink-0 pt-10 group px-4"
                             >
+
                                 {/* String Segment */}
                                 <svg
                                     className="absolute top-0 left-[-50%] w-[200%] h-[40px] z-10 pointer-events-none"

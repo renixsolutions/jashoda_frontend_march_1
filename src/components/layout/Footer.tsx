@@ -15,7 +15,7 @@ export default function Footer() {
     }, []);
 
     return (
-        <footer className="relative overflow-hidden bg-[#131e42] text-white border-t border-white/10 z-20">
+        <footer className="relative overflow-hidden bg-[#131e42] text-white z-20">
             {/* Moving Sparkle Particles Layer */}
             <div className="absolute inset-0 z-0 opacity-40 pointer-events-none overflow-hidden">
                 <style dangerouslySetInnerHTML={{ __html: `
@@ -186,7 +186,13 @@ export default function Footer() {
                 </div>
 
                 <div className="border-t border-white/10 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-white/50">
-                    <p>© 2026 Jashoda Jewels. All rights reserved.</p>
+                    <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4">
+                        <p>© 2026 Jashoda Jewels. All rights reserved.</p>
+                        <span className="hidden md:block w-px h-3 bg-white/10" />
+                        <p className="text-[10px] md:text-xs">
+                            Developed & Designed by <span className="text-white/80 font-semibold tracking-wider hover:text-white transition-colors cursor-default">RENIX SOLUTIONS</span>
+                        </p>
+                    </div>
                     <div className="flex flex-wrap gap-x-8 gap-y-2 mt-4 md:mt-0 justify-center">
                         <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
                         <Link href="/return-and-refund-policy" className="hover:text-white transition-colors">Return & Refund Policy</Link>

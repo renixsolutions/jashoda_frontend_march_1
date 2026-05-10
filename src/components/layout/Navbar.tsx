@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
+import { useLenis } from "lenis/react";
 import { Search, Heart, ShoppingBag, User, MapPin, Menu, Diamond, Camera, Mic, X, LogOut, CheckCircle2, Mail, Package, ChevronRight, Sparkles, MessageSquare, Moon, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
 import MegaMenu from "./MegaMenu";
@@ -25,6 +26,7 @@ export default function Navbar() {
     const [hidden, setHidden] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
+    const lenis = useLenis();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [mobileSubMenu, setMobileSubMenu] = useState<string | null>(null);
     const [mobileFilterOpen, setMobileFilterOpen] = useState<string | null>(null);
@@ -145,6 +147,15 @@ export default function Navbar() {
         }
     };
 
+    // Lock body scroll when mobile menu is open
+    useEffect(() => {
+        if (isMobileMenuOpen) {
+            lenis?.stop();
+        } else {
+            lenis?.start();
+        }
+    }, [isMobileMenuOpen, lenis]);
+
     // Generate dynamic nav links (Genders, Occasions, and Parent Categories)
     const { visibleLinks, moreLinks } = React.useMemo(() => {
         const allLinks: { name: string; href: string; hasMegaMenu?: boolean }[] = [...STATIC_NAV_LINKS];
@@ -194,12 +205,18 @@ export default function Navbar() {
 
     useMotionValueEvent(scrollY, "change", (latest) => {
         const previous = scrollY.getPrevious() ?? 0;
-        if (latest > previous && latest > 150) {
+        const diff = latest - previous;
+        
+        // Only hide after 150px scroll and when scrolling down significantly
+        if (latest > 150 && diff > 5) {
             setHidden(true);
-        } else {
+        } 
+        // Show when scrolling up or at the top
+        else if (diff < -5 || latest < 10) {
             setHidden(false);
         }
-        setScrolled(latest > 50);
+        
+        setScrolled(latest > 20);
     });
 
     return (
@@ -217,7 +234,7 @@ export default function Navbar() {
                 )}
             >
                 {/* TOP ROW: Logo, Search, Icons */}
-                <div className="container mx-auto px-4 lg:px-6 min-h-[70px] lg:min-h-[80px] flex items-center justify-between border-b border-gray-100 py-2">
+                <div className="container mx-auto px-4 lg:px-6 min-h-[44px] lg:min-h-[52px] flex items-center justify-between border-b border-gray-100 py-0.5">
                     {/* Mobile Menu Trigger & Mobile Logo */}
                     <div className="flex md:hidden items-center gap-4">
                         <button onClick={() => setIsMobileMenuOpen(true)}>
@@ -229,7 +246,7 @@ export default function Navbar() {
                                 alt="Jashoda Jewels"
                                 className={cn(
                                     "w-auto object-contain transition-all duration-300",
-                                    scrolled ? "h-10" : "h-14"
+                                    scrolled ? "h-8" : "h-12"
                                 )}
                             />
                         </Link>
@@ -243,7 +260,7 @@ export default function Navbar() {
                                 alt="Jashoda Jewels"
                                 className={cn(
                                     "w-auto object-contain transition-all duration-300",
-                                    scrolled ? "max-h-[60px]" : "max-h-[90px]"
+                                    scrolled ? "max-h-[32px]" : "max-h-[48px]"
                                 )}
                             />
                         </Link>
@@ -258,7 +275,7 @@ export default function Navbar() {
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 onKeyDown={handleSearch}
                                 placeholder="Search for diamond jewellery"
-                                className="w-full bg-gray-50 border border-gray-200 rounded-full py-2.5 px-12 text-sm focus:outline-none focus:border-luxury-pink focus:ring-1 focus:ring-luxury-pink transition-all placeholder:text-gray-400"
+                                className="w-full bg-gray-50 border border-gray-200 rounded-full py-1 px-12 text-xs focus:outline-none focus:border-luxury-pink focus:ring-1 focus:ring-luxury-pink transition-all placeholder:text-gray-400"
                             />
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-luxury-pink transition-colors" />
                             <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-3 text-gray-400">
@@ -474,75 +491,10 @@ export default function Navbar() {
                     </div>
                 </div>
 
-                {/* Promotional Marquee */}
-                {marqueeData && marqueeData.settings.is_active && marqueeData.messages.length > 0 ? (
-                    <div 
-                        className="w-full overflow-hidden py-2 flex text-xs md:text-sm tracking-widest font-medium uppercase relative"
-                        style={{ 
-                            backgroundColor: marqueeData.settings.bg_color || '#702540', 
-                            color: marqueeData.settings.text_color || '#ffffff' 
-                        }}
-                    >
-                        <motion.div
-                            animate={{ x: ["0%", "-50%"] }}
-                            transition={{ 
-                                ease: "linear", 
-                                duration: marqueeData.settings.speed || 25, 
-                                repeat: Infinity 
-                            }}
-                            className="flex whitespace-nowrap items-center w-max"
-                        >
-                            <div className="flex gap-12 px-6 items-center">
-                                {marqueeData.messages.map((msg) => (
-                                    <React.Fragment key={msg.id}>
-                                        <span>{msg.text}</span>
-                                        <span className="opacity-60 text-[10px]">✦</span>
-                                    </React.Fragment>
-                                ))}
-                            </div>
-                            <div className="flex gap-12 px-6 items-center">
-                                {marqueeData.messages.map((msg) => (
-                                    <React.Fragment key={`repeat-${msg.id}`}>
-                                        <span>{msg.text}</span>
-                                        <span className="opacity-60 text-[10px]">✦</span>
-                                    </React.Fragment>
-                                ))}
-                            </div>
-                        </motion.div>
-                    </div>
-                ) : !marqueeData && (
-                    <div className="w-full overflow-hidden bg-[#702540] text-white py-2 flex text-xs md:text-sm tracking-widest font-medium uppercase relative">
-                        <motion.div
-                            animate={{ x: ["0%", "-50%"] }}
-                            transition={{ ease: "linear", duration: 25, repeat: Infinity }}
-                            className="flex whitespace-nowrap items-center w-max"
-                        >
-                            <div className="flex gap-12 px-6 items-center">
-                                <span>Free Shipping On Orders Above ₹50,000</span>
-                                <span className="text-white/60 text-[10px]">✦</span>
-                                <span>100% Certified Jewellery</span>
-                                <span className="text-white/60 text-[10px]">✦</span>
-                                <span>Lifetime Exchange & Buyback</span>
-                                <span className="text-white/60 text-[10px]">✦</span>
-                                <span>Secure & Insured Delivery</span>
-                                <span className="text-white/60 text-[10px]">✦</span>
-                            </div>
-                            <div className="flex gap-12 px-6 items-center">
-                                <span>Free Shipping On Orders Above ₹50,000</span>
-                                <span className="text-white/60 text-[10px]">✦</span>
-                                <span>100% Certified Jewellery</span>
-                                <span className="text-white/60 text-[10px]">✦</span>
-                                <span>Lifetime Exchange & Buyback</span>
-                                <span className="text-white/60 text-[10px]">✦</span>
-                                <span>Secure & Insured Delivery</span>
-                                <span className="text-white/60 text-[10px]">✦</span>
-                            </div>
-                        </motion.div>
-                    </div>
-                )}
+
 
                 <div className="hidden md:block border-b border-gray-100 bg-white relative">
-                    <div className="container mx-auto px-4 md:px-8 min-h-[3.5rem] py-1 flex items-center justify-center gap-4 md:gap-6 lg:gap-10 text-sm font-medium text-gray-600 flex-wrap">
+                    <div className="container mx-auto px-4 md:px-8 min-h-[1.75rem] py-0 flex items-center justify-center gap-4 md:gap-6 lg:gap-8 text-xs font-medium text-gray-600 flex-wrap">
                         {hasMounted && visibleLinks.map((link) => (
                             <div
                                 key={link.name}
@@ -586,7 +538,7 @@ export default function Navbar() {
                             >
                                 <button
                                     className={cn(
-                                        "relative flex items-center gap-2 hover:text-[#702540] transition-colors h-full px-4 group py-4",
+                                        "relative flex items-center gap-2 hover:text-[#702540] transition-colors h-full px-4 group py-1",
                                         activeMenu === "More" ? "text-[#702540]" : "text-gray-600"
                                     )}
                                 >

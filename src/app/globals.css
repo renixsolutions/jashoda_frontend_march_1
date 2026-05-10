@@ -55,10 +55,15 @@
 }
 
 @layer base {
+  html {
+    overflow-x: hidden;
+  }
+
   body {
     @apply text-white antialiased font-sans transition-colors duration-500;
-    background: linear-gradient(75deg, #BCD3E3, #02006c, #d364b2);
+    background-color: #050505;
     min-height: 100vh;
+    overflow-x: hidden;
   }
 
   h1,
@@ -72,50 +77,70 @@
 }
 
 /* --- Dark Mode Elegant UI Overrides --- */
-html.dark body {
-  background: linear-gradient(135deg, #020617, #0f172a, #1e1b4b) !important; /* Elegant dark, deep navy/purple gradient */
-}
+/* (Unifying background to solid obsidian) */
 
 /* Background Inversions */
-html.dark [class*="bg-white"], html.dark .bg-white {
-  background-color: #0f172a !important; 
+html.dark [class*="bg-white"],
+html.dark .bg-white {
+  background-color: #0f172a !important;
   border-color: #1e293b !important;
 }
-html.dark [class*="bg-white/"], html.dark .bg-white\/95 {
+
+html.dark [class*="bg-white/"],
+html.dark .bg-white\/95 {
   background-color: rgba(15, 23, 42, 0.95) !important;
 }
-html.dark [class*="bg-gray-50"], html.dark .bg-gray-50 {
-  background-color: #1e293b !important; 
+
+html.dark [class*="bg-gray-50"],
+html.dark .bg-gray-50 {
+  background-color: #1e293b !important;
   border-color: #334155 !important;
 }
-html.dark [class*="bg-gray-100"], html.dark .bg-gray-100 {
+
+html.dark [class*="bg-gray-100"],
+html.dark .bg-gray-100 {
   background-color: #334155 !important;
   border-color: #475569 !important;
 }
 
 /* Text Color Inversions */
-html.dark [class*="text-black"], html.dark .text-black,
-html.dark [class*="text-gray-900"], html.dark .text-gray-900,
-html.dark .text-charcoal, html.dark [class*="text-charcoal"],
-html.dark [class*="text-[#1E2856]"], html.dark [class*="text-[#702540]"] {
-  color: #f1f5f9 !important; /* Light brilliant gray/white */
+html.dark [class*="text-black"],
+html.dark .text-black,
+html.dark [class*="text-gray-900"],
+html.dark .text-gray-900,
+html.dark .text-charcoal,
+html.dark [class*="text-charcoal"],
+html.dark [class*="text-[#1E2856]"],
+html.dark [class*="text-[#702540]"] {
+  color: #f1f5f9 !important;
+  /* Light brilliant gray/white */
 }
-html.dark [class*="text-gray-800"], html.dark .text-gray-800 {
+
+html.dark [class*="text-gray-800"],
+html.dark .text-gray-800 {
   color: #e2e8f0 !important;
 }
-html.dark [class*="text-gray-700"], html.dark .text-gray-700 {
+
+html.dark [class*="text-gray-700"],
+html.dark .text-gray-700 {
   color: #cbd5e1 !important;
 }
-html.dark [class*="text-gray-600"], html.dark .text-gray-600 {
+
+html.dark [class*="text-gray-600"],
+html.dark .text-gray-600 {
   color: #94a3b8 !important;
 }
 
 /* Borders */
-html.dark [class*="border-gray-100"], html.dark .border-gray-100,
-html.dark [class*="border-gray-200"], html.dark .border-gray-200 {
+html.dark [class*="border-gray-100"],
+html.dark .border-gray-100,
+html.dark [class*="border-gray-200"],
+html.dark .border-gray-200 {
   border-color: #334155 !important;
 }
-html.dark [class*="border-gray-300"], html.dark .border-gray-300 {
+
+html.dark [class*="border-gray-300"],
+html.dark .border-gray-300 {
   border-color: #475569 !important;
 }
 
@@ -222,13 +247,16 @@ select::-ms-expand {
   &::-webkit-scrollbar {
     width: 4px;
   }
+
   &::-webkit-scrollbar-track {
     background: transparent;
   }
+
   &::-webkit-scrollbar-thumb {
     background: #E5E7EB;
     border-radius: 10px;
   }
+
   &::-webkit-scrollbar-thumb:hover {
     background: #D1D5DB;
   }
@@ -250,4 +278,4 @@ select::-ms-expand {
   .md\:px-6 {
     padding-inline: calc(var(--spacing, 0.25rem) * 7) !important;
   }
-}
+}

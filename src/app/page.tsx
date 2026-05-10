@@ -1,39 +1,28 @@
-import Hero from "@/components/home/Hero";
-import BenefitsStrip from "@/components/home/BenefitsStrip";
-import SilverAdBanner from "@/components/home/SilverAdBanner";
+import PremiumHero from "@/components/premium/PremiumHero";
+import TextMarquee from "@/components/premium/TextMarquee";
+import VideoSlideshow from "@/components/premium/VideoSlideshow";
+import ServiceMarquee from "@/components/premium/ServiceMarquee";
+import BentoShowcase from "@/components/premium/BentoShowcase";
+import PromoBanner from "@/components/premium/PromoBanner";
 import CategoryGrid from "@/components/home/CategoryGrid";
-import DynamicCollections from "@/components/home/DynamicCollections";
 import PromoCarousel from "@/components/home/PromoCarousel";
-import NewArrivals from "@/components/home/NewArrivals";
-import VideoAdCards from "@/components/home/VideoAdCards";
-import ImageShowcase from "@/components/home/ImageShowcase";
-import LuxuryShowcase from "@/components/home/LuxuryShowcase";
-import VideoStories from "@/components/home/VideoStories";
 import HomeVideo from "@/components/home/HomeVideo";
 import Testimonials from "@/components/home/Testimonials";
-import Footer from "@/components/layout/Footer";
-import SmoothScroll from "@/components/layout/SmoothScroll";
-import Navbar from "@/components/layout/Navbar";
-import MediaGrid from "@/components/home/MediaGrid";
+
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-transparent">
       <HomeVideo />
-      <section>
-        <Hero />
-      </section>
-      <BenefitsStrip />
-      <PromoCarousel />
-      <LuxuryShowcase />
-      <ImageShowcase />
-      <NewArrivals />
+      <TextMarquee />
+      <PremiumHero />
+
       <CategoryGrid />
-      <DynamicCollections />
-      <SilverAdBanner />
-      <VideoAdCards />
-      <VideoStories />
-      <MediaGrid />
+      <VideoSlideshow />
+      <ServiceMarquee />
+      <PromoCarousel />
+      <BentoShowcase />
+      <PromoBanner />
       <Testimonials />
     </main>
   );

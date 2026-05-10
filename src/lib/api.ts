@@ -26,12 +26,18 @@ interface ApiResponse<T> {
   }
 }
 
+// Common parameter interface
+interface QueryParams {
+  [key: string]: string | number | boolean | undefined | null;
+}
+
 // Helper to build query string
-const buildQueryString = (params: Record<string, any>) => {
+const buildQueryString = (params: QueryParams) => {
   const query = new URLSearchParams();
   Object.keys(params).forEach(key => {
-    if (params[key] !== undefined && params[key] !== null && params[key] !== '') {
-      query.append(key, String(params[key]));
+    const val = params[key];
+    if (val !== undefined && val !== null && val !== '') {
+      query.append(key, String(val));
     }
   });
   return query.toString();
