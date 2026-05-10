@@ -60,7 +60,7 @@ export default function CartPage() {
                     {/* Cart Items List */}
                     <div className="flex-1 space-y-6">
                         {cartItems.map((item) => (
-                            <div key={`${item.id}-${item.size}`} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-6 items-start">
+                            <div key={item.cart_item_id || `${item.id}-${item.selected_size}`} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-6 items-start">
                                 {/* Image */}
                                 <div className="relative w-32 h-32 flex-shrink-0 bg-gray-50 rounded-lg overflow-hidden">
                                     <Image
@@ -77,11 +77,14 @@ export default function CartPage() {
                                     <div className="flex justify-between items-start mb-2">
                                         <div>
                                             <h3 className="text-lg font-medium text-[#1E2856] mb-1">{item.name}</h3>
-                                            <p className="text-sm text-gray-500">{item.category} • {item.metalType || "Silver"}</p>
-                                            {item.size && <p className="text-sm text-gray-500 mt-1">Size: {item.size}</p>}
+                                            <p className="text-sm text-gray-500">
+                                                {item.category && `${item.category} • `}
+                                                {item.metalType || "Silver"}
+                                                {(item.selected_size || item.size) && ` • Size: ${item.selected_size || item.size}`}
+                                            </p>
                                         </div>
                                         <button
-                                            onClick={() => removeFromCart(item.id)}
+                                            onClick={() => removeFromCart(item.id, item.cart_item_id)}
                                             className="text-gray-400 hover:text-red-500 transition-colors p-1"
                                         >
                                             <Trash2 className="w-5 h-5" />
@@ -92,14 +95,14 @@ export default function CartPage() {
                                         {/* Quantity Control */}
                                         <div className="flex items-center border border-gray-200 rounded-lg h-9">
                                             <button
-                                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                                onClick={() => updateQuantity(item.id, item.quantity - 1, item.cart_item_id)}
                                                 className="w-8 h-full flex items-center justify-center text-gray-500 hover:bg-gray-50 hover:text-[#1E2856]"
                                             >
                                                 <Minus className="w-3 h-3" />
                                             </button>
                                             <span className="w-10 text-center text-sm font-medium text-[#1E2856]">{item.quantity}</span>
                                             <button
-                                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                onClick={() => updateQuantity(item.id, item.quantity + 1, item.cart_item_id)}
                                                 className="w-8 h-full flex items-center justify-center text-gray-500 hover:bg-gray-50 hover:text-[#1E2856]"
                                             >
                                                 <Plus className="w-3 h-3" />
