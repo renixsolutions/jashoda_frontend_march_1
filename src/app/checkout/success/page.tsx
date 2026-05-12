@@ -1,9 +1,19 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { CheckCircle2, Package, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 export default function CheckoutSuccessPage() {
+    const [orderNumber, setOrderNumber] = useState<string>("");
+    const [currentDate, setCurrentDate] = useState<string>("");
+
+    useEffect(() => {
+        setOrderNumber(`#ORD-${Math.floor(100000 + Math.random() * 900000)}`);
+        setCurrentDate(new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }));
+    }, []);
+
     return (
         <div className="min-h-screen pt-32 pb-24 bg-gray-50 flex flex-col items-center justify-center p-4">
             <div className="max-w-md w-full bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-gray-100 text-center">
@@ -23,11 +33,15 @@ export default function CheckoutSuccessPage() {
                     <div className="space-y-3 text-sm">
                         <div className="flex justify-between">
                             <span className="text-gray-500">Order Number</span>
-                            <span className="font-medium text-[#1E2856]">#ORD-{Math.floor(100000 + Math.random() * 900000)}</span>
+                            <span className="font-medium text-[#1E2856]">
+                                {orderNumber || <span className="w-16 h-4 bg-gray-200 animate-pulse inline-block rounded"></span>}
+                            </span>
                         </div>
                         <div className="flex justify-between">
                             <span className="text-gray-500">Date</span>
-                            <span className="font-medium text-[#1E2856]">{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                            <span className="font-medium text-[#1E2856]">
+                                {currentDate || <span className="w-24 h-4 bg-gray-200 animate-pulse inline-block rounded"></span>}
+                            </span>
                         </div>
                         <div className="flex justify-between">
                             <span className="text-gray-500">Status</span>
