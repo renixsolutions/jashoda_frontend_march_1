@@ -90,7 +90,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
             const res = await cartApi.addToCart(Number(product.id), quantity, sizeId);
             if (res.success) {
-                toast.success('Added to bag successfully');
+                toast.success(`Added ${product.name}${sizeName ? ` (Size ${sizeName})` : ''} to bag successfully`);
                 // Re-fetch to get correct item ids
                 fetchCart();
             }

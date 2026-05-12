@@ -6,6 +6,7 @@ import PDPGallery from "@/components/product/PDPGallery";
 import PDPInfo from "@/components/product/PDPInfo";
 import PDPTabs from "@/components/product/PDPTabs";
 import PDPRelated from "@/components/product/PDPRelated";
+import ReviewSection from "@/components/product/ReviewSection";
 import GlobalBreadcrumb from "@/components/layout/GlobalBreadcrumb";
 
 export const metadata: Metadata = {
@@ -66,6 +67,11 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                         <PDPTabs product={product} />
                     </div>
                 </div>
+
+                {/* Dedicated High-End Full Width Reviews Section */}
+                <section className="mt-16 pt-12 border-t border-gray-200/80 mb-20">
+                    <ReviewSection productId={product.id} />
+                </section>
 
                 <PDPRelated currentProduct={product} />
             </main>

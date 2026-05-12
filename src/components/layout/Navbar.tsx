@@ -31,6 +31,7 @@ export default function Navbar() {
     const [mobileSubMenu, setMobileSubMenu] = useState<string | null>(null);
     const [mobileFilterOpen, setMobileFilterOpen] = useState<string | null>(null);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+    const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const router = useRouter();
     const pathname = usePathname();
@@ -98,6 +99,7 @@ export default function Navbar() {
     useEffect(() => {
         setActiveMenu(null);
         setIsMobileMenuOpen(false);
+        setIsMobileSearchOpen(false);
         setMobileSubMenu(null);
     }, [pathname, searchParams]);
 
@@ -130,6 +132,7 @@ export default function Navbar() {
     const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter' && searchQuery.trim()) {
             setIsMobileMenuOpen(false); // Close mobile menu if open
+            setIsMobileSearchOpen(false);
             setShowSuggestions(false);
             router.push(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
         }
@@ -196,14 +199,10 @@ export default function Navbar() {
         }
     };
 
-    // Lock body scroll when mobile menu is open
+    // Keep body overflow native to allow flawless touch scroll propagation inside full-screen mobile WebKit overlay drawers
     useEffect(() => {
-        if (isMobileMenuOpen) {
-            lenis?.stop();
-        } else {
-            lenis?.start();
-        }
-    }, [isMobileMenuOpen, lenis]);
+        // No custom locks to ensure native touchmove events bubble freely
+    }, [isMobileMenuOpen]);
 
     // Generate dynamic nav links (Genders, Occasions, and Parent Categories)
     const { visibleLinks, moreLinks } = React.useMemo(() => {
@@ -255,16 +254,16 @@ export default function Navbar() {
     useMotionValueEvent(scrollY, "change", (latest) => {
         const previous = scrollY.getPrevious() ?? 0;
         const diff = latest - previous;
-        
+
         // Only hide after 150px scroll and when scrolling down significantly
         if (latest > 150 && diff > 5) {
             setHidden(true);
-        } 
+        }
         // Show when scrolling up or at the top
         else if (diff < -5 || latest < 10) {
             setHidden(false);
         }
-        
+
         setScrolled(latest > 20);
     });
 
@@ -332,12 +331,12 @@ export default function Navbar() {
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-luxury-pink transition-colors" />
                             <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-3 text-gray-400">
                                 <Camera className="w-4 h-4 hover:text-luxury-pink cursor-pointer transition-colors" />
-                                <Mic 
+                                <Mic
                                     onClick={startVoiceSearch}
                                     className={cn(
                                         "w-4 h-4 cursor-pointer transition-all duration-300",
                                         isListening ? "text-[#F04F69] animate-pulse scale-125" : "hover:text-luxury-pink"
-                                    )} 
+                                    )}
                                 />
                             </div>
 
@@ -364,8 +363,8 @@ export default function Navbar() {
                                                         className="px-4 py-3 hover:bg-gray-50 cursor-pointer flex items-center gap-4 transition-colors border-b border-gray-50 last:border-0"
                                                     >
                                                         <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0 border border-gray-100">
-                                                            <img 
-                                                                src={api.getMediaUrl(item.images?.[0] || item.image_url)} 
+                                                            <img
+                                                                src={api.getMediaUrl(item.images?.[0] || item.image_url)}
                                                                 alt={item.name}
                                                                 className="w-full h-full object-cover"
                                                                 onError={(e) => {
@@ -425,6 +424,14 @@ export default function Navbar() {
                         </button>
                         <button className="hidden lg:block text-charcoal hover:text-luxury-pink transition-colors" title="Stores">
                             <MapPin className="w-5 h-5" />
+                        </button>
+                        {/* Mobile Search Icon Trigger */}
+                        <button
+                            onClick={() => setIsMobileSearchOpen(!isMobileSearchOpen)}
+                            className="block md:hidden text-charcoal hover:text-luxury-pink transition-colors relative cursor-pointer"
+                            title="Search"
+                        >
+                            <Search className="w-5 h-5" />
                         </button>
                         <button
                             onClick={() => {
@@ -549,6 +556,72 @@ export default function Navbar() {
                     </div>
                 </div>
 
+                {/* Mobile Expanded Search Bar Strip */}
+                <AnimatePresence>
+                    {isMobileSearchOpen && (
+                        <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.25 }}
+                            className="block md:hidden border-b border-gray-100 bg-white px-4 py-2.5 overflow-hidden"
+                        >
+                            <div className="relative flex items-center">
+                                <input
+                                    type="text"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    onKeyDown={handleSearch}
+                                    placeholder={isListening ? "Listening..." : "Search jewellery..."}
+                                    className={cn(
+                                        "w-full bg-gray-50 border border-gray-200 rounded-xl py-2.5 pl-10 pr-10 text-xs focus:outline-none focus:border-[#702540] transition-all",
+                                        isListening && "border-luxury-pink ring-1 ring-luxury-pink"
+                                    )}
+                                    autoFocus
+                                />
+                                <Search className="absolute left-3 w-4 h-4 text-gray-400 pointer-events-none" />
+                                <Mic
+                                    onClick={startVoiceSearch}
+                                    className={cn(
+                                        "absolute right-3 w-4 h-4 cursor-pointer transition-colors",
+                                        isListening ? "text-[#F04F69] animate-pulse" : "text-gray-400 hover:text-[#702540]"
+                                    )}
+                                />
+                            </div>
+
+                            {/* Live Mobile Search Suggestions */}
+                            {showSuggestions && suggestions.length > 0 && (
+                                <div data-lenis-prevent="true" className="mt-2 border border-gray-100 rounded-xl bg-white max-h-60 overflow-y-auto divide-y divide-gray-50 shadow-sm">
+                                    {suggestions.map((item) => (
+                                        <div
+                                            key={item.id}
+                                            onClick={() => {
+                                                setIsMobileSearchOpen(false);
+                                                setShowSuggestions(false);
+                                                router.push(`/shop/${item.id}`);
+                                            }}
+                                            className="px-3 py-2 flex items-center gap-3 cursor-pointer hover:bg-gray-50 transition-colors"
+                                        >
+                                            <img
+                                                src={api.getMediaUrl(item.images?.[0] || item.image_url)}
+                                                alt={item.name}
+                                                className="w-8 h-8 rounded-lg object-cover bg-gray-100 shrink-0"
+                                                onError={(e) => {
+                                                    (e.target as HTMLImageElement).src = '/luxury-product-thumb.png';
+                                                }}
+                                            />
+                                            <div className="min-w-0 flex-1">
+                                                <p className="text-xs font-bold text-gray-900 truncate">{item.name}</p>
+                                                <p className="text-[10px] text-[#702540] font-bold">{item.price_label || `₹${Number(item.price).toLocaleString()}`}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
 
 
                 <div className="hidden md:block border-b border-gray-100 bg-white relative">
@@ -565,13 +638,13 @@ export default function Navbar() {
                                     className={cn(
                                         "relative flex items-center gap-2 hover:text-[#702540] transition-colors h-full px-2 group",
                                         activeMenu === link.name ? "text-[#702540]" : "hover:text-[#702540]",
-                                        (link.name.toLowerCase() === "gift" || link.name.toLowerCase() === "gifting") ? "text-red-500 font-semibold" : 
-                                        (link.name.toLowerCase() === "wedding" || link.name.toLowerCase() === "party wear") ? "text-[#702540] font-semibold" : ""
+                                        (link.name.toLowerCase() === "gift" || link.name.toLowerCase() === "gifting") ? "text-red-500 font-semibold" :
+                                            (link.name.toLowerCase() === "wedding" || link.name.toLowerCase() === "party wear") ? "text-[#702540] font-semibold" : ""
                                     )}
                                 >
                                     {link.name}
                                     {activeMenu === link.name && (
-                                        <motion.div 
+                                        <motion.div
                                             layoutId="nav-underline"
                                             className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#702540]"
                                             initial={false}
@@ -589,7 +662,7 @@ export default function Navbar() {
                         ))}
 
                         {hasMounted && moreLinks.length > 0 && (
-                            <div 
+                            <div
                                 className="h-full flex items-center relative"
                                 onMouseEnter={() => setActiveMenu("More")}
                                 onMouseLeave={() => setActiveMenu(null)}
@@ -603,7 +676,7 @@ export default function Navbar() {
                                     More
                                     <ChevronRight className={cn("w-4 h-4 transition-transform duration-300", activeMenu === "More" && "rotate-90")} />
                                     {activeMenu === "More" && (
-                                        <motion.div 
+                                        <motion.div
                                             layoutId="nav-underline"
                                             className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#702540]"
                                             initial={false}
@@ -650,21 +723,27 @@ export default function Navbar() {
             <AnimatePresence>
                 {isMobileMenuOpen && (
                     <motion.div
+                        data-lenis-prevent="true"
                         initial={{ x: "-100%" }}
                         animate={{ x: 0 }}
                         exit={{ x: "-100%" }}
                         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        className="fixed inset-0 z-[60] bg-white text-charcoal flex flex-col pt-6 px-6 overflow-y-auto"
+                        className="fixed inset-0 z-[60] bg-white text-charcoal overflow-y-auto px-6 pt-6 pb-40 overscroll-none custom-scrollbar"
+                        style={{ WebkitOverflowScrolling: 'touch' }}
                     >
-                        <div className="flex justify-between items-center mb-10">
+                        {/* Header */}
+                        <div className="flex justify-between items-center pb-8 shrink-0 border-b border-gray-50">
                             <img src="/jashoda-logo.png" alt="Logo" className="h-10 w-auto" />
                             <button
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className="p-2 text-gray-500 hover:text-charcoal"
+                                className="p-2 text-gray-500 hover:text-charcoal cursor-pointer"
                             >
                                 <X size={28} />
                             </button>
                         </div>
+
+                        {/* Search Container Padding */}
+                        <div className="pt-6">
 
                         {/* Search for Mobile */}
                         <div className="mb-8 relative" ref={mobileSearchRef}>
@@ -681,12 +760,12 @@ export default function Navbar() {
                             />
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                             <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                                <Mic 
+                                <Mic
                                     onClick={startVoiceSearch}
                                     className={cn(
                                         "w-5 h-5 cursor-pointer transition-all",
                                         isListening ? "text-[#F04F69] animate-pulse" : "text-gray-400"
-                                    )} 
+                                    )}
                                 />
                             </div>
 
@@ -694,10 +773,11 @@ export default function Navbar() {
                             <AnimatePresence>
                                 {showSuggestions && searchQuery.trim() && (
                                     <motion.div
+                                        data-lenis-prevent="true"
                                         initial={{ opacity: 0, y: -5 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -5 }}
-                                        className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden z-50"
+                                        className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden z-50 max-h-80 overflow-y-auto"
                                     >
                                         {isSuggestionsLoading ? (
                                             <div className="p-4 text-center text-sm text-gray-500">Loading suggestions...</div>
@@ -714,8 +794,8 @@ export default function Navbar() {
                                                         className="px-4 py-4 border-b border-gray-50 hover:bg-gray-50 cursor-pointer flex items-center gap-4 transition-colors"
                                                     >
                                                         <div className="w-14 h-14 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0 border border-gray-100">
-                                                            <img 
-                                                                src={api.getMediaUrl(item.images?.[0] || item.image_url)} 
+                                                            <img
+                                                                src={api.getMediaUrl(item.images?.[0] || item.image_url)}
                                                                 alt={item.name}
                                                                 className="w-full h-full object-cover"
                                                                 onError={(e) => {
@@ -794,7 +874,7 @@ export default function Navbar() {
                                                     <div className="flex flex-col gap-2 p-2">
                                                         {/* Category Section */}
                                                         <div className="flex flex-col">
-                                                            <button 
+                                                            <button
                                                                 onClick={() => setMobileFilterOpen(mobileFilterOpen === 'cat' ? null : 'cat')}
                                                                 className="flex items-center justify-between p-3 text-sm font-bold text-[#1E2856] uppercase tracking-wider bg-white rounded-lg border border-gray-100"
                                                             >
@@ -804,8 +884,8 @@ export default function Navbar() {
                                                             {mobileFilterOpen === 'cat' && (
                                                                 <div className="grid grid-cols-2 gap-2 p-2">
                                                                     {categories.map(c => (
-                                                                        <Link 
-                                                                            key={c.id} 
+                                                                        <Link
+                                                                            key={c.id}
                                                                             href={`/shop?category=${c.slug}`}
                                                                             onClick={() => setIsMobileMenuOpen(false)}
                                                                             className="p-2 text-xs bg-white border border-gray-50 rounded-md text-gray-600 hover:text-[#702540]"
@@ -813,7 +893,7 @@ export default function Navbar() {
                                                                             {c.name}
                                                                         </Link>
                                                                     ))}
-                                                                    <Link 
+                                                                    <Link
                                                                         href="/shop"
                                                                         onClick={() => setIsMobileMenuOpen(false)}
                                                                         className="p-2 text-xs bg-[#702540]/5 border border-[#702540]/20 rounded-md text-[#702540] font-bold text-center col-span-2"
@@ -826,7 +906,7 @@ export default function Navbar() {
 
                                                         {/* Price Section */}
                                                         <div className="flex flex-col">
-                                                            <button 
+                                                            <button
                                                                 onClick={() => setMobileFilterOpen(mobileFilterOpen === 'price' ? null : 'price')}
                                                                 className="flex items-center justify-between p-3 text-sm font-bold text-[#1E2856] uppercase tracking-wider bg-white rounded-lg border border-gray-100"
                                                             >
@@ -841,7 +921,7 @@ export default function Navbar() {
                                                                         { label: "₹25k - ₹50k", min: 25000, max: 50000 },
                                                                         { label: "Above ₹50k", min: 50000, max: 1000000 }
                                                                     ].map(range => (
-                                                                        <Link 
+                                                                        <Link
                                                                             key={range.label}
                                                                             href={`/shop?min=${range.min}&max=${range.max}`}
                                                                             onClick={() => setIsMobileMenuOpen(false)}
@@ -857,7 +937,7 @@ export default function Navbar() {
 
                                                         {/* Gender Section */}
                                                         <div className="flex flex-col">
-                                                            <button 
+                                                            <button
                                                                 onClick={() => setMobileFilterOpen(mobileFilterOpen === 'gender' ? null : 'gender')}
                                                                 className="flex items-center justify-between p-3 text-sm font-bold text-[#1E2856] uppercase tracking-wider bg-white rounded-lg border border-gray-100"
                                                             >
@@ -867,7 +947,7 @@ export default function Navbar() {
                                                             {mobileFilterOpen === 'gender' && (
                                                                 <div className="grid grid-cols-2 gap-2 p-2">
                                                                     {genders.map(g => (
-                                                                        <Link 
+                                                                        <Link
                                                                             key={g.id}
                                                                             href={`/shop?gender=${g.slug}`}
                                                                             onClick={() => setIsMobileMenuOpen(false)}
@@ -882,7 +962,7 @@ export default function Navbar() {
 
                                                         {/* Occasion Section */}
                                                         <div className="flex flex-col">
-                                                            <button 
+                                                            <button
                                                                 onClick={() => setMobileFilterOpen(mobileFilterOpen === 'occ' ? null : 'occ')}
                                                                 className="flex items-center justify-between p-3 text-sm font-bold text-[#1E2856] uppercase tracking-wider bg-white rounded-lg border border-gray-100"
                                                             >
@@ -892,7 +972,7 @@ export default function Navbar() {
                                                             {mobileFilterOpen === 'occ' && (
                                                                 <div className="grid grid-cols-2 gap-2 p-2">
                                                                     {occasions.map(o => (
-                                                                        <Link 
+                                                                        <Link
                                                                             key={o.id}
                                                                             href={`/shop?occasion=${o.slug}`}
                                                                             onClick={() => setIsMobileMenuOpen(false)}
@@ -920,12 +1000,12 @@ export default function Navbar() {
                                     <span className="w-8 h-[1px] bg-luxury-pink"></span>
                                     <span className="text-[10px] font-bold uppercase tracking-widest text-[#702540]">Featured Collections</span>
                                 </div>
-                                <Link 
-                                    href={promos[0].link_url || "/shop"} 
+                                <Link
+                                    href={promos[0].link_url || "/shop"}
                                     onClick={() => setIsMobileMenuOpen(false)}
                                     className="block group relative aspect-video rounded-2xl overflow-hidden shadow-lg"
                                 >
-                                    <video 
+                                    <video
                                         src={promos[0].video_url.startsWith('http') ? promos[0].video_url : `${process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '') || 'http://localhost:3000'}${promos[0].video_url.startsWith('/') ? '' : '/'}${promos[0].video_url}`}
                                         className="w-full h-full object-cover"
                                         autoPlay
@@ -944,8 +1024,9 @@ export default function Navbar() {
                             </div>
                         )}
 
-                        <div className="mt-auto py-8 text-center text-xs text-gray-400">
+                        <div className="mt-16 pt-4 border-t border-gray-50 py-8 text-center text-xs text-gray-400 shrink-0">
                             <p>© 2024 Jashoda Jewels</p>
+                        </div>
                         </div>
                     </motion.div>
                 )}
