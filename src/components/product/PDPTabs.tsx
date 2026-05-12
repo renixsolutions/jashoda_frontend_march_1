@@ -107,22 +107,6 @@ export default function PDPTabs({ product }: { product: Product }) {
                     </div>
                 )}
             </div>
-            {/* Ratings & Reviews Section */}
-            <div className="border-b border-gray-200">
-                <button
-                    onClick={() => toggleSection("reviews")}
-                    className="w-full py-4 flex justify-between items-center text-left"
-                >
-                    <span className="text-xs font-bold tracking-wider text-[#1E2856] uppercase">Ratings & Reviews</span>
-                    {openSection === "reviews" ? <ChevronUp className="w-4 h-4 text-gray-500" /> : <ChevronDown className="w-4 h-4 text-gray-500" />}
-                </button>
-
-                {openSection === "reviews" && (
-                    <div className="pb-6">
-                        <ReviewSection productId={product.id} />
-                    </div>
-                )}
-            </div>
         </div>
     );
 }

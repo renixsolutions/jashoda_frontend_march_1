@@ -58,12 +58,12 @@ export default function FilterDropdown({
             <div className={cn(
                 "flex items-center gap-2 rounded-full border transition-all shrink-0 h-10 overflow-hidden shadow-sm",
                 active
-                    ? "bg-rose-50 border-[#702540] text-[#702540]"
-                    : "bg-white border-[#E0E0E0] text-[#404040] hover:border-[#702540]"
+                    ? "bg-rose-50 border-[#111827] text-[#111827]"
+                    : "bg-white border-[#E0E0E0] text-[#404040] hover:border-[#111827]"
             )}>
                 <button
                     onClick={() => setIsOpen(!isOpen)}
-                    className="flex items-center gap-2 pl-6 pr-4 h-full text-[11px] font-bold uppercase tracking-widest hover:text-[#702540] transition-colors"
+                    className="flex items-center gap-2 pl-6 pr-4 h-full text-[11px] font-bold uppercase tracking-widest hover:text-[#111827] transition-colors"
                 >
                     <span className="max-w-[120px] truncate">{displayLabel}</span>
                     <ChevronDown className={cn("w-3.5 h-3.5 transition-transform duration-300", isOpen && "rotate-180")} />
@@ -75,7 +75,7 @@ export default function FilterDropdown({
                             e.stopPropagation();
                             onClear();
                         }}
-                        className="h-full px-3 border-l border-[#702540]/20 flex items-center justify-center hover:bg-[#702540] hover:text-white transition-all group"
+                        className="h-full px-3 border-l border-[#111827]/20 flex items-center justify-center hover:bg-[#111827] hover:text-white transition-all group"
                         title="Clear filter"
                     >
                         <X className="w-3.5 h-3.5" />
@@ -100,7 +100,7 @@ export default function FilterDropdown({
                                         className={cn(
                                             "w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all text-left",
                                             tempValue === option.value
-                                                ? "bg-rose-50 text-[#702540] font-bold"
+                                                ? "bg-rose-50 text-[#111827] font-bold"
                                                 : "text-gray-600 hover:bg-gray-50"
                                         )}
                                     >
@@ -114,7 +114,7 @@ export default function FilterDropdown({
                         <div className="p-4 border-t border-gray-100 bg-[#FBFBFB] flex gap-2">
                             <button
                                 onClick={handleApply}
-                                className="flex-1 bg-[#702540] text-white py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-[#5a1d33] transition-colors shadow-lg active:scale-95"
+                                className="flex-1 bg-[#111827] text-white py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-[#5a1d33] transition-colors shadow-lg active:scale-95"
                             >
                                 Apply Filter
                             </button>

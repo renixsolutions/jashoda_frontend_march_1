@@ -349,6 +349,44 @@ export const api = {
     return handleResponse(res, 'Failed to delete promo');
   },
 
+  // Admin Banners (Hero & Promo Carousel)
+  adminGetBanners: async (activeOnly: boolean = false, type?: string) => {
+    const params: any = { activeOnly };
+    if (type) params.type = type;
+    const queryString = buildQueryString(params);
+    const res = await fetch(`${BASE_URL}/admin/banners?${queryString}`, {
+      headers: getAuthHeaders(),
+      cache: 'no-store'
+    });
+    return handleResponse(res, 'Failed to fetch admin banners');
+  },
+
+  adminCreateBanner: async (data: any) => {
+    const res = await fetch(`${BASE_URL}/admin/banners`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res, 'Failed to create banner');
+  },
+
+  adminUpdateBanner: async (id: number | string, data: any) => {
+    const res = await fetch(`${BASE_URL}/admin/banners/${id}`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res, 'Failed to update banner');
+  },
+
+  adminDeleteBanner: async (id: number | string) => {
+    const res = await fetch(`${BASE_URL}/admin/banners/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders(),
+    });
+    return handleResponse(res, 'Failed to delete banner');
+  },
+
   // Admin Home Ad Cards
   adminGetHomeAds: async (activeOnly: boolean = false) => {
     const res = await fetch(`${BASE_URL}/admin/home-ads?activeOnly=${activeOnly}`, {
@@ -539,11 +577,11 @@ export const cartApi = {
     return handleResponse(res, 'Failed to fetch cart');
   },
 
-  addToCart: async (productId: number, quantity: number = 1) => {
+  addToCart: async (productId: number, quantity: number = 1, sizeId?: number) => {
     const res = await fetch(`${BASE_URL}/cart/items`, {
       method: 'POST',
       headers: getAuthHeaders(),
-      body: JSON.stringify({ product_id: productId, quantity }),
+      body: JSON.stringify({ product_id: productId, quantity, size_id: sizeId }),
     });
     return handleResponse(res, 'Failed to add to cart');
   },
@@ -661,6 +699,31 @@ export const usersApi = {
     });
     return handleResponse(res, 'Failed to set default address');
   },
+
+  adminGetUsers: async (params: any = {}) => {
+    const queryString = buildQueryString(params);
+    const res = await fetch(`${BASE_URL}/users?${queryString}`, {
+      headers: getAuthHeaders(),
+      cache: 'no-store'
+    });
+    return handleResponse(res, 'Failed to fetch users');
+  },
+
+  adminGetUserCoupons: async (userId: number | string) => {
+    const res = await fetch(`${BASE_URL}/users/${userId}/coupons`, {
+      headers: getAuthHeaders(),
+      cache: 'no-store'
+    });
+    return handleResponse(res, 'Failed to fetch user coupons');
+  },
+
+  adminResetUserCoupon: async (userId: number | string, couponId: number | string) => {
+    const res = await fetch(`${BASE_URL}/users/${userId}/coupons/${couponId}/reset`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+    });
+    return handleResponse(res, 'Failed to reset user coupon');
+  },
 };
 
 // --- ORDERS API ---
@@ -699,3 +762,69 @@ export const ordersApi = {
     return handleResponse(res, 'Failed to fetch order details');
   },
 };
+
+// --- OFFERS & COUPONS API ---
+export const offersApi = {
+  // Public/User Offers
+  getAvailableOffers: async (params: { category_id?: number, gender_id?: number, collection_id?: number } = {}) => {
+    const queryString = buildQueryString(params);
+    const res = await fetch(`${BASE_URL}/offers?${queryString}`, {
+      headers: getAuthHeaders(),
+      cache: 'no-store'
+    });
+    return handleResponse(res, 'Failed to fetch available offers');
+  },
+
+  validateCoupon: async (code: string, cartTotal: number) => {
+    const res = await fetch(`${BASE_URL}/offers/validate`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ code, cartTotal }),
+    });
+    return handleResponse(res, 'Invalid coupon code');
+  },
+
+  // Admin Offers
+  adminGetOffers: async () => {
+    const res = await fetch(`${BASE_URL}/admin/offers`, {
+      headers: getAuthHeaders(),
+      cache: 'no-store'
+    });
+    return handleResponse(res, 'Failed to fetch admin offers');
+  },
+
+  adminCreateOffer: async (data: any) => {
+    const res = await fetch(`${BASE_URL}/admin/offers`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res, 'Failed to create offer');
+  },
+
+  adminUpdateOffer: async (id: number | string, data: any) => {
+    const res = await fetch(`${BASE_URL}/admin/offers/${id}`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res, 'Failed to update offer');
+  },
+
+  adminDeleteOffer: async (id: number | string) => {
+    const res = await fetch(`${BASE_URL}/admin/offers/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders(),
+    });
+    return handleResponse(res, 'Failed to delete offer');
+  },
+
+  getOfferStats: async () => {
+    const res = await fetch(`${BASE_URL}/admin/offers/stats`, {
+      headers: getAuthHeaders(),
+      cache: 'no-store'
+    });
+    return handleResponse(res, 'Failed to fetch offer statistics');
+  },
+};
+

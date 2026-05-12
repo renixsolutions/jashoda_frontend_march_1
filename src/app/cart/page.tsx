@@ -8,12 +8,29 @@ import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { ApplyOfferModal } from "@/components/offers/ApplyOfferModal";
+import { Ticket, X } from "lucide-react";
 
 export default function CartPage() {
-    const { cartItems, updateQuantity, removeFromCart, totalPrice, totalItems } = useCart();
+    const { 
+        cartItems, 
+        updateQuantity, 
+        removeFromCart, 
+        totalPrice, 
+        totalItems, 
+        appliedCoupon, 
+        removeCoupon,
+        discountAmount,
+        taxAmount,
+        subtotal
+    } = useCart();
     const { isAuthenticated, isLoading, promptLogin } = useAuth();
     const router = useRouter();
+
+    const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
+
+    const finalTotal = totalPrice; // CartContext's totalPrice is now subtotal - discount + tax
 
     useEffect(() => {
         if (!isLoading && !isAuthenticated) {
@@ -135,22 +152,51 @@ export default function CartPage() {
                             <div className="space-y-4 mb-6">
                                 <div className="flex justify-between text-gray-600">
                                     <span>Subtotal</span>
-                                    <span>₹{totalPrice.toLocaleString()}</span>
+                                    <span>₹{subtotal.toLocaleString()}</span>
                                 </div>
                                 <div className="flex justify-between text-gray-600">
                                     <span>Shipping</span>
                                     <span className="text-green-600">Free</span>
                                 </div>
                                 <div className="flex justify-between text-gray-600">
-                                    <span>Tax (GST)</span>
-                                    <span>Calculated at checkout</span>
+                                    <span>Tax (GST 3% Added)</span>
+                                    <span>₹{Math.round(taxAmount).toLocaleString()}</span>
                                 </div>
+
+                                {appliedCoupon ? (
+                                    <div className="flex justify-between items-center bg-emerald-50 p-3 rounded-lg border border-emerald-100">
+                                        <div className="flex flex-col">
+                                            <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Coupon Applied</span>
+                                            <span className="text-sm font-bold text-[#1E2856]">{appliedCoupon.code}</span>
+                                        </div>
+                                        <div className="flex items-center gap-4">
+                                            <span className="text-sm font-bold text-emerald-600">-₹{discountAmount.toLocaleString()}</span>
+                                            <button 
+                                                onClick={() => removeCoupon()}
+                                                className="p-1 hover:bg-emerald-100 rounded-full text-emerald-600"
+                                            >
+                                                <X className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <button 
+                                        onClick={() => setIsOfferModalOpen(true)}
+                                        className="w-full flex items-center justify-between p-3 border border-dashed border-gray-300 rounded-lg hover:border-[#D4AF37] hover:bg-zinc-50 transition-all text-gray-500 group"
+                                    >
+                                        <div className="flex items-center gap-2">
+                                            <Ticket className="w-4 h-4 text-gray-400 group-hover:text-[#D4AF37]" />
+                                            <span className="text-xs font-medium">Have a promo code?</span>
+                                        </div>
+                                        <span className="text-[10px] font-bold text-[#D4AF37] uppercase">Apply</span>
+                                    </button>
+                                )}
                             </div>
 
                             <div className="border-t border-gray-100 pt-6 mb-8">
                                 <div className="flex justify-between items-end">
                                     <span className="text-lg font-medium text-[#1E2856]">Total</span>
-                                    <span className="text-2xl font-bold text-[#1E2856] font-serif">₹{totalPrice.toLocaleString()}</span>
+                                    <span className="text-2xl font-bold text-[#1E2856] font-serif">₹{finalTotal.toLocaleString()}</span>
                                 </div>
                             </div>
 
@@ -167,6 +213,13 @@ export default function CartPage() {
                     </div>
                 </div>
             </div>
+
+            <ApplyOfferModal 
+                isOpen={isOfferModalOpen} 
+                onClose={() => setIsOfferModalOpen(false)} 
+                cartTotal={subtotal}
+                onApply={(discount) => {}} // No longer needed as ApplyOfferModal will handle it
+            />
         </div>
     );
 }

@@ -6,37 +6,74 @@ import gsap from 'gsap'
 import { HERO_SLIDES } from './slides'
 import Magnetic from './Magnetic'
 import RotatingLogo from './RotatingLogo'
+import { api } from "@/lib/api"
+import { useRouter } from "next/navigation"
 
 const PremiumHero = () => {
+  const [banners, setBanners] = useState<any[]>([])
   const [currentSlide, setCurrentSlide] = useState(0)
   const [direction, setDirection] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [imageError, setImageError] = useState(false)
   const titleRef = useRef<HTMLHeadingElement>(null)
+  const router = useRouter()
 
   const { scrollY } = useScroll()
   const scale = useTransform(scrollY, [0, 600], [1, 1.15])
   const imageOpacity = useTransform(scrollY, [0, 600], [0.8, 0.4])
 
+  useEffect(() => {
+    const fetchBanners = async () => {
+      try {
+        const response = await api.getBanners(true, 'MAIN_HERO')
+        if (response.success && response.data.length > 0) {
+          setBanners(response.data)
+        } else {
+          // Fallback to static slides if no banners found in DB
+          setBanners(HERO_SLIDES.map(s => ({
+            ...s,
+            title: s.name,
+            brand_text: s.category,
+            image_url: s.image,
+            cta_text: "View Masterpiece"
+          })))
+        }
+      } catch (error) {
+        console.error("Error fetching hero banners:", error)
+        setBanners(HERO_SLIDES.map(s => ({
+          ...s,
+          title: s.name,
+          brand_text: s.category,
+          image_url: s.image,
+          cta_text: "View Masterpiece"
+        })))
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchBanners()
+  }, [])
+
   const paginate = (newDirection: number) => {
-    if (isAnimating) return
+    if (isAnimating || banners.length <= 1) return
     setImageError(false)
     setDirection(newDirection)
-    setCurrentSlide((prev) => (prev + newDirection + HERO_SLIDES.length) % HERO_SLIDES.length)
+    setCurrentSlide((prev) => (prev + newDirection + banners.length) % banners.length)
   }
 
   useEffect(() => {
-    if (isAnimating) return
+    if (isAnimating || banners.length <= 1) return
     const timer = setInterval(() => {
       paginate(1)
     }, 8000)
     return () => clearInterval(timer)
-  }, [currentSlide, isAnimating])
+  }, [currentSlide, isAnimating, banners.length])
 
   useEffect(() => {
-    if (titleRef.current) {
-      const text = HERO_SLIDES[currentSlide].name
-      titleRef.current.innerHTML = text.split('').map(char =>
+    if (titleRef.current && banners[currentSlide]) {
+      const text = banners[currentSlide].title || banners[currentSlide].name || ""
+      titleRef.current.innerHTML = text.split('').map((char: string) =>
         `<span class="char inline-block">${char === ' ' ? '&nbsp;' : char}</span>`
       ).join('')
 
@@ -45,7 +82,21 @@ const PremiumHero = () => {
         { y: 0, opacity: 1, stagger: 0.03, duration: 1, ease: "power4.out", delay: 0.5 }
       )
     }
-  }, [currentSlide])
+  }, [currentSlide, banners])
+
+  const handleBannerClick = () => {
+    const banner = banners[currentSlide]
+    if (!banner) return
+
+    const params = new URLSearchParams()
+    if (banner.category_id) params.append('category', banner.category_id)
+    if (banner.subcategory_id) params.append('subcategory', banner.subcategory_id)
+    if (banner.gender_id) params.append('gender', banner.gender_id)
+    if (banner.occasion_id) params.append('occasion', banner.occasion_id)
+
+    const queryString = params.toString()
+    router.push(`/shop${queryString ? `?${queryString}` : ''}`)
+  }
 
   const slideVariants = {
     enter: (direction: number) => ({
@@ -82,6 +133,16 @@ const PremiumHero = () => {
     })
   }
 
+  if (loading) {
+    return (
+      <section className="relative h-[96vh] w-[98%] mx-auto mt-2 md:mt-4 rounded-t-[32px] md:rounded-t-[64px] overflow-hidden bg-[#09090B] flex items-center justify-center">
+        <div className="w-16 h-16 border-2 border-white/5 border-t-white rounded-full animate-spin" />
+      </section>
+    )
+  }
+
+  if (banners.length === 0) return null
+
   return (
     <section className="relative h-[96vh] w-[98%] mx-auto mt-2 md:mt-4 rounded-t-[32px] md:rounded-t-[64px] overflow-hidden bg-[#09090B] z-0 shadow-2xl">
       <AnimatePresence initial={false} custom={direction} onExitComplete={() => setIsAnimating(false)}>
@@ -99,8 +160,8 @@ const PremiumHero = () => {
           <div className="absolute inset-0 z-0 bg-[#09090B]">
             {!imageError ? (
               <motion.img
-                src={HERO_SLIDES[currentSlide].image}
-                alt={HERO_SLIDES[currentSlide].name}
+                src={api.getMediaUrl(banners[currentSlide].image_url || banners[currentSlide].image)}
+                alt={banners[currentSlide].title || banners[currentSlide].name}
                 onError={() => setImageError(true)}
                 style={{ scale, opacity: imageOpacity }}
                 className="w-full h-full object-cover transition-all duration-[3000ms]"
@@ -120,7 +181,7 @@ const PremiumHero = () => {
               className="mb-8"
             >
               <span className="text-white/60 text-[10px] md:text-xs uppercase font-black tracking-[1em]">
-                {HERO_SLIDES[currentSlide].category}
+                {banners[currentSlide].brand_text || banners[currentSlide].category}
               </span>
             </motion.div>
 
@@ -129,11 +190,9 @@ const PremiumHero = () => {
                 ref={titleRef}
                 className="text-[10vw] md:text-[8vw] font-serif italic text-white leading-tight tracking-tight px-4"
               >
-                {HERO_SLIDES[currentSlide].name}
+                {banners[currentSlide].title || banners[currentSlide].name}
               </h1>
             </div>
-
-
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -141,7 +200,7 @@ const PremiumHero = () => {
               transition={{ delay: 1.5, duration: 1.2 }}
               className="text-neutral-400 text-xs md:text-sm max-w-lg mx-auto font-light tracking-[0.2em] leading-relaxed mb-16 italic"
             >
-              {HERO_SLIDES[currentSlide].description}
+              {banners[currentSlide].description}
             </motion.p>
 
             <motion.div
@@ -150,8 +209,13 @@ const PremiumHero = () => {
               transition={{ delay: 1.8, duration: 1 }}
             >
               <Magnetic>
-                <button className="group relative px-12 py-4 rounded-full border border-white/20 text-white uppercase text-[9px] tracking-[0.5em] font-bold overflow-hidden transition-all duration-700 hover:border-white">
-                  <span className="relative z-10 group-hover:text-black transition-colors duration-500">View Masterpiece</span>
+                <button 
+                  onClick={handleBannerClick}
+                  className="group relative px-12 py-4 rounded-full border border-white/20 text-white uppercase text-[9px] tracking-[0.5em] font-bold overflow-hidden transition-all duration-700 hover:border-white"
+                >
+                  <span className="relative z-10 group-hover:text-black transition-colors duration-500">
+                    {banners[currentSlide].cta_text || "View Masterpiece"}
+                  </span>
                   <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-700" />
                 </button>
               </Magnetic>
@@ -191,11 +255,10 @@ const PremiumHero = () => {
                   exit={{ opacity: 0, y: -5 }}
                   className="text-[10px] tracking-[0.2em] font-bold text-white whitespace-nowrap"
                 >
-                  {HERO_SLIDES[currentSlide].name}
+                  {banners[currentSlide].title || banners[currentSlide].name}
                 </motion.span>
               </AnimatePresence>
             </div>
-
 
             <button
               onClick={() => paginate(1)}
@@ -205,11 +268,11 @@ const PremiumHero = () => {
             </button>
           </div>
 
-          {/* Desktop View: Full List (Original) */}
+          {/* Desktop View: Full List */}
           <div className="hidden md:flex items-center gap-3">
-            {HERO_SLIDES.map((slide, index) => (
+            {banners.map((slide, index) => (
               <button
-                key={slide.id}
+                key={slide.id || index}
                 onClick={() => {
                   if (currentSlide === index) return
                   setDirection(index > currentSlide ? 1 : -1)
@@ -241,16 +304,14 @@ const PremiumHero = () => {
                     0{index + 1}
                   </span>
                   <span className={`text-[12px] tracking-[0.2em] font-bold transition-all whitespace-nowrap ${currentSlide === index ? 'text-white translate-y-0' : 'text-neutral-500 group-hover:text-neutral-300 group-hover:-translate-y-0.5'}`}>
-                    {slide.name}
+                    {slide.title || slide.name}
                   </span>
                 </div>
-
               </button>
             ))}
           </div>
         </motion.div>
       </div>
-
 
       {/* Decorative Side Elements */}
       <div className="hidden md:flex absolute left-12 top-1/2 -translate-y-1/2 flex-col items-center gap-20 z-30 opacity-30">

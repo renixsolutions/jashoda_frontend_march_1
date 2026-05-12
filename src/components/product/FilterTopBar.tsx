@@ -20,8 +20,8 @@ const FilterPill = ({ label, onRemove, active }: FilterPillProps) => (
         className={`
       flex items-center gap-2 px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all border shrink-0
       ${active
-                ? "bg-[#702540] text-white border-[#702540] shadow-lg shadow-rose-900/10 hover:bg-[#5a1d33] hover:-translate-y-0.5"
-                : "bg-white/80 backdrop-blur-md text-[#404040] border-gray-100 shadow-sm hover:border-[#702540] hover:text-[#702540]"
+                ? "bg-[#111827] text-white border-[#111827] shadow-lg shadow-rose-900/10 hover:bg-[#5a1d33] hover:-translate-y-0.5"
+                : "bg-white/80 backdrop-blur-md text-[#404040] border-gray-100 shadow-sm hover:border-[#111827] hover:text-[#111827]"
             }
     `}
     >
@@ -131,8 +131,8 @@ export default function FilterTopBar() {
                     className={cn(
                         "flex items-center gap-2 px-6 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all shrink-0 h-10 shadow-sm border",
                         activeFilters.length === 0
-                            ? "bg-[#702540] text-white border-[#702540] shadow-md"
-                            : "bg-white text-gray-400 border-gray-100 hover:text-[#702540] hover:border-[#702540]"
+                            ? "bg-[#111827] text-white border-[#111827] shadow-md"
+                            : "bg-white text-gray-400 border-gray-100 hover:text-[#111827] hover:border-[#111827]"
                     )}
                 >
                     <Filter className="w-3.5 h-3.5" />
@@ -178,7 +178,7 @@ export default function FilterTopBar() {
                 {activeFilters.length > 0 && (
                     <button 
                         onClick={clearAll}
-                        className="text-[10px] text-[#702540] font-bold hover:underline ml-2 uppercase tracking-widest shrink-0"
+                        className="text-[10px] text-[#111827] font-bold hover:underline ml-2 uppercase tracking-widest shrink-0"
                     >
                         Clear All
                     </button>
@@ -199,7 +199,7 @@ export default function FilterTopBar() {
                         ))}
                         <button 
                             onClick={clearAll}
-                            className="text-[10px] text-[#702540] font-bold uppercase tracking-widest px-2 shrink-0"
+                            className="text-[10px] text-[#111827] font-bold uppercase tracking-widest px-2 shrink-0"
                         >
                             Clear
                         </button>
@@ -211,12 +211,12 @@ export default function FilterTopBar() {
             <div className="md:hidden fixed bottom-6 right-6 z-40">
                 <button
                     onClick={() => setIsMobileFilterOpen(true)}
-                    className="flex items-center gap-2 px-6 py-4 rounded-full bg-[#702540] text-white shadow-2xl active:scale-95 transition-all"
+                    className="flex items-center gap-2 px-6 py-4 rounded-full bg-[#111827] text-white shadow-2xl active:scale-95 transition-all"
                 >
                     <Filter className="w-5 h-5" />
                     <span className="font-bold uppercase tracking-widest text-xs">Filter</span>
                     {activeFilters.length > 0 && (
-                        <span className="flex items-center justify-center w-5 h-5 rounded-full bg-white text-[#702540] text-[10px] font-bold">
+                        <span className="flex items-center justify-center w-5 h-5 rounded-full bg-white text-[#111827] text-[10px] font-bold">
                             {activeFilters.length}
                         </span>
                     )}
@@ -242,7 +242,7 @@ export default function FilterTopBar() {
                             className="fixed bottom-0 left-0 right-0 bg-white rounded-t-[32px] p-8 z-[70] md:hidden max-h-[85vh] overflow-y-auto"
                         >
                             <div className="flex items-center justify-between mb-8">
-                                <h3 className="text-2xl font-serif text-[#702540] italic">Filter Jewellery</h3>
+                                <h3 className="text-2xl font-serif text-[#111827] italic">Filter Jewellery</h3>
                                 <button onClick={() => setIsMobileFilterOpen(false)} className="p-2 bg-gray-50 rounded-full">
                                     <X className="w-6 h-6 text-gray-400" />
                                 </button>
@@ -259,7 +259,7 @@ export default function FilterTopBar() {
                                                 className={cn(
                                                     "px-4 py-3 rounded-xl text-xs text-center border transition-all",
                                                     (categoryId === c.slug || subcategoryId === c.slug)
-                                                        ? "bg-rose-50 border-[#702540] text-[#702540] font-bold"
+                                                        ? "bg-rose-50 border-[#111827] text-[#111827] font-bold"
                                                         : "border-gray-100 text-gray-600"
                                                 )}
                                             >
@@ -279,7 +279,7 @@ export default function FilterTopBar() {
                                                 className={cn(
                                                     "px-6 py-3 rounded-xl text-xs border transition-all",
                                                     genderId === g.slug
-                                                        ? "bg-rose-50 border-[#702540] text-[#702540] font-bold"
+                                                        ? "bg-rose-50 border-[#111827] text-[#111827] font-bold"
                                                         : "border-gray-100 text-gray-600"
                                                 )}
                                             >
@@ -299,7 +299,7 @@ export default function FilterTopBar() {
                                                 className={cn(
                                                     "px-6 py-3 rounded-xl text-xs border transition-all",
                                                     occasionId === o.slug
-                                                        ? "bg-rose-50 border-[#702540] text-[#702540] font-bold"
+                                                        ? "bg-rose-50 border-[#111827] text-[#111827] font-bold"
                                                         : "border-gray-100 text-gray-600"
                                                 )}
                                             >
@@ -319,7 +319,7 @@ export default function FilterTopBar() {
                                                 className={cn(
                                                     "w-full px-6 py-3 rounded-xl text-xs text-left border transition-all flex justify-between items-center",
                                                     (min && max && PRICERANGES.find(p => p.min === Number(min) && p.max === Number(max))?.label === r.label)
-                                                        ? "bg-rose-50 border-[#702540] text-[#702540] font-bold"
+                                                        ? "bg-rose-50 border-[#111827] text-[#111827] font-bold"
                                                         : "border-gray-100 text-gray-600"
                                                 )}
                                             >
@@ -340,7 +340,7 @@ export default function FilterTopBar() {
                                 </button>
                                 <button
                                     onClick={() => setIsMobileFilterOpen(false)}
-                                    className="flex-[2] bg-[#702540] text-white py-4 rounded-2xl text-xs font-bold uppercase tracking-widest shadow-xl"
+                                    className="flex-[2] bg-[#111827] text-white py-4 rounded-2xl text-xs font-bold uppercase tracking-widest shadow-xl"
                                 >
                                     Show Results
                                 </button>

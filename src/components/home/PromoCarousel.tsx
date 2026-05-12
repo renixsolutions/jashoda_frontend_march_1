@@ -14,8 +14,6 @@ const staticPromotions = [
         id: 1,
         title: "Timeless Heritage",
         description: "A masterful fusion of Rajputana soul and contemporary precision. Explore the signature diamond collection designed for the modern heirloom.",
-        bg_color: "bg-gradient-to-br from-[#1A1A1A] via-[#2D1B1B] to-[#1A1A1A]", // Deep Velvet Maroon
-        accent_color: "text-[#F2D7A1]",
         image_url: "/diamond-pendant.png",
         secondary_image_url: "/diamond-bangle.png",
         cta_text: "DISCOVER ARCHIVAL"
@@ -24,11 +22,16 @@ const staticPromotions = [
         id: 2,
         title: "The Golden Era",
         description: "An architectural manifesto in pure 24k gold. Hand-selected pieces that defined the essence of royal luxury.",
-        bg_color: "bg-gradient-to-br from-[#0C0C0C] via-[#1A1A1A] to-[#0C0C0C]", // Obsidian Charcoal
-        accent_color: "text-white",
         image_url: "/gold-rings-banner.png",
         cta_text: "EXPLORE EDITION"
     }
+];
+
+const luxuryBackgrounds = [
+    "bg-gradient-to-br from-[#09090B] via-[#1A1525] to-[#09090B]", // Deep amethyst dark
+    "bg-gradient-to-br from-[#0F172A] via-[#0B0F19] to-[#020617]", // Midnight slate
+    "bg-gradient-to-br from-[#1A1A1A] via-[#2D1B1B] to-[#1A1A1A]", // Velvet maroon
+    "bg-gradient-to-br from-[#1C1917] via-[#292524] to-[#0C0A09]", // Warm obsidian
 ];
 
 // ─── Refined Animation Constants ──────────────────────────────────────────────
@@ -95,20 +98,31 @@ export default function PromoCarousel() {
     };
 
     const handleBannerClick = (banner: any) => {
+        if (banner.link_url) {
+            router.push(banner.link_url);
+            return;
+        }
+
         const q = new URLSearchParams();
         if (banner.category_id) q.append("category", banner.category_id);
+        if (banner.subcategory_id) q.append("subcategory", banner.subcategory_id);
+        if (banner.gender_id) q.append("gender", banner.gender_id);
+        if (banner.occasion_id) q.append("occasion", banner.occasion_id);
+        
         router.push(`/shop${q.toString() ? `?${q.toString()}` : ""}`);
     };
 
     if (loading) return (
-        <div className="w-full h-[600px] flex items-center justify-center bg-white rounded-t-[60px] md:rounded-t-[100px]">
-            <div className="w-32 h-32 border-2 border-black/5 border-t-[#C8A165] rounded-full animate-spin" />
+        <div className="w-full bg-[#09090B]">
+            <div className="w-full h-[600px] flex items-center justify-center bg-white rounded-t-[60px] md:rounded-t-[100px]">
+                <div className="w-32 h-32 border-2 border-black/5 border-t-[#C8A165] rounded-full animate-spin" />
+            </div>
         </div>
     );
     if (!banners.length) return null;
 
     return (
-        <div className="w-full bg-[#FFFFFF]">
+        <div className="w-full bg-[#09090B]">
             <section className="relative w-full py-12 md:py-20 overflow-hidden flex flex-col items-center bg-[#FAFAFA] rounded-t-[60px] md:rounded-t-[100px]">
 
                 {/* ── Background Editorial Identity ── */}
@@ -136,16 +150,17 @@ export default function PromoCarousel() {
                     <AnimatePresence initial={false} custom={direction} mode="popLayout">
                         {banners.map((promo, index) => {
                             if (index !== currentIndex) return null;
+                            const cardBg = luxuryBackgrounds[index % luxuryBackgrounds.length];
 
                             return (
                                 <motion.div
-                                    key={promo.id}
+                                    key={promo.id || index}
                                     custom={direction}
                                     initial={{ scale: 0.95, opacity: 0, z: -150, rotateX: 5 }}
                                     animate={{ scale: 1, opacity: 1, z: 0, rotateX: 0 }}
                                     exit={{ scale: 1.05, opacity: 0, z: 100, filter: "blur(15px)" }}
                                     transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                                    className={`absolute w-full md:w-[85%] h-full rounded-[50px] overflow-hidden flex flex-col items-center justify-center p-8 md:p-16 ${promo.bg_color || 'bg-[#1A1A1A]'} shadow-[0_60px_120px_-30px_rgba(0,0,0,0.45)]`}
+                                    className={`absolute w-full md:w-[85%] h-full rounded-[50px] overflow-hidden flex flex-col items-center justify-center p-8 md:p-16 ${cardBg} shadow-[0_60px_120px_-30px_rgba(0,0,0,0.45)]`}
                                     style={{ transformStyle: "preserve-3d" }}
                                 >
                                     {/* Archival Texture Layer */}
@@ -156,24 +171,24 @@ export default function PromoCarousel() {
 
                                     {/* Side Images - Immediate Visibility */}
                                     <div className="hidden lg:block absolute left-6 xl:left-10 top-1/2 -translate-y-1/2 w-[18%] h-[75%] z-20 pointer-events-none">
+                                        {promo.secondary_image_url || promo.image_url ? (
                                         <img
                                             src={api.getMediaUrl(promo.secondary_image_url || promo.image_url)}
                                             alt=""
                                             className="object-contain w-full h-full drop-shadow-[0_20px_40px_rgba(0,0,0,0.3)]"
                                         />
+                                        ) : null}
                                     </div>
 
                                     <div className="hidden lg:block absolute right-6 xl:right-10 top-1/2 -translate-y-1/2 w-[18%] h-[75%] z-20 pointer-events-none">
+                                        {promo.image_url ? (
                                         <img
                                             src={api.getMediaUrl(promo.image_url)}
                                             alt=""
                                             className="object-contain w-full h-full drop-shadow-[0_20px_40px_rgba(0,0,0,0.3)]"
                                         />
+                                        ) : null}
                                     </div>
-
-
-
-
 
                                     {/* Center Editorial Content - Narrower for more Gap */}
                                     <div className="relative z-30 flex flex-col items-center text-center max-w-xl px-6">
@@ -186,33 +201,31 @@ export default function PromoCarousel() {
                                             <motion.div variants={contentLine} className="flex flex-col items-center mb-6">
                                                 {/* Mobile Image */}
                                                 <div className="lg:hidden w-full h-56 mb-8 flex justify-center">
+                                                    {promo.image_url ? (
                                                     <img
                                                         src={api.getMediaUrl(promo.image_url)}
                                                         alt=""
                                                         className="object-contain h-full drop-shadow-[0_20px_40px_rgba(0,0,0,0.5)]"
                                                     />
+                                                    ) : null}
                                                 </div>
 
-                                                <span className={`text-[10px] tracking-[0.4em] ${promo.accent_color || 'text-white/60'} font-bold`}>
+                                                <span className={`text-[10px] tracking-[0.4em] text-[#C8A165] font-bold uppercase`}>
                                                     Jashoda originals
                                                 </span>
                                                 <div className="w-16 h-[1px] bg-[#C8A165]/50 mt-4" />
                                             </motion.div>
 
-
-
                                             <motion.h2 
                                                 variants={contentLine} 
                                                 className={`font-serif text-3xl md:text-4xl lg:text-5xl mb-6 leading-[1.2] tracking-normal bg-gradient-to-b from-[#FFFFFF] via-[#F2D7A1] to-[#C8A165] bg-clip-text text-transparent italic drop-shadow-sm`}
                                             >
-                                                {promo.title.charAt(0).toUpperCase() + promo.title.slice(1).toLowerCase()}
+                                                {promo.title ? promo.title.charAt(0).toUpperCase() + promo.title.slice(1).toLowerCase() : 'Collection'}
                                             </motion.h2>
-
-
 
                                             <motion.p 
                                                 variants={contentLine} 
-                                                className="text-white/60 text-xs md:text-sm max-w-md mb-10 font-light leading-relaxed tracking-wide italic"
+                                                className="text-white/70 text-xs md:text-sm max-w-md mb-10 font-light leading-relaxed tracking-wide italic"
                                             >
                                                 {promo.description}
                                             </motion.p>
@@ -265,8 +278,8 @@ export default function PromoCarousel() {
                             onClick={() => go(idx > currentIndex ? 1 : -1, idx)}
                             className="group flex flex-col items-center"
                         >
-                            <div className={`h-[2px] transition-all duration-700 ${idx === currentIndex ? 'w-20 bg-black' : 'w-10 bg-black/10 group-hover:bg-black/30'}`} />
-                            <span className={`text-[8px] mt-2 font-bold transition-opacity duration-500 ${idx === currentIndex ? 'opacity-100' : 'opacity-0'}`}>
+                            <div className={`h-[2px] transition-all duration-700 ${idx === currentIndex ? 'w-20 bg-[#C8A165]' : 'w-10 bg-black/10 group-hover:bg-[#C8A165]/50'}`} />
+                            <span className={`text-[8px] mt-2 font-bold transition-opacity duration-500 ${idx === currentIndex ? 'opacity-100 text-[#C8A165]' : 'opacity-0 text-black/40'}`}>
                                 0{idx + 1}
                             </span>
                         </button>

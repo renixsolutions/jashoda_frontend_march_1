@@ -92,10 +92,12 @@ export default function VideoStories() {
 
     if (loading) {
         return (
-            <section className="py-24 relative overflow-hidden flex justify-center items-center min-h-[600px]">
-                <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#702540] via-[#8a3052] to-[#5c1c33] opacity-90" />
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white relative z-10"></div>
-            </section>
+            <div className="w-full bg-[#131e42]">
+                <section className="py-24 relative overflow-hidden flex justify-center items-center min-h-[600px] rounded-t-[60px] md:rounded-t-[100px] shadow-[0_-20px_50px_rgba(0,0,0,0.2)]">
+                    <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#702540] via-[#8a3052] to-[#5c1c33] opacity-90" />
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white relative z-10"></div>
+                </section>
+            </div>
         );
     }
 
@@ -104,18 +106,71 @@ export default function VideoStories() {
     }
 
     return (
-        <section className="py-24 relative overflow-hidden">
-            {/* Animated Background */}
-            <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#702540] via-[#8a3052] to-[#5c1c33] bg-[length:400%_400%] animate-gradient-xy opacity-90" />
+        <div className="w-full bg-[#131e42]">
+            <section className="py-24 relative overflow-hidden rounded-t-[60px] md:rounded-t-[100px] shadow-[0_-20px_50px_rgba(0,0,0,0.2)]">
+                {/* ── Ultra-Premium Background ── */}
+                <div className="absolute inset-0 z-0 bg-[#0B0406]" /> 
 
-            {/* Decorative Elements */}
-            <div className="absolute top-0 left-0 w-full h-full z-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] mix-blend-overlay pointer-events-none" />
+                {/* Animated Gradient Meshes */}
+                <div className="absolute inset-0 z-0 opacity-60 bg-gradient-to-br from-[#702540] via-[#2A0B18] to-[#09090B] bg-[length:200%_200%] animate-gradient-xy" />
 
-            <div className="container mx-auto px-4 relative z-10">
-                <div className="text-center mb-16 px-4">
-                    <h2 className="text-3xl md:text-5xl font-serif text-white mb-4">Stories & Styles</h2>
-                    <p className="text-white/80 max-w-lg mx-auto">Trendsetting diamond jewellery suited for every occasion</p>
+                {/* Floating Ambient Glows */}
+                <motion.div 
+                    animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }} 
+                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute -top-[20%] -left-[10%] w-[60%] h-[70%] bg-[radial-gradient(circle,rgba(200,161,101,0.15)_0%,transparent_70%)] pointer-events-none blur-[50px]" 
+                />
+                <motion.div 
+                    animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.4, 0.2] }} 
+                    transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                    className="absolute -bottom-[20%] -right-[10%] w-[70%] h-[80%] bg-[radial-gradient(circle,rgba(112,37,64,0.3)_0%,transparent_70%)] pointer-events-none blur-[60px]" 
+                />
+
+                {/* Luxury Typography Watermark */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden opacity-[0.03]">
+                    <span className="text-[28vw] font-serif tracking-tighter text-white leading-none whitespace-nowrap">
+                        STORIES
+                    </span>
                 </div>
+
+                {/* Sophisticated Texture */}
+                <div className="absolute top-0 left-0 w-full h-full z-0 opacity-[0.15] bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] mix-blend-screen pointer-events-none" />
+
+                <div className="container mx-auto px-4 relative z-10 pt-10">
+                    
+                    {/* Refined Header */}
+                    <div className="text-center mb-20 px-4 relative z-20">
+                        <motion.div 
+                            initial={{ opacity: 0, y: 10 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="flex items-center justify-center gap-4 mb-6"
+                        >
+                            <div className="w-12 h-[1px] bg-[#C8A165]/40" />
+                            <span className="text-[10px] uppercase tracking-[0.4em] text-[#C8A165] font-bold">The Editorial</span>
+                            <div className="w-12 h-[1px] bg-[#C8A165]/40" />
+                        </motion.div>
+                        
+                        <motion.h2 
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.1 }}
+                            className="text-4xl md:text-6xl lg:text-7xl font-serif text-white mb-8 tracking-tight"
+                        >
+                            Stories & <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-[#F2D7A1] to-[#C8A165]">Styles</span>
+                        </motion.h2>
+                        
+                        <motion.p 
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.2 }}
+                            className="text-white/50 text-xs md:text-sm tracking-widest uppercase font-light max-w-lg mx-auto leading-relaxed"
+                        >
+                            A curated exhibition of our finest moments in motion.
+                        </motion.p>
+                    </div>
 
                 <div className="relative h-[600px] flex items-center justify-center perspective-1000">
                     {/* Navigation Buttons */}
@@ -238,6 +293,7 @@ export default function VideoStories() {
                 </div>
             </div>
         </section>
+        </div>
     );
 }
 

@@ -1,5 +1,15 @@
 
+export interface Variant {
+    size_id: number;
+    size: string;
+    stock_quantity?: number;
+    quantity?: number; // Backend uses quantity
+    diameter?: string;
+    price?: number;
+}
+
 export interface Product {
+
     id: string; // or number, but keeping string for flexibility as per prompt "idOrSlug"
     slug: string;
     name: string;
@@ -36,7 +46,9 @@ export interface Product {
     gender?: string;
     collections?: { id: number, name: string, slug: string }[];
     createdAt: string;
+    variants?: Variant[];
 }
+
 
 export interface Category {
     id: number;

@@ -44,7 +44,7 @@ declare global {
 }
 
 export default function CheckoutPage() {
-    const { cartItems, totalPrice, clearCart } = useCart();
+    const { cartItems, totalPrice, clearCart, appliedCoupon, discountAmount, taxAmount, subtotal } = useCart();
     const { isAuthenticated } = useAuth();
     const router = useRouter();
     const [currentStep, setCurrentStep] = useState<CheckoutStep>('shipping');
@@ -245,7 +245,8 @@ export default function CheckoutPage() {
 
             const orderData = {
                 payment_method: formData.paymentMethod === 'cod' ? 'cod' : 'razorpay',
-                shipping_address: shippingAddressData
+                shipping_address: shippingAddressData,
+                coupon_code: appliedCoupon?.code || null
             };
 
             // 2. Call API to place order
@@ -644,15 +645,21 @@ export default function CheckoutPage() {
                             <div className="space-y-3 pt-6 border-t border-gray-100">
                                 <div className="flex justify-between text-sm text-gray-600">
                                     <span>Subtotal</span>
-                                    <span>₹{totalPrice.toLocaleString()}</span>
+                                    <span>₹{subtotal.toLocaleString()}</span>
                                 </div>
+                                {appliedCoupon && (
+                                    <div className="flex justify-between text-sm text-emerald-600 font-medium">
+                                        <span>Discount ({appliedCoupon.code})</span>
+                                        <span>-₹{discountAmount.toLocaleString()}</span>
+                                    </div>
+                                )}
                                 <div className="flex justify-between text-sm text-gray-600">
                                     <span>Shipping</span>
                                     <span className="text-green-600">Free</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-gray-600">
-                                    <span>Tax (Included)</span>
-                                    <span>₹0</span>
+                                    <span>Tax (GST 3% Added)</span>
+                                    <span>₹{Math.round(taxAmount).toLocaleString()}</span>
                                 </div>
                             </div>
 

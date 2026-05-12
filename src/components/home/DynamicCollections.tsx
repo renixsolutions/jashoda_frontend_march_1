@@ -35,17 +35,18 @@ export default function DynamicCollections() {
     }
 
     return (
-        <>
-            {collections.map((collection, index) => (
-                <CollectionCarousel 
-                    key={collection.id}
-                    collectionSlug={collection.slug}
-                    title={collection.name}
-                    subtitle={collection.description}
-                    // Alternate backgrounds for visual variety
-                    bgColor={index % 2 === 0 ? "#fcf8f5" : "#ffffff"}
-                />
-            ))}
-        </>
+        <div className="w-full bg-[#FAFAFA]">
+            <div className="w-full bg-[#FDFBF7] rounded-t-[60px] md:rounded-t-[100px] overflow-hidden shadow-[0_-20px_50px_rgba(0,0,0,0.05)] border-t border-[#832729]/5">
+                {collections.map((collection, index) => (
+                    <CollectionCarousel 
+                        key={collection.id}
+                        collectionSlug={collection.slug}
+                        title={collection.name}
+                        subtitle={collection.description}
+                        index={index}
+                    />
+                ))}
+            </div>
+        </div>
     );
 }

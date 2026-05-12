@@ -14,14 +14,22 @@ export interface CartItem extends Product {
 
 export interface CartContextType {
     cartItems: CartItem[];
-    addToCart: (product: Product, quantity?: number, size?: string) => Promise<void>;
+    addToCart: (product: Product, quantity?: number, sizeId?: number, sizeName?: string) => Promise<void>;
     removeFromCart: (productId: string | number, cartItemId?: number) => Promise<void>;
     updateQuantity: (productId: string | number, quantity: number, cartItemId?: number) => Promise<void>;
     clearCart: () => Promise<void>;
     totalItems: number;
     totalPrice: number;
+    discountAmount: number;
+    appliedCoupon: any | null;
+    applyCoupon: (coupon: any) => void;
+    removeCoupon: () => void;
     isLoading: boolean;
+    taxAmount: number;
+    gstRate: number;
+    subtotal: number;
 }
+
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
@@ -29,6 +37,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     const { user, isAuthenticated, promptLogin } = useAuth();
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [appliedCoupon, setAppliedCoupon] = useState<any | null>(null);
+
 
     // Fetch cart from backend on load or when user logs in
     useEffect(() => {
@@ -61,7 +71,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         }
     };
 
-    const addToCart = async (product: Product, quantity: number = 1, size?: string) => {
+    const addToCart = async (product: Product, quantity: number = 1, sizeId?: number, sizeName?: string) => {
         if (!isAuthenticated) {
             toast.error("Please login to add to cart");
             promptLogin();
@@ -75,10 +85,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
                 if (existing) {
                     return prev.map(item => item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item);
                 }
-                return [...prev, { ...product, quantity, size }];
+                return [...prev, { ...product, quantity, size: sizeName }];
             });
 
-            const res = await cartApi.addToCart(Number(product.id), quantity);
+            const res = await cartApi.addToCart(Number(product.id), quantity, sizeId);
             if (res.success) {
                 toast.success('Added to bag successfully');
                 // Re-fetch to get correct item ids
@@ -155,7 +165,39 @@ export function CartProvider({ children }: { children: ReactNode }) {
     };
 
     const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
-    const totalPrice = cartItems.reduce((acc, item) => acc + ((item.discount_price ? Number(item.discount_price) : item.price) * item.quantity), 0);
+    const subtotal = cartItems.reduce((acc, item) => acc + ((item.discount_price ? Number(item.discount_price) : item.price) * item.quantity), 0);
+    
+    const [discountAmount, setDiscountAmount] = useState(0);
+
+    useEffect(() => {
+        if (appliedCoupon && subtotal > 0) {
+            if (subtotal >= (appliedCoupon.min_purchase || 0)) {
+                if (appliedCoupon.discount_type === 'PERCENTAGE') {
+                    setDiscountAmount((subtotal * appliedCoupon.discount_value) / 100);
+                } else {
+                    setDiscountAmount(appliedCoupon.discount_value);
+                }
+            } else {
+                setDiscountAmount(0);
+                // toast.error(`Min purchase for this coupon is ₹${appliedCoupon.min_purchase}`);
+            }
+        } else {
+            setDiscountAmount(0);
+        }
+    }, [appliedCoupon, subtotal]);
+
+    // Jewelry GST in India is typically 3%
+    const gstRate = 3;
+    const taxAmount = subtotal > 0 ? (subtotal * gstRate) / 100 : 0;
+    const totalPrice = subtotal + taxAmount - discountAmount;
+
+    const applyCoupon = (coupon: any) => {
+        setAppliedCoupon(coupon);
+    };
+
+    const removeCoupon = () => {
+        setAppliedCoupon(null);
+    };
 
     return (
         <CartContext.Provider value={{
@@ -166,7 +208,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
             clearCart: clearCartContext,
             totalItems,
             totalPrice,
-            isLoading
+            discountAmount,
+            appliedCoupon,
+            applyCoupon,
+            removeCoupon,
+            isLoading,
+            taxAmount,
+            gstRate,
+            subtotal
         }}>
             {children}
         </CartContext.Provider>

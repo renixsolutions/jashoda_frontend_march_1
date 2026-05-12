@@ -2,48 +2,35 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-
-const items = [
-  {
-    id: 1,
-    title: "Lunar horizon",
-    category: "Signature necklace",
-    image: "/assets/images/hero_necklace.png",
-    description: "Forged under meticulous precision, this piece embodies the absolute pinnacle of our atelier's devotion to sterling silver."
-  },
-  {
-    id: 2,
-    title: "Crystalline dew",
-    category: "Earrings",
-    image: "/assets/images/arrival_earrings.png",
-    description: "Cold-pressed architectural drops, painstakingly polished to a mirror-like finish that captures and refracts ambient light."
-  },
-  {
-    id: 3,
-    title: "Imperial grace",
-    category: "Spiritual idols",
-    image: "/assets/images/arrival_ganesha.png",
-    description: "A sculptural triumph in solid silver. This devotional artifact is crafted to preserve eternal grace for generations."
-  },
-  {
-    id: 4,
-    title: "Ethereal band",
-    category: "Signature rings",
-    image: "/assets/images/hero_ring.png",
-    description: "An exercise in absolute restraint. These sweeping minimalist curves carry the undeniable weight of master craftsmanship."
-  }
-]
-
+import { useNavigation } from "@/contexts/NavigationContext"
+import { getMediaUrl } from "@/lib/api"
+import { useRouter } from 'next/navigation'
 
 const glowColors = [
   "#1E3A8A", // 0: Deep Sapphire
   "#064E3B", // 1: Forest Emerald
   "#A68F7B", // 2: Champagne Gold (Atelier)
   "#3A3025", // 3: Deep Bronze
+  "#4A0E4E", // 4: Deep Purple
+  "#8B0000", // 5: Dark Red
+  "#2F4F4F", // 6: Dark Slate Gray
+  "#8B4513", // 7: Saddle Brown
 ]
 
 const BentoShowcase = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number>(0)
+  const { categories, loading } = useNavigation()
+  const router = useRouter()
+
+  if (loading && categories.length === 0) {
+    return (
+      <section className="py-20 md:py-32 bg-gradient-to-b from-[#09090B] via-[#09090B] to-[#050505] min-h-[800px] flex items-center justify-center">
+         <div className="w-8 h-8 border-4 border-white/20 border-t-white rounded-full animate-spin"></div>
+      </section>
+    );
+  }
+
+  if (!categories || categories.length === 0) return null;
 
   return (
     <section id="silver-gallery" className="py-20 md:py-32 bg-gradient-to-b from-[#09090B] via-[#09090B] to-[#050505] overflow-hidden relative transition-colors duration-1000">
@@ -51,7 +38,7 @@ const BentoShowcase = () => {
       {/* ── Dynamic Ambient Reflection: Global Section Light ── */}
       <motion.div
         animate={{
-          backgroundImage: `radial-gradient(circle at center, ${glowColors[hoveredIndex]}20 0%, transparent 70%)`
+          backgroundImage: `radial-gradient(circle at center, ${glowColors[hoveredIndex % glowColors.length]}20 0%, transparent 70%)`
         }}
         transition={{ duration: 1.5, ease: "easeInOut" }}
         className="absolute inset-0 pointer-events-none z-0 opacity-60"
@@ -99,13 +86,21 @@ const BentoShowcase = () => {
 
         {/* ── Interactive Accordion Gallery ── */}
         <div className="flex flex-col md:flex-row w-full h-[800px] md:h-[600px] xl:h-[700px] gap-3 md:gap-4">
-          {items.map((item, index) => {
+          {categories.map((category, index) => {
             const isActive = hoveredIndex === index;
+            const imageUrl = category.image_url ? getMediaUrl(category.image_url) : (category.image ? getMediaUrl(category.image) : '/placeholder.png');
+
             return (
               <motion.div
-                key={item.id}
+                key={category.id}
                 onHoverStart={() => setHoveredIndex(index)}
-                onClick={() => setHoveredIndex(index)}
+                onClick={() => {
+                  if (!isActive) {
+                    setHoveredIndex(index);
+                  } else {
+                    router.push(`/shop?category=${category.slug}`);
+                  }
+                }}
                 animate={{
                   flex: isActive ? 3 : 1
                 }}
@@ -120,8 +115,8 @@ const BentoShowcase = () => {
                   transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                 >
                   <img
-                    src={item.image}
-                    alt={item.title}
+                    src={imageUrl}
+                    alt={category.name}
                     className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#090A0F] via-[#090A0F]/50 to-transparent opacity-90" />
@@ -137,8 +132,8 @@ const BentoShowcase = () => {
                     transition={{ duration: 0.4 }}
                   >
                     <div className="flex items-center gap-4 -rotate-90 whitespace-nowrap origin-center">
-                      <span className="text-white/20 font-serif italic text-2xl">0{item.id}</span>
-                      <span className="text-white/40 tracking-[0.2em] text-[10px] font-bold">{item.category}</span>
+                      <span className="text-white/20 font-serif italic text-2xl">0{index + 1}</span>
+                      <span className="text-white/40 tracking-[0.2em] text-[10px] font-bold uppercase">{category.name}</span>
                     </div>
 
                   </motion.div>
@@ -153,23 +148,23 @@ const BentoShowcase = () => {
                     className="relative z-10 w-full pointer-events-auto"
                   >
                     <div className="flex items-center gap-4 mb-4">
-                      <span className="text-white/40 font-serif italic text-xl">0{item.id}</span>
+                      <span className="text-white/40 font-serif italic text-xl">0{index + 1}</span>
                       <div className="h-[1px] w-10 bg-white/20" />
-                      <span className="text-[9px] tracking-[0.2em] text-white/60 font-bold">{item.category}</span>
+                      <span className="text-[9px] tracking-[0.2em] text-white/60 font-bold uppercase">Collection</span>
 
                     </div>
 
                     <h3 className="text-2xl md:text-5xl lg:text-6xl font-serif text-white italic mb-4 whitespace-nowrap overflow-hidden text-ellipsis">
-                      {item.title}
+                      {category.name}
                     </h3>
 
                     <div className="overflow-hidden">
                       <motion.p
                         animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 10 }}
                         transition={{ duration: 0.5, delay: isActive ? 0.3 : 0 }}
-                        className="text-white/40 text-xs md:text-base leading-relaxed max-w-sm md:max-w-md italic tracking-wider"
+                        className="text-white/40 text-xs md:text-base leading-relaxed max-w-sm md:max-w-md italic tracking-wider line-clamp-3"
                       >
-                        {item.description}
+                        Discover our exquisite collection of {category.name.toLowerCase()}, crafted with unparalleled precision and architectural fluidity.
                       </motion.p>
                     </div>
 
@@ -178,7 +173,10 @@ const BentoShowcase = () => {
                       transition={{ duration: 0.5, delay: isActive ? 0.4 : 0 }}
                       className="mt-6 md:mt-8 flex items-center gap-4"
                     >
-                      <button className="group/btn flex items-center gap-4 text-[10px] uppercase tracking-[0.3em] text-white font-bold cursor-pointer transition-colors">
+                      <button 
+                        onClick={(e) => { e.stopPropagation(); router.push(`/shop?category=${category.slug}`) }}
+                        className="group/btn flex items-center gap-4 text-[10px] uppercase tracking-[0.3em] text-white font-bold cursor-pointer transition-colors"
+                      >
                         <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover/btn:bg-white group-hover/btn:text-black transition-all duration-300">
                           <span className="text-sm">→</span>
                         </div>
@@ -200,7 +198,10 @@ const BentoShowcase = () => {
           transition={{ delay: 0.3 }}
           className="mt-24 flex justify-center"
         >
-          <button className="group flex items-center gap-6 text-white uppercase text-[10px] tracking-[0.5em] font-bold">
+          <button 
+            onClick={() => router.push('/shop')}
+            className="group flex items-center gap-6 text-white uppercase text-[10px] tracking-[0.5em] font-bold cursor-pointer"
+          >
             View Complete Exhibition
             <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500">
               <span className="text-lg">→</span>
@@ -214,3 +215,4 @@ const BentoShowcase = () => {
 }
 
 export default BentoShowcase
+

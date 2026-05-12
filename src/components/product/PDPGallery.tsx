@@ -19,9 +19,41 @@ export default function PDPGallery({ images, videoUrl, rating, reviews }: { imag
     }, [images]);
 
     return (
-        <div className="flex flex-col-reverse md:flex-row gap-6 h-full">
+        <div className="flex flex-col gap-6">
+            {/* Main View */}
+            <div className="relative bg-[#F8F8F8] border border-gray-100/50 rounded-[40px] overflow-hidden h-[500px] md:h-[700px] w-full transition-all duration-500 group shadow-sm hover:shadow-md">
+                {selected === "video" && videoUrl ? (
+                    <div className="w-full h-full flex items-center justify-center bg-black">
+                        <video 
+                            src={videoUrl} 
+                            controls 
+                            autoPlay 
+                            className="max-w-full max-h-full"
+                        />
+                    </div>
+                ) : (
+                    <Image
+                        src={selected}
+                        alt="Product Main View"
+                        fill
+                        className="object-cover mix-blend-multiply transition-all duration-700 group-hover:scale-110"
+                        unoptimized={selected.startsWith('http')}
+                    />
+                )}
+
+                {/* Rating Badge */}
+                {(rating !== undefined || reviews !== undefined) && (
+                    <div className="absolute bottom-6 left-6 z-10 flex items-center gap-1.5 px-4 py-2 bg-white/90 backdrop-blur-md rounded-full shadow-sm border border-black/5">
+                        <Star className="w-4 h-4 text-orange-400 fill-orange-400" />
+                        <span className="text-sm font-semibold text-gray-700">
+                            {rating !== undefined && rating !== null ? rating : '0.0'} | {reviews !== undefined && reviews !== null ? reviews : '0'}
+                        </span>
+                    </div>
+                )}
+            </div>
+
             {/* Thumbnails */}
-            <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto no-scrollbar md:w-24 shrink-0 py-1">
+            <div className="flex flex-row gap-4 overflow-x-auto no-scrollbar py-1">
                 {/* Images */}
                 {safeImages.map((img, idx) => (
                     <button
@@ -58,38 +90,6 @@ export default function PDPGallery({ images, videoUrl, rating, reviews }: { imag
                         <Play className="w-8 h-8 text-white fill-white" />
                         <span className="text-[10px] text-white font-bold uppercase tracking-tighter">Video</span>
                     </button>
-                )}
-            </div>
-
-            {/* Main View */}
-            <div className="flex-1 relative bg-[#F8F8F8] border border-gray-100/50 rounded-[40px] overflow-hidden min-h-[450px] md:min-h-[750px] w-full transition-all duration-500 group shadow-sm hover:shadow-md">
-                {selected === "video" && videoUrl ? (
-                    <div className="w-full h-full flex items-center justify-center bg-black">
-                        <video 
-                            src={videoUrl} 
-                            controls 
-                            autoPlay 
-                            className="max-w-full max-h-full"
-                        />
-                    </div>
-                ) : (
-                    <Image
-                        src={selected}
-                        alt="Product Main View"
-                        fill
-                        className="object-cover mix-blend-multiply transition-all duration-700 group-hover:scale-110"
-                        unoptimized={selected.startsWith('http')}
-                    />
-                )}
-
-                {/* Rating Badge */}
-                {(rating !== undefined || reviews !== undefined) && (
-                    <div className="absolute bottom-6 left-6 z-10 flex items-center gap-1.5 px-4 py-2 bg-white/90 backdrop-blur-md rounded-full shadow-sm border border-black/5">
-                        <Star className="w-4 h-4 text-orange-400 fill-orange-400" />
-                        <span className="text-sm font-semibold text-gray-700">
-                            {rating !== undefined && rating !== null ? rating : '0.0'} | {reviews !== undefined && reviews !== null ? reviews : '0'}
-                        </span>
-                    </div>
                 )}
             </div>
         </div>

@@ -135,6 +135,55 @@ export default function Navbar() {
         }
     };
 
+    const [isListening, setIsListening] = useState(false);
+    const recognitionRef = useRef<any>(null);
+
+    // Initialize Speech Recognition
+    useEffect(() => {
+        if (typeof window !== 'undefined' && ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
+            const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+            recognitionRef.current = new SpeechRecognition();
+            recognitionRef.current.continuous = false;
+            recognitionRef.current.interimResults = false;
+            recognitionRef.current.lang = 'en-IN';
+
+            recognitionRef.current.onresult = (event: any) => {
+                const transcript = event.results[0][0].transcript;
+                setSearchQuery(transcript);
+                setIsListening(false);
+                // Automatically trigger search
+                router.push(`/shop?search=${encodeURIComponent(transcript.trim())}`);
+            };
+
+            recognitionRef.current.onerror = (event: any) => {
+                console.error("Speech recognition error:", event.error);
+                setIsListening(false);
+            };
+
+            recognitionRef.current.onend = () => {
+                setIsListening(false);
+            };
+        }
+    }, []);
+
+    const startVoiceSearch = () => {
+        if (recognitionRef.current) {
+            if (isListening) {
+                recognitionRef.current.stop();
+                setIsListening(false);
+            } else {
+                try {
+                    recognitionRef.current.start();
+                    setIsListening(true);
+                } catch (err) {
+                    console.error("Failed to start speech recognition", err);
+                }
+            }
+        } else {
+            alert("Voice search is not supported in this browser.");
+        }
+    };
+
     const toggleTheme = () => {
         if (isDarkMode) {
             document.documentElement.classList.remove('dark');
@@ -274,13 +323,22 @@ export default function Navbar() {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 onKeyDown={handleSearch}
-                                placeholder="Search for diamond jewellery"
-                                className="w-full bg-gray-50 border border-gray-200 rounded-full py-1 px-12 text-xs focus:outline-none focus:border-luxury-pink focus:ring-1 focus:ring-luxury-pink transition-all placeholder:text-gray-400"
+                                placeholder={isListening ? "Listening... Speak now" : "Search for diamond jewellery"}
+                                className={cn(
+                                    "w-full bg-gray-50 border border-gray-200 rounded-full py-1 px-12 text-xs focus:outline-none focus:border-luxury-pink focus:ring-1 focus:ring-luxury-pink transition-all placeholder:text-gray-400",
+                                    isListening && "border-luxury-pink ring-1 ring-luxury-pink shadow-[0_0_10px_rgba(240,79,105,0.2)]"
+                                )}
                             />
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-luxury-pink transition-colors" />
                             <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-3 text-gray-400">
                                 <Camera className="w-4 h-4 hover:text-luxury-pink cursor-pointer transition-colors" />
-                                <Mic className="w-4 h-4 hover:text-luxury-pink cursor-pointer transition-colors" />
+                                <Mic 
+                                    onClick={startVoiceSearch}
+                                    className={cn(
+                                        "w-4 h-4 cursor-pointer transition-all duration-300",
+                                        isListening ? "text-[#F04F69] animate-pulse scale-125" : "hover:text-luxury-pink"
+                                    )} 
+                                />
                             </div>
 
                             {/* Suggestions Dropdown */}
@@ -615,10 +673,22 @@ export default function Navbar() {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 onKeyDown={handleSearch}
-                                placeholder="Search..."
-                                className="w-full bg-gray-50 border border-gray-200 rounded-lg py-3 px-10 text-sm focus:outline-none focus:border-luxury-pink"
+                                placeholder={isListening ? "Listening..." : "Search..."}
+                                className={cn(
+                                    "w-full bg-gray-50 border border-gray-200 rounded-lg py-3 px-10 text-sm focus:outline-none focus:border-luxury-pink",
+                                    isListening && "border-luxury-pink ring-1 ring-luxury-pink"
+                                )}
                             />
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                                <Mic 
+                                    onClick={startVoiceSearch}
+                                    className={cn(
+                                        "w-5 h-5 cursor-pointer transition-all",
+                                        isListening ? "text-[#F04F69] animate-pulse" : "text-gray-400"
+                                    )} 
+                                />
+                            </div>
 
                             {/* Mobile Suggestions Dropdown */}
                             <AnimatePresence>

@@ -105,7 +105,7 @@ export default function ProductCard({ product, variant = 'light' }: ProductCardP
             viewport={{ once: true }}
             whileHover={{ y: -8 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="group relative w-full flex-shrink-0 bg-transparent rounded-2xl overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            className={`group relative w-full flex-shrink-0 rounded-2xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 ${isDark ? 'bg-[#151515] border border-white/5 shadow-lg' : 'bg-white border border-gray-100 shadow-md p-1 pb-4'}`}
         >
             {/* Badge Overlay */}
             {product.badge && (
@@ -128,21 +128,21 @@ export default function ProductCard({ product, variant = 'light' }: ProductCardP
                 onClick={handleToggleWishlist}
                 className={`absolute top-4 right-4 z-20 p-2 rounded-full transition-all transform hover:scale-110 ${isInWishlistState
                     ? 'bg-rose-500 text-white shadow-md'
-                    : isDark ? 'bg-black/20 text-white hover:bg-black/40 hover:text-[#F2D7A1]' : 'bg-white/80 text-[#832729] hover:bg-white hover:shadow-md'
+                    : isDark ? 'bg-black/40 backdrop-blur-md text-white hover:bg-black/60 hover:text-[#F2D7A1]' : 'bg-white/80 backdrop-blur-md text-[#832729] hover:bg-white hover:shadow-md'
                     }`}
             >
                 <Heart className={`w-5 h-5 ${isInWishlistState ? 'fill-current' : ''}`} />
             </button>
 
             {/* Image Container with Slider Effect */}
-            <Link href={`/shop/${product.id}`} className={`block relative h-[380px] w-full overflow-hidden rounded-2xl ${isDark ? 'bg-black/20' : 'bg-[#F9F9F9]'}`}>
+            <Link href={`/shop/${product.id}`} className={`block relative h-[380px] w-full overflow-hidden ${isDark ? 'bg-[#09090B] rounded-t-xl' : 'bg-[#F9F9F9] rounded-xl'}`}>
                 {validImages.map((imgUrl, idx) => (
                     <Image
                         key={`${imgUrl}-${idx}`}
                         src={imgUrl}
                         alt={`${product.name} - ${idx + 1}`}
                         fill
-                        className={`object-cover transition-opacity duration-1000 ease-in-out group-hover:scale-110 ${
+                        className={`object-cover transition-opacity duration-1000 ease-in-out group-hover:scale-105 ${
                             idx === currentImgIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
                         }`}
                         unoptimized={imgUrl.startsWith('http')}
@@ -170,7 +170,7 @@ export default function ProductCard({ product, variant = 'light' }: ProductCardP
             </Link>
 
             {/* Product Details */}
-            <div className={`pt-5 text-left px-3 ${isDark ? 'px-2' : ''}`}>
+            <div className={`pt-5 text-left px-4 pb-2`}>
                 <div className="flex justify-between items-start mb-1">
                     <Link href={`/shop/${product.id}`}>
                         <h3 className={`text-base font-sans leading-tight transition-colors line-clamp-2 pr-4 ${isDark ? 'text-white/90 hover:text-white font-medium' : 'text-[#404040] hover:text-[#832729] font-medium'}`}>{product.name}</h3>
@@ -205,8 +205,6 @@ export default function ProductCard({ product, variant = 'light' }: ProductCardP
                         </div>
                     )}
                 </div>
-
-                {isDark && <p className="text-xs text-white/50 uppercase tracking-widest mt-1">{product.category}</p>}
             </div>
         </motion.div>
     );
